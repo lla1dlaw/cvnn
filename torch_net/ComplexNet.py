@@ -1,31 +1,43 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision import datasets, transforms
-from complexPyTorch.complexLayers import ComplexBatchNorm2d, ComplexConv2d, ComplexLinear
-from complexPyTorch.complexFunctions import complex_relu, complex_max_pool2d
+from complextorch.nn.modules.linear import Linear as ComplexLinear
+from complextorch.nn.modules.conv import Conv2d as ComplexConv2d
+from complextorch.nn.modules.batchnorm import BatchNorm2d as ComplexBatchNorm2d
+from complextorch.nn.modules.activation import zReLU as complex_relu
+from complextorch.nn.modules.batchnorm import BatchNorm1d as ComplexBatchNorm1d
 
 class ComplexNet(nn.Module):
-    
-    def __init__(self):
+    def __init__(self, linear_shape: list[int],in_size: int, out_size: int, conv_shape: list[int] = None):
+        """Complex Neural Network Class
+
+        Args:
+            linear_shape (list[int]): List of integers representing the shape of hidden linear layers.
+            in_size (int): Dimension of the input tensor.
+            out_size (int): Dimension of the output tensor.
+            conv_shape (list[int], optional): List of integers representing the shape of convolutional linear layers. Defaults to None.
+        """
         super(ComplexNet, self).__init__()
-        self.conv1 = ComplexConv2d(1, 10, 5, 1)
-        self.bn  = ComplexBatchNorm2d(10)
-        self.conv2 = ComplexConv2d(10, 20, 5, 1)
-        self.fc1 = ComplexLinear(4*4*20, 500)
-        self.fc2 = ComplexLinear(500, 10)
-             
+
+        if conv_shape: # If conv_shape is provided, use it
+            pass # add conv layers here
+
+        prev_outsize = in_size
+        
+        self.layers = []
+        for shape in linear_shape:
+            self.layers.append(ComplexLinear(prev_outsize, shape, bias=True, dtype=torch.complex64)) # hidden layers
+            prev_outsize = shape
+            self.layers.append(ComplexBatchNorm1d(shape)) # batch norm after each hidden layer
+        self.layers.append(ComplexLinear(prev_outsize, out_size, bias=True, dtype=torch.complex64)) # output layer
+        self.layers = nn.ModuleList(self.layers)
+
+
     def forward(self,x):
-        x = self.conv1(x)
-        x = complex_relu(x)
-        x = complex_max_pool2d(x, 2, 2)
-        x = self.bn(x)
-        x = self.conv2(x)
-        x = complex_relu(x)
-        x = complex_max_pool2d(x, 2, 2)
-        x = x.view(-1,4*4*20)
-        x = self.fc1(x)
-        x = complex_relu(x)
-        x = self.fc2(x)
-        x = x.abs()
-        x =  F.log_softmax(x, dim=1)
+        for layer in self.layers[:-1]:
+            x = layer(x)
+            if isinstance(layer, ComplexLinear):
+                x = complex_relu(x)
+        x = self.layers[-1](x)
+        x = F.log_softmax(x, dim=1)
         return x
