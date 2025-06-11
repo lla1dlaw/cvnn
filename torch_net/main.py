@@ -22,16 +22,25 @@ import numpy as np
 from tqdm import tqdm 
 
 
-def load_complex_dataset(x_train, x_test):
+def load_complex_dataset(train_dataset, test_dataset):
     """Loads the MNIST dataset and applies the 2D Discrete Fourier Transform (DFT) to each image.
     Args:
-        x_train (numpy.ndarray): The training images, shape (num_samples, 28, 28).
-        x_test (numpy.ndarray): The test images, shape (num_samples, 28, 28).
+        train_data (torchvision.datasets.MNIST): The training dataset.
+        test_data (torchvision.datasets.MNIST): The test dataset.
+        
     returns: A tuple containing the transformed training and test datasets.
     """
 
+    x_train = train_dataset.data.numpy()
+    y_train = train_dataset.targets.numpy()
+
+    # 4. Convert test data and labels to NumPy arrays
+    x_test = test_dataset.data.numpy()
+    y_test = test_dataset.targets.numpy()
+
     x_train_complex = []
     x_test_complex = []
+
     for train_sample in x_train:
         # Apply the 2D Discrete Fourier Transform
         train_complex_image = np.fft.fft2(train_sample)
@@ -41,7 +50,8 @@ def load_complex_dataset(x_train, x_test):
         test_complex_image = np.fft.fft2(test_sample)
         x_test_complex.append(test_complex_image)
         
-    out = torch.from_numpy(np.array(x_train_complex).astype(np.complex64).flatten()), torch.from_numpy(np.array(x_test_complex).astype(np.complex64).flatten())
+    train_set, test_set = torch.from_numpy(np.array(x_train_complex).astype(np.complex64)), torch.from_numpy(np.array(x_test_complex).astype(np.complex64))
+    out = TensorDataset(train_set, torch.from_numpy(y_train)), TensorDataset(test_set, torch.from_numpy(y_test))
     return out
 
 def train(model, device, train_loader, optimizer, loss, epoch):
@@ -74,14 +84,21 @@ def main():
     linear_shape = [100, 100] # shape of hidden linear layers
 
     # Load MNIST datasets
-    (real_images_train, labels_train), (real_images_test, labels_test) = tf.keras.datasets.mnist.load_data() # real data
-    complex_images_train, complex_images_test = load_complex_dataset(real_images_train, real_images_test) # complex data (2d DFT)
+    real_train_dataset = torchvision.datasets.MNIST(
+        root='./data',
+        train=True,
+        download=True,
+        transform=torchvision.transforms.ToTensor()
+    )
 
-    # generate datasets 
-    real_train_dataset = TensorDataset(real_images_train, labels_train)
-    real_test_dataset = TensorDataset(real_images_test, labels_test)
-    complex_train_dataset = TensorDataset(complex_images_train, labels_train)
-    complex_test_dataset = TensorDataset(complex_images_test, labels_test)
+    real_test_dataset = torchvision.datasets.MNIST(
+        root='./data',
+        train=False,
+        download=True,
+        transform=torchvision.transforms.ToTensor()
+    )
+
+    complex_train_dataset, complex_test_dataset = load_complex_dataset(real_train_dataset, real_test_dataset) # complex data (2d DFT)
 
     # create dataloaders
     real_train_loader = DataLoader(real_train_dataset, batch_size=batch_size, shuffle=True)
@@ -90,7 +107,7 @@ def main():
     complex_test_loader = DataLoader(complex_test_dataset, batch_size=batch_size, shuffle=False)
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = ComplexNet(in_size, out_size, ).to(device)
+    model = ComplexNet(linear_shape, in_size, out_size).to(device)
     optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
     # Run training on 50 epochs
