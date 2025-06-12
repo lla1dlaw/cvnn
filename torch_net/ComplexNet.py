@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from complextorch.nn.modules.linear import Linear as ComplexLinear
 from complextorch.nn.modules.conv import Conv2d as ComplexConv2d
 from complextorch.nn.modules.batchnorm import BatchNorm2d as ComplexBatchNorm2d
-from complextorch.nn.modules.activation import zReLU as complex_relu
+from complextorch.nn.modules.activation import zReLU
 from complextorch.nn.modules.batchnorm import BatchNorm1d as ComplexBatchNorm1d
 
 class ComplexNet(nn.Module):
@@ -24,10 +24,11 @@ class ComplexNet(nn.Module):
 
         prev_outsize = in_size
         
-        self.layers = []
+        self.layers = [nn.Flatten(1)]
         for shape in linear_shape:
             self.layers.append(ComplexLinear(prev_outsize, shape, bias=True, dtype=torch.complex64)) # hidden layers
             prev_outsize = shape
+            self.layers.append(zReLU())
             self.layers.append(ComplexBatchNorm1d(shape)) # batch norm after each hidden layer
         self.layers.append(ComplexLinear(prev_outsize, out_size, bias=True, dtype=torch.complex64)) # output layer
         self.layers = nn.ModuleList(self.layers)
@@ -36,8 +37,9 @@ class ComplexNet(nn.Module):
     def forward(self,x):
         for layer in self.layers[:-1]:
             x = layer(x)
+            print(x)
             if isinstance(layer, ComplexLinear):
-                x = complex_relu(x)
-        x = self.layers[-1](x)
-        x = F.log_softmax(x, dim=1)
+                x = self.complex_relu(x)
+        x = self.layers[-1](x) # output layer
+        x = F.log_softmax(x, dim=1) # log-softmax for output
         return x
