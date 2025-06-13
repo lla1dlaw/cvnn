@@ -1,14 +1,19 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from complextorch.nn.modules.linear import Linear as ComplexLinear
+# from torch.nn import Linear as ComplexLinear
+
+# from complextorch.nn.modules.linear import Linear as ComplexLinear
+# from complextorch.nn import CVLinear as ComplexLinear
+from complexPyTorch.complexLayers import ComplexLinear 
 from complextorch.nn.modules.conv import Conv2d as ComplexConv2d
 from complextorch.nn.modules.batchnorm import BatchNorm2d as ComplexBatchNorm2d
 from complextorch.nn.modules.activation import zReLU
+from complextorch.nn.modules.softmax import CVSoftMax
 from complextorch.nn.modules.batchnorm import BatchNorm1d as ComplexBatchNorm1d
 
 class ComplexNet(nn.Module):
-    def __init__(self, linear_shape: list[int],in_size: int, out_size: int, conv_shape: list[int] = None):
+    def __init__(self, linear_shape: list[int], in_size: int, out_size: int, conv_shape: list[int] = None):
         """Complex Neural Network Class
 
         Args:
@@ -23,23 +28,25 @@ class ComplexNet(nn.Module):
             pass # add conv layers here
 
         prev_outsize = in_size
-        
-        self.layers = [nn.Flatten(1)]
+        self.layers = []
+#        self.layers.append(nn.Flatten(1))
         for shape in linear_shape:
-            self.layers.append(ComplexLinear(prev_outsize, shape, bias=True, dtype=torch.complex64)) # hidden layers
+            self.layers.append(ComplexLinear(prev_outsize, shape)) # hidden layers
             prev_outsize = shape
             self.layers.append(zReLU())
             self.layers.append(ComplexBatchNorm1d(shape)) # batch norm after each hidden layer
-        self.layers.append(ComplexLinear(prev_outsize, out_size, bias=True, dtype=torch.complex64)) # output layer
+        self.layers.append(ComplexLinear(prev_outsize, out_size)) # output layer
+        self.layers.append(CVSoftMax(1))
         self.layers = nn.ModuleList(self.layers)
 
 
     def forward(self,x):
-        for layer in self.layers[:-1]:
+        print(f"\n\nInput shape: {x.shape}")
+        print(f"Sample input: {x[0][0][0]}")
+        print(f"Sample input type: {x[0][0][0].dtype}")
+        x = torch.flatten(x, start_dim=1)
+        for i, layer in enumerate(self.layers):
             x = layer(x)
-            print(x)
-            if isinstance(layer, ComplexLinear):
-                x = self.complex_relu(x)
-        x = self.layers[-1](x) # output layer
-        x = F.log_softmax(x, dim=1) # log-softmax for output
+            print(f"Layer{i} output shape: {x.shape} ")
+            print(f"Sample layer{i} datapoint: {x[0][0]}")
         return x

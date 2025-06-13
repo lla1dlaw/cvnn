@@ -17,9 +17,10 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader, TensorDataset
 
 from ComplexNet import ComplexNet
-from complextorch.nn.modules.loss import CVCauchyError
+from complextorch.nn.modules.loss import CVLogError
 import numpy as np
 from tqdm import tqdm 
+import matplotlib.pyplot as plt
 
 
 def load_complex_dataset(train_dataset, test_dataset):
@@ -32,11 +33,25 @@ def load_complex_dataset(train_dataset, test_dataset):
     """
 
     x_train = train_dataset.data.numpy()
-    y_train = train_dataset.targets.numpy()
+    y_train_indecies = train_dataset.targets.numpy()
+
+    y_train = [] # one hot encoded vectors 
+    for index in y_train_indecies:
+        y_train.append([0]*10)
+        y_train[-1][index] = 1
+
+    y_train = np.array(y_train).astype(np.complex64)
 
     # 4. Convert test data and labels to NumPy arrays
     x_test = test_dataset.data.numpy()
-    y_test = test_dataset.targets.numpy()
+    y_test_indecies = test_dataset.targets.numpy()
+    
+    y_test = [] # one-hot encoded vectors
+    for index in y_test_indecies:
+        y_test.append([0]*10)
+        y_test[-1][index] = 1
+
+    y_test = np.array(y_test).astype(np.complex64)
 
     x_train_complex = []
     x_test_complex = []
@@ -49,18 +64,26 @@ def load_complex_dataset(train_dataset, test_dataset):
         # Apply the 2D Discrete Fourier Transform
         test_complex_image = np.fft.fft2(test_sample)
         x_test_complex.append(test_complex_image)
-        
+
+    
+    
+    # normalize transformed data
+    x_train_complex = np.array(x_train_complex)
+    x_train_complex = x_train_complex / np.abs(x_train_complex).max()
+    x_test_complex = np.array(x_test_complex)
+    x_test_complex = x_test_complex / np.abs(x_test_complex).max()
+
     train_set, test_set = torch.from_numpy(np.array(x_train_complex).astype(np.complex64)), torch.from_numpy(np.array(x_test_complex).astype(np.complex64))
     out = TensorDataset(train_set, torch.from_numpy(y_train)), TensorDataset(test_set, torch.from_numpy(y_test))
     return out
 
-def train(model, device, train_loader, optimizer, loss, epoch):
+def train(model, device, train_loader, optimizer, loss_fn, epoch):
     model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
+    for batch_idx, (data, target) in tqdm(enumerate(train_loader)):
         data, target = data.to(device).type(torch.complex64), target.to(device)
         optimizer.zero_grad()
         output = model(data)
-        loss = loss(output, target)
+        loss = loss_fn(output, target)
         loss.backward()
         optimizer.step()
         if batch_idx % 100 == 0:
@@ -76,7 +99,7 @@ def main():
     # training params
     batch_size = 64
     epochs = 20
-    loss = CVCauchyError  # complex-valued loss function
+    loss = CVLogError()  # complex-valued loss function
 
     # model params
     in_size = 28 * 28 
@@ -110,21 +133,22 @@ def main():
     model = ComplexNet(linear_shape, in_size, out_size).to(device)
     optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
-    # Run training on 50 epochs
-    for epoch in tqdm(range(epochs)):
-        train(model, device, complex_train_loader, optimizer, loss, epoch)
+
+    # # Run training on 50 epochs
+    for epoch in range(epochs):
+        train(model, device, real_train_loader, optimizer, loss, epoch)
     
     # test the model
     model.eval()
     test_loss = 0
     correct = 0
     with torch.no_grad():
-        for data, target in complex_test_loader:
+        for data, target in teal_test_loader:
             data, target = data.to(device).type(torch.complex64), target.to(device)
             output = model(data)
             test_loss += loss(output, target).item()  # sum up batch loss
-            pred = output.argmax(dim=1, keepdim=True)  # get the index of the max log-probability
-            correct += pred.eq(target.view_as(pred)).sum().item() 
+            pred = output.abs().argmax(dim=1, keepdim=True)  # get the index of the largest magnitude log-propobility (complex softmax)
+            correct += pred.eq(target.abs().argmax(dim=1, keepdim=True).view_as(pred)).sum().item() 
 
 
 if __name__ == '__main__':
