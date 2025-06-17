@@ -8,7 +8,8 @@ Date: June 2025
 
 import pretty_errors
 import os
-import datetime
+import sys
+from datetime import datetime
 import time
 from pathlib import Path
 
@@ -19,9 +20,11 @@ import cvnn.layers as complex_layers
 import matplotlib.pyplot as plt
 import pandas as pd
 from keras.utils.layer_utils import count_params
+from tqdm import tqdm
+import math
 
 
-def save_model(model: tf.keras.Model, path: str, name: str = None) -> str:
+def save_model(model: tf.keras.Model, path: str, filename = None) -> str:
     """Saves the TensorFlow Keras model to the specified path.
 
     This function saves the model in the recommended '.keras' format.
@@ -33,7 +36,7 @@ def save_model(model: tf.keras.Model, path: str, name: str = None) -> str:
         path (str): The path to the directory where the model will be stored.
         name (str, optional): The desired name for the model file.
                               If None, a name is generated automatically.
-                              Defaults to None.
+                              Defaults to an empty string.
 
     Returns:
         (str): The path to the saved model.
@@ -46,17 +49,15 @@ def save_model(model: tf.keras.Model, path: str, name: str = None) -> str:
         print(f"Error creating directory {path}: {e}")
 
     # Determine the filename for the model.
-    if name is None:
+    if not filename:
         # Generate a filename based on the model's name and current timestamp.
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         model_name = model.name if hasattr(model, "name") and model.name else "model"
         filename = f"{model_name}_{timestamp}.keras"
-    else:
-        # Use the provided name, ensuring it has the correct extension.
-        if not name.endswith(".keras"):
-            filename = f"{name}.keras"
-        else:
-            filename = name
+        
+    # Use the provided name, ensuring it has the correct extension.
+    elif not filename.endswith(".keras"):
+        filename = f"{Path(filename).stem}.keras"
 
     # Construct the full path for saving the model.
     full_path = os.path.join(path, filename)
@@ -71,12 +72,12 @@ def save_model(model: tf.keras.Model, path: str, name: str = None) -> str:
     return full_path
 
 
-def save_model_metrics(metrics: dict, path: str, name: str = None) -> None:
+def save_model_metrics(metrics: dict, path: str, filename = None) -> None:
     """Saves model metrics to a csv file.
     Args:
         metrics (dict): dictionary containing the training data for a given network.
         path (str): Path to the csv directory.
-        name (str): Filename of the csv.
+        filename (str): Filename of the csv. Defualts to an empty string.
     Returns:
         None.
     """
@@ -85,12 +86,15 @@ def save_model_metrics(metrics: dict, path: str, name: str = None) -> None:
         os.makedirs(path, exist_ok=True)
     except OSError as e:
         print(f"Error creating directory {path}: {e}")
+    
+    if not filename:
+        filename = "complex_linear_MNIST_training_metrics.csv"
+        
 
     # load metrics into a pandas dataframe:
-    data = pd.DataFrame(metrics)
-    filename = Path(name).stem
-    filename = f"{filename}.csv" if not name.endswith(".csv") else name
-    full_path = os.path.join(path, filename)
+    data = pd.DataFrame([metrics])
+    filename = Path(filename).stem
+    full_path = os.path.join(path, f"{filename}.csv")
 
     try:
         data.to_csv(full_path, index=False, mode="x")
@@ -104,14 +108,23 @@ def save_model_metrics(metrics: dict, path: str, name: str = None) -> None:
         print(f"Error saving metrics to {full_path}: {e}")
 
 
+def save_training_chart(losses: list[int], accuracies: list[int], path: str, filename: str) -> None:
+    """Saves a matplot lib chart of a network's trainging losses and accuracies to the specified path as the specified filename.
 
-def save_training_chart(losses: list[int], accuracies: list[int], path: str, name: str = None):
-    chart_name = Path(name).stem
+    Args:
+        losses (list[int]): loss values.
+        accuracies (list[int]): accuracy values. 
+        path (str): path to the save directory.
+        filename (str): Filename to save the chart under.
+    Returns:
+        None.
+    """
+    chart_name = Path(filename).stem
     filename = f"{chart_name}.png"
     # Plot training loss and accuracy
     X = list(range(len(losses)))
     fig, ax1 = plt.subplots(figsize=(10, 6))
-    fig.suptitle(f"{chart_name}", fontsize=16)
+    fig.suptitle(f"{chart_name.replace('_', ' ').capitalize()} Training Loss and Accuracy", fontsize=16)
     color = "tab:red"
     ax1.set_xlabel("Epochs")
     ax1.set_ylabel("Loss", color=color, fontsize=12)
@@ -129,7 +142,6 @@ def save_training_chart(losses: list[int], accuracies: list[int], path: str, nam
     fig.tight_layout(
         rect=(0.0, 0.03, 1.0, 0.95)
     )  # Adjust layout to make room for suptitle
-    plt.show()
     
     # save the training_figure
     try:
@@ -140,18 +152,20 @@ def save_training_chart(losses: list[int], accuracies: list[int], path: str, nam
     except Exception as e: 
         print(f"Error creating directory {path}: {e}")
 
+    plt.show()
+
 
 def get_linear_model(
-    input_shape: tuple[int],
+    input_shape: tuple,
     outsize: int,
     hidden_widths: list[int],
     batch_size: int,
     hidden_activations: list[str],
+    name: str,
     batch_norm: bool = False,
     weight_initializer: str = "ComplexGlorotUniform",
-    output_activation: str = None,
+    output_activation: str = "convert_to_real_with_abs",
     dtype=tf.as_dtype(np.complex64),
-    name: str = None,
 ) -> tf.keras.Model:
     """Generates a feedforward model.
     Args:
@@ -160,12 +174,12 @@ def get_linear_model(
         hidden_widths (list[int]): List of layer width values excluding input and output layers.
         batch_size (int): Batch size used by the input layer during training.
         hidden_activations (list[str]): List of activation functions to use after each hidden layer. See cvnn docs for options.
+        name (str): Optional. The name to assign to the keras object. Defaults to None.
         batch_norm (bool): Optional. If True batch normalization layers will be used.
         weight_initializer (str): The weight initialization algorithm to be used: Options are ComplexGlorotUniform, ComplexGlorotNormal, ComplexHeUniform, ComplexHeNormal. Defaults to ComplexGlorotUnivorm.
                                 NOTE: These intiializers work for both real and complex layers.
         output_activation (Callable): Activation function to use on the output layer. Defaults to None.
         dtype: The datatype to use for the layer parameters and expected inputs. Defaults to tf.compex64.
-        name (str): Optional. The name to assign to the keras object. Defaults to None.
     Returns:
         (tf.keras.Model): A generated feedforward keras model.
     """
@@ -221,7 +235,8 @@ def load_complex_dataset(x_train, y_train, x_test, y_test):
     x_test_complex = []
     one_hot_y_train = []
     one_hot_y_test = []
-    for train_sample in x_train:
+
+    for train_sample in tqdm(x_train):
         # Apply the 2D Discrete Fourier Transform
         train_complex_image = np.fft.fft2(train_sample)
 
@@ -229,7 +244,7 @@ def load_complex_dataset(x_train, y_train, x_test, y_test):
         train_shifted_complex_image = np.fft.fftshift(train_complex_image)
         casted = tf.cast(train_shifted_complex_image, dtype=tf.complex64)
         x_train_complex.append(casted)
-    for test_sample in x_test:
+    for test_sample in tqdm(x_test):
         # Apply the 2D Discrete Fourier Transform
         test_complex_image = np.fft.fft2(test_sample)
 
@@ -239,11 +254,11 @@ def load_complex_dataset(x_train, y_train, x_test, y_test):
         x_test_complex.append(casted)
 
     # convert y to one-hot complex values
-    for y in y_train:
+    for y in tqdm(y_train):
         one_hot_y_train.append([0] * 10)
         one_hot_y_train[-1][y] = 1
 
-    for y in y_test:
+    for y in tqdm(y_test):
         one_hot_y_test.append([0] * 10)
         one_hot_y_test[-1][y] = 1
 
@@ -278,16 +293,19 @@ def main():
         f"Test data shape: {complex_images_test.shape}, Test labels shape: {labels_test.shape}\n"
     )
 
-    epochs = 50
+    epochs = 5
     batch_size = 128
     input_shape = (28, 28)
     outsize = 10
     hidden_widths_list = [[20, 20, 20], [128, 128]]
-    hidden_activations = ["cart_relu"] * len(hidden_widths)
     output_activation = "convert_to_real_with_abs"
-    name = f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}"
+    optimizer = "adam"
+
+    print("\n-- Training Networks --\n")
     
     for hidden_widths in hidden_widths_list: 
+        name = f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}"
+        hidden_activations = ["cart_relu"] * len(hidden_widths)
         model = get_linear_model(
             input_shape,
             outsize,
@@ -299,21 +317,26 @@ def main():
         )
 
         model.compile(
-            optimizer="adam",
+            optimizer=optimizer,
             metrics=["accuracy"],
             loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         )
         model.summary()
 
         # Train and evaluate
-        start_time = time.perf_counter()
+        start_time = datetime.now()
         history = model.fit(
             complex_images_train, labels_train, epochs=epochs, batch_size=64
         ).history
-        training_time = start_time - time.perf_counter()
+        end_time = datetime.now()
+        training_time = end_time - start_time
 
         test_loss, test_acc = model.evaluate(complex_images_test, labels_test, verbose=2)
         train_losses = history["loss"]
+ 
+        print(f"\nTest loss: {test_loss:.4f}")
+        print(f"Test acc: {test_acc:.4f}")
+
         train_acc = history["accuracy"]
         dims = "-".join(map(str, hidden_widths))
         trainable_params = sum(count_params(layer) for layer in model.trainable_weights)
@@ -321,38 +344,40 @@ def main():
             count_params(layer) for layer in model.non_trainable_weights
         )
         total_params = trainable_params + non_trainable_params
-        path_to_model = save_model(model, os.join(".", "metrics"), training_time, name="complex_MNIST_performance_metrics.csv")
-        path_to_plot = os.path.join(".", "charts") 
-
+        path_to_model = save_model(model, os.path.join(sys.path[0], "models"), filename=f"{model.name}.keras")
+        plots_dir = os.path.join(sys.path[0], "plots")
+        plot_filename = f"{model.name}.png"
+        path_to_plot = os.path.join(plots_dir, plot_filename)
+        metrics_dir = os.path.join(sys.path[0], "metrics")
+        metrics_filename = "complex_linear_MNIST_training_metrics.csv"
         # training data to be saved in the metrics.csv file
         training_data = {
             "path": path_to_model,
             "loss_error_plot_path": path_to_plot,
             "hidden_shape": dims,
-            "input_shape": input_shape,
-            "out_size": outsize,
-            "hidden_activations": hidden_activations,
+            "input_features": math.prod(input_shape),
+            "output_features": outsize,
+            "hidden_activation": hidden_activations[0],
             "output_activation": output_activation,
+            "optimizer": optimizer,
             "trainable_params": trainable_params,
             "non-trainable_params": non_trainable_params,
             "total_params": total_params,
             "test_acc": test_acc,
             "test_loss": test_loss,
-        "num_epochs": epochs,
-        "batch_size": batch_size,
-        "training_time": training_time,
-        "final_training_acc": train_acc[-1],
-        "final_training_loss": train_losses[-1]
-        }
+            "num_epochs": epochs,
+            "batch_size": batch_size,
+            "training_time": training_time,
+            "final_training_acc": train_acc[-1],
+            "final_training_loss": train_losses[-1]
+            }
 
         for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
             training_data[f"epoch_{epoch}_loss"] = loss
             training_data[f"epoch_{epoch}_acc"] = acc
-
-        print(f"\nTest loss: {test_loss:.4f}")
-        print(f"Test acc: {test_acc:.4f}")
-
-        save_training_chart(train_losses, train_acc, path_to_plot, name)
+        
+        save_model_metrics(training_data, metrics_dir, filename=metrics_filename)
+        save_training_chart(train_losses, train_acc, plots_dir, name)
     
 
 if __name__ == "__main__":
