@@ -268,7 +268,7 @@ def load_complex_dataset(x_train, y_train, x_test, y_test, one_hot_y: bool = Tru
 def main():
 
     # training meta data
-    epochs = 1
+    epochs = 100
     batch_size = 64
     input_shape = (28, 28)
     outsize = 10
@@ -351,13 +351,13 @@ def main():
                 )
 
                 # save paths
-                models_dir = "/complex_models"
+                models_dir = "./complex_models"
                 model_filename = f"{model.name}_{hidden_function}_{imag_init_method}.keras"
                 path_to_model = os.path.join(models_dir, model_filename)
-                plots_dir = "/complex_plots"
+                plots_dir = "./complex_plots"
                 plot_filename = f"{model.name}_{hidden_function}_{imag_init_method}.png"
                 path_to_plot = os.path.join(plots_dir, plot_filename)
-                metrics_dir = "/complex_metrics"
+                metrics_dir = "./complex_metrics"
                 metrics_filename = f"{model.name}.csv"
 
                 # training data to be saved in the metrics.csv file
