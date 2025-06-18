@@ -8,9 +8,7 @@ Date: June 2025
 
 import pretty_errors
 import os
-import sys
 from datetime import datetime
-import time
 from pathlib import Path
 
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
@@ -20,7 +18,6 @@ import cvnn.layers as complex_layers
 import matplotlib.pyplot as plt
 import pandas as pd
 from keras.utils.layer_utils import count_params
-from tqdm import tqdm
 import math
 
 
@@ -152,7 +149,6 @@ def save_training_chart(losses: list[int], accuracies: list[int], path: str, fil
     except Exception as e: 
         print(f"Error creating directory {path}: {e}")
 
-    plt.show()
 
 
 def get_linear_model(
@@ -234,7 +230,7 @@ def load_complex_dataset(x_train, y_train, x_test, y_test, one_hot_y: bool = Tru
         assert imag_init in ['fft', 'zero', 'transform']
     except AssertionError:
         print(f"Incorrect argument: {imag_init} for imag_init. Available options: 'fft', 'zero', or 'transform'")
-    print("\n-- Generating Complex MNIST --\n")
+    print(f"\n-- Generating Complex MNIST using {imag_init} imaginary initialization --\n")
 
     x_train_complex = np.copy(x_train)
     x_test_complex = np.copy(x_test)
@@ -267,117 +263,134 @@ def load_complex_dataset(x_train, y_train, x_test, y_test, one_hot_y: bool = Tru
     one_hot_y_train = one_hot_y_train.astype(np.complex64)
     one_hot_y_test = one_hot_y_test.astype(np.complex64)
 
-    return x_train, y_train, x_test, y_test
+    return (x_train, y_train), (x_test, y_test)
 
 def main():
-     # real data
-    (real_images_train, labels_train), (real_images_test, labels_test) = (
-        tf.keras.datasets.mnist.load_data()
-    ) 
-    # complex data (2d DFT)
-    (complex_images_train, one_hot_y_train), (complex_images_test, one_hot_y_test) = (
-        load_complex_dataset(
-            real_images_train, labels_train, real_images_test, labels_test
-        )
-    )  
-    print(f"Complex number Ex: {complex_images_train[0][0][0]}")
 
-    # flatten images
-    print(
-        f"\nTrain data shape: {complex_images_train.shape}, Train labels shape: {labels_train.shape}"
-    )
-    print(
-        f"Test data shape: {complex_images_test.shape}, Test labels shape: {labels_test.shape}\n"
-    )
-
-    epochs = 5
-    batch_size = 128
+    # training meta data
+    epochs = 1
+    batch_size = 64
     input_shape = (28, 28)
     outsize = 10
-    hidden_widths_list = [[20, 20, 20], [128, 128]]
+    hidden_widths_list = [[32]*3, [64]*3, [128]*3, [256]*3]
     complex_activation_functions = ['modrelu', 'zrelu', 'crelu', 'complex_cardioid']
-    real_activation, functions = ['relu', ]
+    real_activation_functions = ['relu']
     output_activation = "convert_to_real_with_abs"
     optimizer = "adam"
 
-    print("\n-- Training Networks --\n")
+
+    # start training cycle
+    print("-- Training Complex Networks --")
     
-    for hidden_widths in hidden_widths_list: 
-        name = f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}"
-        hidden_activations = ["cart_relu"] * len(hidden_widths)
-        model = get_linear_model(
-            input_shape,
-            outsize,
-            hidden_widths,
-            batch_size,
-            hidden_activations,
-            output_activation=output_activation,
-            name=name,
-        )
-
-        model.compile(
-            optimizer=optimizer,
-            metrics=["accuracy"],
-            loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-        )
-        model.summary()
-
-        # Train and evaluate
-        start_time = datetime.now()
-        history = model.fit(
-            complex_images_train, labels_train, epochs=epochs, batch_size=64
-        ).history
-        end_time = datetime.now()
-        training_time = end_time - start_time
-
-        test_loss, test_acc = model.evaluate(complex_images_test, labels_test, verbose=2)
-        train_losses = history["loss"]
- 
-        print(f"\nTest loss: {test_loss:.4f}")
-        print(f"Test acc: {test_acc:.4f}")
-
-        train_acc = history["accuracy"]
-        dims = "-".join(map(str, hidden_widths))
-        trainable_params = sum(count_params(layer) for layer in model.trainable_weights)
-        non_trainable_params = sum(
-            count_params(layer) for layer in model.non_trainable_weights
-        )
-        total_params = trainable_params + non_trainable_params
-        path_to_model = save_model(model, os.path.join(sys.path[0], "models"), filename=f"{model.name}.keras")
-        plots_dir = os.path.join(sys.path[0], "plots")
-        plot_filename = f"{model.name}.png"
-        path_to_plot = os.path.join(plots_dir, plot_filename)
-        metrics_dir = os.path.join(sys.path[0], "metrics")
-        metrics_filename = "complex_linear_MNIST_training_metrics.csv"
-        # training data to be saved in the metrics.csv file
-        training_data = {
-            "path": path_to_model,
-            "loss_error_plot_path": path_to_plot,
-            "hidden_shape": dims,
-            "input_features": math.prod(input_shape),
-            "output_features": outsize,
-            "hidden_activation": hidden_activations[0],
-            "output_activation": output_activation,
-            "optimizer": optimizer,
-            "trainable_params": trainable_params,
-            "non-trainable_params": non_trainable_params,
-            "total_params": total_params,
-            "test_acc": test_acc,
-            "test_loss": test_loss,
-            "num_epochs": epochs,
-            "batch_size": batch_size,
-            "training_time": training_time,
-            "final_training_acc": train_acc[-1],
-            "final_training_loss": train_losses[-1]
-            }
-
-        for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
-            training_data[f"epoch_{epoch}_loss"] = loss
-            training_data[f"epoch_{epoch}_acc"] = acc
+    imaginary_component_init_methods = ['fft', 'zero'] # add 'transform' to this once you figure out how to do this. 
+    
+    for imag_init_method in imaginary_component_init_methods:
+        # real data
+        (real_images_train, labels_train), (real_images_test, labels_test) = tf.keras.datasets.mnist.load_data()
         
-        save_model_metrics(training_data, metrics_dir, filename=metrics_filename)
-        save_training_chart(train_losses, train_acc, plots_dir, name)
-    
+        # complex data (2d DFT)
+        (complex_images_train, one_hot_y_train), (complex_images_test, one_hot_y_test) = load_complex_dataset(
+            real_images_train,
+            labels_train,
+            real_images_test,
+            labels_test,
+            one_hot_y=True,
+            imag_init=imag_init_method
+        )
+        
+        print(f"Complex number Ex: {complex_images_train[0][0][0]}")
+
+        # flatten images
+        print(
+            f"\nTrain data shape: {complex_images_train.shape}, Train labels shape: {labels_train.shape}"
+        )
+        print(
+            f"Test data shape: {complex_images_test.shape}, Test labels shape: {labels_test.shape}\n"
+        )
+
+        for hidden_function in complex_activation_functions: # try every hidden activation
+            for hidden_widths in hidden_widths_list: 
+                name = f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}"
+                hidden_activations = [hidden_function] * len(hidden_widths)
+                model = get_linear_model(
+                    input_shape,
+                    outsize,
+                    hidden_widths,
+                    batch_size,
+                    hidden_activations,
+                    output_activation=output_activation,
+                    name=name,
+                )
+
+                model.compile(
+                    optimizer=optimizer,
+                    metrics=["accuracy"],
+                    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                )
+                model.summary()
+
+                # Train and evaluate
+                start_time = datetime.now()
+                history = model.fit(
+                    complex_images_train, labels_train, epochs=epochs, batch_size=64
+                ).history
+                end_time = datetime.now()
+                training_time = end_time - start_time
+
+                test_loss, test_acc = model.evaluate(complex_images_test, labels_test, verbose=2)
+                train_losses = history["loss"]
+        
+                print(f"\nTest loss: {test_loss:.4f}")
+                print(f"Test acc: {test_acc:.4f}")
+
+                train_acc = history["accuracy"]
+                dims = "-".join(map(str, hidden_widths))
+                trainable_params = sum(count_params(layer) for layer in model.trainable_weights)
+                non_trainable_params = sum(
+                    count_params(layer) for layer in model.non_trainable_weights
+                )
+
+                # save paths
+                models_dir = "/complex_models"
+                model_filename = f"{model.name}_{hidden_function}_{imag_init_method}.keras"
+                path_to_model = os.path.join(models_dir, model_filename)
+                plots_dir = "/complex_plots"
+                plot_filename = f"{model.name}_{hidden_function}_{imag_init_method}.png"
+                path_to_plot = os.path.join(plots_dir, plot_filename)
+                metrics_dir = "/complex_metrics"
+                metrics_filename = f"{model.name}.csv"
+
+                # training data to be saved in the metrics.csv file
+                training_data = {
+                    "path_to_model": path_to_model,
+                    "path_to_plot": path_to_plot,
+                    "hidden_shape": dims,
+                    "input_features": math.prod(input_shape),
+                    "output_features": outsize,
+                    "hidden_activation": hidden_function,
+                    "output_activation": output_activation,
+                    "imag_comp_init_method": imag_init_method, 
+                    "optimizer": optimizer,
+                    "trainable_params": trainable_params,
+                    "non-trainable_params": non_trainable_params,
+                    "test_acc": test_acc,
+                    "test_loss": test_loss,
+                    "num_epochs": epochs,
+                    "batch_size": batch_size,
+                    "training_time": training_time,
+                    "final_training_acc": train_acc[-1],
+                    "final_training_loss": train_losses[-1]
+                    }
+
+                for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
+                    training_data[f"epoch_{epoch}_loss"] = loss
+                    training_data[f"epoch_{epoch}_acc"] = acc
+                
+                # save model and training info
+                save_model(model, models_dir, filename=model_filename)
+                save_model_metrics(training_data, metrics_dir, filename=metrics_filename)
+                save_training_chart(train_losses, train_acc, plots_dir, plot_filename)
+
 
 if __name__ == "__main__":
     main()
