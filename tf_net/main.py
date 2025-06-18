@@ -4,6 +4,8 @@ Purpose: Environment for training and comparing Complex Valued Neural Networks t
 Resources Used: cvnn package written by J. Agustin Barrachina. Documentation and source code for this library are available: https://github.com/NEGU93/cvnn
 Acknowledgements: This script was written as a part of the Boise State University Cloud Computing Security and Privacy REU
 Date: June 2025
+
+python version: 3.10.18
 """
 
 import pretty_errors
@@ -298,7 +300,6 @@ def main():
             imag_init=imag_init_method
         )
         
-        print(f"Complex number Ex: {complex_images_train[0][0][0]}")
 
         # flatten images
         print(
