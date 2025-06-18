@@ -268,7 +268,7 @@ def load_complex_dataset(x_train, y_train, x_test, y_test, one_hot_y: bool = Tru
 def main():
 
     # training meta data
-    epochs = 100
+    epochs = 1
     batch_size = 64
     input_shape = (28, 28)
     outsize = 10
