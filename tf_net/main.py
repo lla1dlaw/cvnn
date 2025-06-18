@@ -122,11 +122,11 @@ def save_training_chart(losses: list[int], accuracies: list[int], path: str, fil
     chart_name = Path(filename).stem
     filename = f"{chart_name}.png"
     # Plot training loss and accuracy
-    X = list(range(len(losses)))
+    X = list(range(1, len(losses)+1))
     fig, ax1 = plt.subplots(figsize=(10, 6))
     fig.suptitle(f"{chart_name.replace('_', ' ').capitalize()} Training Loss and Accuracy", fontsize=16)
     color = "tab:red"
-    ax1.set_xlabel("Epochs")
+    ax1.set_xlabel("Epoch")
     ax1.set_ylabel("Loss", color=color, fontsize=12)
     ax1.plot(X, losses, color=color, label="Loss")
     ax1.tick_params(axis="y", labelcolor=color)
@@ -218,71 +218,68 @@ def get_linear_model(
     return model
 
 
-def load_complex_dataset(x_train, y_train, x_test, y_test):
+def load_complex_dataset(x_train, y_train, x_test, y_test, one_hot_y: bool = True, imag_init: str='fft'):
     """Loads the MNIST dataset and applies the 2D Discrete Fourier Transform (DFT) to each image.
     Args:
         x_train (numpy.ndarray): The training images, shape (num_samples, 28, 28).
         y_train (numpy.ndarray): The labels for the training images.
         x_test (numpy.ndarray): The test images, shape (num_samples, 28, 28).
         y_test (numpy.ndarray): The labels for the test images.
+        one_hot_y (bool, optional): Whether to one-hot-encode classification labels
+        imag_init (str, optional): The method used for initialization of the complex value. Options are: 'fft', 'zero', 'transform'
     Returns:
         (tuple): A tuple containing the transformed training and test datasets.
     """
-
+    try: 
+        assert imag_init in ['fft', 'zero', 'transform']
+    except AssertionError:
+        print(f"Incorrect argument: {imag_init} for imag_init. Available options: 'fft', 'zero', or 'transform'")
     print("\n-- Generating Complex MNIST --\n")
 
-    x_train_complex = []
-    x_test_complex = []
-    one_hot_y_train = []
-    one_hot_y_test = []
+    x_train_complex = np.copy(x_train)
+    x_test_complex = np.copy(x_test)
+    one_hot_y_train = np.copy(y_train)
+    one_hot_y_test = np.copy(y_test)
 
-    for train_sample in tqdm(x_train):
+    if imag_init == 'fft':
         # Apply the 2D Discrete Fourier Transform
-        train_complex_image = np.fft.fft2(train_sample)
-
+        x_train_complex = np.fft.fft2(x_train_complex)
+        x_test_complex = np.fft.fft2(x_test_complex)
         # The output of the DFT is often shifted to have the zero-frequency component (DC component) in the center for visualization purposes.
-        train_shifted_complex_image = np.fft.fftshift(train_complex_image)
-        casted = tf.cast(train_shifted_complex_image, dtype=tf.complex64)
-        x_train_complex.append(casted)
-    for test_sample in tqdm(x_test):
-        # Apply the 2D Discrete Fourier Transform
-        test_complex_image = np.fft.fft2(test_sample)
+        x_train_complex = np.fft.fftshift(x_train_complex)
+        x_test_complex = np.fft.fftshift(x_train_complex)
 
-        # The output of the DFT is often shifted to have the zero-frequency component (DC component) in the center for visualization purposes.
-        test_shifted_complex_image = np.fft.fftshift(test_complex_image)
-        casted = tf.cast(test_shifted_complex_image, dtype=tf.complex64)
-        x_test_complex.append(casted)
+    elif imag_init == 'transform':
+        raise ValueError('Transform imaginary component intialization is not available at this time.')
 
-    # convert y to one-hot complex values
-    for y in tqdm(y_train):
-        one_hot_y_train.append([0] * 10)
-        one_hot_y_train[-1][y] = 1
+    elif imag_init == 'zero':
+        # casting real values to complex zeros the imaginary component of the number and sets the real component to the original real value
+        x_train_complex = x_train_complex.astype(np.complex64)
+        x_test_complex = x_train_complex.astype(np.complex64)
+    
+    # create one hot encoded y_values
+    if one_hot_y:
+        one_hot_y_train = np.eye(10)[one_hot_y_train]
+        one_hot_y_test = np.eye(10)[one_hot_y_test]
 
-    for y in tqdm(y_test):
-        one_hot_y_test.append([0] * 10)
-        one_hot_y_test[-1][y] = 1
+    x_train_complex = tf.cast(x_train_complex , dtype=tf.complex64)
+    x_test_complex = tf.cast(x_test_complex , dtype=tf.complex64)
+    one_hot_y_train = one_hot_y_train.astype(np.complex64)
+    one_hot_y_test = one_hot_y_test.astype(np.complex64)
 
-    one_hot_y_train, one_hot_y_test = (
-        tf.cast(np.array(one_hot_y_train), dtype=tf.complex64),
-        tf.cast(np.array(one_hot_y_test), dtype=tf.complex64),
-    )
-
-    return (np.array(x_train_complex), one_hot_y_train), (
-        np.array(x_test_complex),
-        one_hot_y_test,
-    )
-
+    return x_train, y_train, x_test, y_test
 
 def main():
+     # real data
     (real_images_train, labels_train), (real_images_test, labels_test) = (
         tf.keras.datasets.mnist.load_data()
-    )  # real data
+    ) 
+    # complex data (2d DFT)
     (complex_images_train, one_hot_y_train), (complex_images_test, one_hot_y_test) = (
         load_complex_dataset(
             real_images_train, labels_train, real_images_test, labels_test
         )
-    )  # complex data (2d DFT)
-
+    )  
     print(f"Complex number Ex: {complex_images_train[0][0][0]}")
 
     # flatten images
@@ -298,6 +295,8 @@ def main():
     input_shape = (28, 28)
     outsize = 10
     hidden_widths_list = [[20, 20, 20], [128, 128]]
+    complex_activation_functions = ['modrelu', 'zrelu', 'crelu', 'complex_cardioid']
+    real_activation, functions = ['relu', ]
     output_activation = "convert_to_real_with_abs"
     optimizer = "adam"
 
