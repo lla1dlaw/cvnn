@@ -182,6 +182,7 @@ def get_linear_model(
         (tf.keras.Model): A generated feedforward keras model.
     """
 
+
     if len(hidden_widths) != len(hidden_activations):
         raise ValueError(
             f"Mismatched length between hidden_widths ({len(hidden_widths)}) and hidden_activations ({len(hidden_widths)}).\nThe length of these lists must be identical."
@@ -193,10 +194,10 @@ def get_linear_model(
     model = tf.keras.models.Sequential(name=name)
     # input and flattening layers
     model.add(
-        complex_layers.ComplexInput(input_shape=input_shape, batch_size=batch_size)
+        complex_layers.ComplexInput(input_shape=input_shape, batch_size=batch_size, dtype=dtype)
     )
     if len(input_shape) > 1:
-        model.add(complex_layers.ComplexFlatten())
+        model.add(complex_layers.ComplexFlatten(dtype=dtype))
     # hidden layers
     for width, activation in zip(hidden_widths, hidden_activations):
         model.add(
@@ -245,7 +246,7 @@ def load_complex_dataset(x_train, y_train, x_test, y_test, one_hot_y: bool = Tru
         x_test_complex = np.fft.fft2(x_test_complex)
         # The output of the DFT is often shifted to have the zero-frequency component (DC component) in the center for visualization purposes.
         x_train_complex = np.fft.fftshift(x_train_complex)
-        x_test_complex = np.fft.fftshift(x_train_complex)
+        x_test_complex = np.fft.fftshift(x_test_complex)
 
     elif imag_init == 'transform':
         raise ValueError('Transform imaginary component intialization is not available at this time.')
@@ -253,44 +254,63 @@ def load_complex_dataset(x_train, y_train, x_test, y_test, one_hot_y: bool = Tru
     elif imag_init == 'zero':
         # casting real values to complex zeros the imaginary component of the number and sets the real component to the original real value
         x_train_complex = x_train_complex.astype(np.complex64)
-        x_test_complex = x_train_complex.astype(np.complex64)
+        x_test_complex = x_test_complex.astype(np.complex64)
     
     # create one hot encoded y_values
     if one_hot_y:
         one_hot_y_train = np.eye(10)[one_hot_y_train]
         one_hot_y_test = np.eye(10)[one_hot_y_test]
 
-    x_train_complex = tf.cast(x_train_complex , dtype=tf.complex64)
-    x_test_complex = tf.cast(x_test_complex , dtype=tf.complex64)
     one_hot_y_train = one_hot_y_train.astype(np.complex64)
     one_hot_y_test = one_hot_y_test.astype(np.complex64)
 
-    return (x_train, y_train), (x_test, y_test)
+    return (x_train_complex, one_hot_y_train), (x_test_complex, one_hot_y_test)
 
 def main():
 
     # training meta data
-    epochs = 100
+    real_datatype = tf.as_dtype(np.float32)
+    complex_datatype = tf.as_dtype(np.complex64)
+    model_datatype = complex_datatype
+    epochs = 1
     batch_size = 64
+    batch_norm = False
     input_shape = (28, 28)
     outsize = 10
-    hidden_widths_list = [[32]*3, [64]*3, [128]*3, [256]*3]
+    complex_hidden_widths_list = [[32]*3, [64]*3, [128]*3, [256]*3]
+    real_hidden_widths_list = [[2*val for val in layer] for layer in complex_hidden_widths_list] # real networks have half the number of trainable parameters as complex ones of the same "size"
     complex_activation_functions = ['modrelu', 'zrelu', 'crelu', 'complex_cardioid']
     real_activation_functions = ['relu']
-    output_activation = "convert_to_real_with_abs"
+    real_output_activation_function = 'cart_softmax'
+    complex_output_activation = "convert_to_real_with_abs"
     optimizer = "adam"
+    imaginary_component_init_methods = ['zero', 'fft'] # add 'transform' to this once you figure out how to do this. 
 
+    # placeholders that are filled based on datatype of the network
+    hidden_widths_list = None
+    output_activation = None
+    activation_functions = None
 
     # start training cycle
-    print("-- Training Complex Networks --")
+    print("-- Training Networks --")
+    # real data is only loaded once
+    (real_images_train, labels_train), (real_images_test, labels_test) = tf.keras.datasets.mnist.load_data()
+
+    if model_datatype == tf.as_dtype(np.complex64):
+        hidden_widths_list = complex_hidden_widths_list
+        output_activation = complex_output_activation
+        activation_functions = complex_activation_functions
+    else: 
+        hidden_widths_list = real_hidden_widths_list
+        output_activation = real_output_activation_function
+        activation_functions = real_activation_functions
     
-    imaginary_component_init_methods = ['fft', 'zero'] # add 'transform' to this once you figure out how to do this. 
-    
-    for imag_init_method in imaginary_component_init_methods:
-        # real data
-        (real_images_train, labels_train), (real_images_test, labels_test) = tf.keras.datasets.mnist.load_data()
+    for i, imag_init_method in enumerate(imaginary_component_init_methods):
+        # break the loop after the first imaginary init method has been used (no need to repeat training for real networks)
+        if model_datatype != tf.as_dtype(np.complex64) and i == 1:
+            break
         
-        # complex data (2d DFT)
+        # complex data (loaded multiple times because the image_init_method may change if desired)
         (complex_images_train, one_hot_y_train), (complex_images_test, one_hot_y_test) = load_complex_dataset(
             real_images_train,
             labels_train,
@@ -299,19 +319,15 @@ def main():
             one_hot_y=True,
             imag_init=imag_init_method
         )
-        
 
         # flatten images
         print(
-            f"\nTrain data shape: {complex_images_train.shape}, Train labels shape: {labels_train.shape}"
-        )
-        print(
-            f"Test data shape: {complex_images_test.shape}, Test labels shape: {labels_test.shape}\n"
+            f"Using:\n\t- {hidden_widths_list}\n\t-{output_activation}\n\t-{activation_functions}"
         )
 
-        for hidden_function in complex_activation_functions: # try every hidden activation
+        for hidden_function in activation_functions: # try every hidden activation
             for hidden_widths in hidden_widths_list: 
-                name = f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}"
+                name = f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}" if model_datatype == tf.as_dtype(np.complex64) else f"MNIST_real_linear_{'-'.join(map(str, hidden_widths))}"
                 hidden_activations = [hidden_function] * len(hidden_widths)
                 model = get_linear_model(
                     input_shape,
@@ -320,7 +336,9 @@ def main():
                     batch_size,
                     hidden_activations,
                     output_activation=output_activation,
+                    batch_norm=batch_norm,
                     name=name,
+                    dtype=model_datatype
                 )
 
                 model.compile(
@@ -332,15 +350,26 @@ def main():
 
                 # Train and evaluate
                 start_time = datetime.now()
-                history = model.fit(
-                    complex_images_train, labels_train, epochs=epochs, batch_size=64
-                ).history
+                
+                history = None # history placeholder
+
+                if model_datatype == tf.as_dtype(np.complex64):
+                   history = model.fit(
+                        complex_images_train, labels_train, epochs=epochs, batch_size=batch_size, shuffle=True
+                    ).history
+                else:
+                    history = model.fit(
+                        real_images_train, labels_train, epochs=epochs, batch_size=batch_size, shuffle=True
+                    ).history
                 end_time = datetime.now()
                 training_time = end_time - start_time
-
-                test_loss, test_acc = model.evaluate(complex_images_test, labels_test, verbose=2)
+                
+                if model_datatype == tf.as_dtype(np.complex64):
+                    test_loss, test_acc = model.evaluate(complex_images_test, labels_test, verbose=2)
+                else: 
+                    test_loss, test_acc = model.evaluate(real_images_test, labels_test, verbose=2)
+       
                 train_losses = history["loss"]
-        
                 print(f"\nTest loss: {test_loss:.4f}")
                 print(f"Test acc: {test_acc:.4f}")
 
@@ -352,13 +381,14 @@ def main():
                 )
 
                 # save paths
-                models_dir = "./complex_models"
-                model_filename = f"{model.name}_{hidden_function}_{imag_init_method}.keras"
+                models_dir = "./complex_models" if model_datatype == tf.as_dtype(np.complex64) else "./real_models"
+                model_filename = f"{model.name}_{hidden_function}_{imag_init_method}.keras" if model_datatype == tf.as_dtype(np.complex64) else f"{model.name}_{hidden_function}.keras" # real models have no imag init method
                 path_to_model = os.path.join(models_dir, model_filename)
-                plots_dir = "./complex_plots"
-                plot_filename = f"{model.name}_{hidden_function}_{imag_init_method}.png"
+                plots_dir = "./complex_plots" if model_datatype == tf.as_dtype(np.complex64) else "./real_plots"
+                plot_filename = f"{model.name}_{hidden_function}_{imag_init_method}.png" if model_datatype == tf.as_dtype(np.complex64) else f"{model.name}_{hidden_function}.png" # real models have no imag init method
+
                 path_to_plot = os.path.join(plots_dir, plot_filename)
-                metrics_dir = "./complex_metrics"
+                metrics_dir = "./complex_metrics" if model_datatype == tf.as_dtype(np.complex64) else "./real_metrics"
                 metrics_filename = f"{model.name}.csv"
 
                 # training data to be saved in the metrics.csv file
@@ -370,7 +400,6 @@ def main():
                     "output_features": outsize,
                     "hidden_activation": hidden_function,
                     "output_activation": output_activation,
-                    "imag_comp_init_method": imag_init_method, 
                     "optimizer": optimizer,
                     "trainable_params": trainable_params,
                     "non-trainable_params": non_trainable_params,
@@ -382,6 +411,10 @@ def main():
                     "final_training_acc": train_acc[-1],
                     "final_training_loss": train_losses[-1]
                     }
+
+                # add the image init method to the training metrics only if the network is complex
+                if model_datatype == tf.as_dtype(np.complex64):
+                    training_data["imag_comp_init_method"] = imag_init_method
 
                 for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
                     training_data[f"epoch_{epoch}_loss"] = loss
