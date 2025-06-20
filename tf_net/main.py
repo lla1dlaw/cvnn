@@ -135,6 +135,7 @@ def save_training_chart(losses: list[int], accuracies: list[int], path: str, fil
     ax2.set_ylabel("Accuracy", color=color, fontsize=12)
     ax2.plot(X, accuracies, color=color, label="Accuracy")
     ax2.tick_params(axis="y", labelcolor=color)
+    ax2.set_ylim([0.0, 1.0])
     lines, labels = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax2.legend(lines + lines2, labels + labels2, loc="best")
@@ -271,7 +272,7 @@ def main():
     # training meta data
     real_datatype = tf.as_dtype(np.float32)
     complex_datatype = tf.as_dtype(np.complex64)
-    model_datatype = complex_datatype
+    datatypes = [real_datatype, complex_datatype]
     epochs = 50
     batch_size = 64
     batch_norm = False
@@ -293,137 +294,139 @@ def main():
 
     # start training cycle
     print("-- Training Networks --")
-    # real data is only loaded once
-    (real_images_train, labels_train), (real_images_test, labels_test) = tf.keras.datasets.mnist.load_data()
+    for datatype in datatypes:
 
-    if model_datatype == tf.as_dtype(np.complex64):
-        hidden_widths_list = complex_hidden_widths_list
-        output_activation = complex_output_activation
-        activation_functions = complex_activation_functions
-    else: 
-        hidden_widths_list = real_hidden_widths_list
-        output_activation = real_output_activation_function
-        activation_functions = real_activation_functions
-    
-    for i, imag_init_method in enumerate(imaginary_component_init_methods):
-        # break the loop after the first imaginary init method has been used (no need to repeat training for real networks)
-        if model_datatype != tf.as_dtype(np.complex64) and i == 1:
-            break
+        model_datatype = datatype        # real data is only loaded once
+        (real_images_train, labels_train), (real_images_test, labels_test) = tf.keras.datasets.mnist.load_data()
+
+        if model_datatype == tf.as_dtype(np.complex64):
+            hidden_widths_list = complex_hidden_widths_list
+            output_activation = complex_output_activation
+            activation_functions = complex_activation_functions
+        else: 
+            hidden_widths_list = real_hidden_widths_list
+            output_activation = real_output_activation_function
+            activation_functions = real_activation_functions
         
-        # complex data (loaded multiple times because the image_init_method may change if desired)
-        (complex_images_train, one_hot_y_train), (complex_images_test, one_hot_y_test) = load_complex_dataset(
-            real_images_train,
-            labels_train,
-            real_images_test,
-            labels_test,
-            one_hot_y=True,
-            imag_init=imag_init_method
-        )
+        for i, imag_init_method in enumerate(imaginary_component_init_methods):
+            # break the loop after the first imaginary init method has been used (no need to repeat training for real networks)
+            if model_datatype != tf.as_dtype(np.complex64) and i == 1:
+                break
+            
+            # complex data (loaded multiple times because the image_init_method may change if desired)
+            (complex_images_train, one_hot_y_train), (complex_images_test, one_hot_y_test) = load_complex_dataset(
+                real_images_train,
+                labels_train,
+                real_images_test,
+                labels_test,
+                one_hot_y=True,
+                imag_init=imag_init_method
+            )
 
-        # flatten images
-        print(
-            f"Using:\n\t- {hidden_widths_list}\n\t-{output_activation}\n\t-{activation_functions}"
-        )
+            # flatten images
+            print(
+                f"Using:\n\t- {hidden_widths_list}\n\t-{output_activation}\n\t-{activation_functions}"
+            )
 
-        for hidden_function in activation_functions: # try every hidden activation
-            for hidden_widths in hidden_widths_list: 
-                name = f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}" if model_datatype == tf.as_dtype(np.complex64) else f"MNIST_real_linear_{'-'.join(map(str, hidden_widths))}"
-                hidden_activations = [hidden_function] * len(hidden_widths)
-                model = get_linear_model(
-                    input_shape,
-                    outsize,
-                    hidden_widths,
-                    batch_size,
-                    hidden_activations,
-                    output_activation=output_activation,
-                    batch_norm=batch_norm,
-                    name=name,
-                    dtype=model_datatype
-                )
+            for hidden_function in activation_functions: # try every hidden activation
+                for hidden_widths in hidden_widths_list: 
+                    name = f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}" if model_datatype == tf.as_dtype(np.complex64) else f"MNIST_real_linear_{'-'.join(map(str, hidden_widths))}"
+                    hidden_activations = [hidden_function] * len(hidden_widths)
+                    model = get_linear_model(
+                        input_shape,
+                        outsize,
+                        hidden_widths,
+                        batch_size,
+                        hidden_activations,
+                        output_activation=output_activation,
+                        batch_norm=batch_norm,
+                        name=name,
+                        dtype=model_datatype
+                    )
 
-                model.compile(
-                    optimizer=optimizer,
-                    metrics=["accuracy"],
-                    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                )
-                model.summary()
+                    model.compile(
+                        optimizer=optimizer,
+                        metrics=["accuracy"],
+                        loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                    )
+                    model.summary()
 
-                # Train and evaluate
-                start_time = datetime.now()
-                
-                history = None # history placeholder
+                    # Train and evaluate
+                    start_time = datetime.now()
+                    
+                    history = None # history placeholder
 
-                if model_datatype == tf.as_dtype(np.complex64):
-                   history = model.fit(
-                        complex_images_train, labels_train, epochs=epochs, batch_size=batch_size, shuffle=True
-                    ).history
-                else:
-                    history = model.fit(
-                        real_images_train, labels_train, epochs=epochs, batch_size=batch_size, shuffle=True
-                    ).history
-                end_time = datetime.now()
-                training_time = end_time - start_time
-                
-                if model_datatype == tf.as_dtype(np.complex64):
-                    test_loss, test_acc = model.evaluate(complex_images_test, labels_test, verbose=2)
-                else: 
-                    test_loss, test_acc = model.evaluate(real_images_test, labels_test, verbose=2)
-       
-                train_losses = history["loss"]
-                print(f"\nTest loss: {test_loss:.4f}")
-                print(f"Test acc: {test_acc:.4f}")
+                    if model_datatype == tf.as_dtype(np.complex64):
+                        history = model.fit(
+                                complex_images_train, labels_train, epochs=epochs, batch_size=batch_size, shuffle=True
+                            ).history
+                    else:
+                        history = model.fit(
+                            real_images_train, labels_train, epochs=epochs, batch_size=batch_size, shuffle=True
+                        ).history
+                    end_time = datetime.now()
+                    training_time = end_time - start_time
+                    
+                    if model_datatype == tf.as_dtype(np.complex64):
+                        test_loss, test_acc = model.evaluate(complex_images_test, labels_test, verbose=2)
+                    else: 
+                        test_loss, test_acc = model.evaluate(real_images_test, labels_test, verbose=2)
+        
+                    train_losses = history["loss"]
+                    print(f"\nTest loss: {test_loss:.4f}")
+                    print(f"Test acc: {test_acc:.4f}")
 
-                train_acc = history["accuracy"]
-                dims = "-".join(map(str, hidden_widths))
-                trainable_params = sum(count_params(layer) for layer in model.trainable_weights)
-                non_trainable_params = sum(
-                    count_params(layer) for layer in model.non_trainable_weights
-                )
+                    train_acc = history["accuracy"]
+                    dims = "-".join(map(str, hidden_widths))
+                    trainable_params = sum(count_params(layer) for layer in model.trainable_weights)
+                    non_trainable_params = sum(
+                        count_params(layer) for layer in model.non_trainable_weights
+                    )
 
-                # save paths
-                models_dir = "./complex_models" if model_datatype == tf.as_dtype(np.complex64) else "./real_models"
-                model_filename = f"{model.name}_{hidden_function}_{imag_init_method}.keras" if model_datatype == tf.as_dtype(np.complex64) else f"{model.name}_{hidden_function}.keras" # real models have no imag init method
-                path_to_model = os.path.join(models_dir, model_filename)
-                plots_dir = "./complex_plots" if model_datatype == tf.as_dtype(np.complex64) else "./real_plots"
-                plot_filename = f"{model.name}_{hidden_function}_{imag_init_method}.png" if model_datatype == tf.as_dtype(np.complex64) else f"{model.name}_{hidden_function}.png" # real models have no imag init method
+                    # save paths
+                    models_dir = "./complex_models" if model_datatype == tf.as_dtype(np.complex64) else "./real_models"
+                    model_filename = f"{model.name}_{hidden_function}_{imag_init_method}.keras" if model_datatype == tf.as_dtype(np.complex64) else f"{model.name}_{hidden_function}.keras" # real models have no imag init method
+                    path_to_model = os.path.join(models_dir, model_filename)
+                    plots_dir = "./complex_plots" if model_datatype == tf.as_dtype(np.complex64) else "./real_plots"
+                    plot_filename = f"{model.name}_{hidden_function}_{imag_init_method}.png" if model_datatype == tf.as_dtype(np.complex64) else f"{model.name}_{hidden_function}.png" # real models have no imag init method
 
-                path_to_plot = os.path.join(plots_dir, plot_filename)
-                metrics_dir = "./complex_metrics" if model_datatype == tf.as_dtype(np.complex64) else "./real_metrics"
-                metrics_filename = f"{model.name}.csv"
+                    path_to_plot = os.path.join(plots_dir, plot_filename)
+                    metrics_dir = "./complex_metrics" if model_datatype == tf.as_dtype(np.complex64) else "./real_metrics"
+                    metrics_filename = f"{model.name}.csv"
 
-                # training data to be saved in the metrics.csv file
-                training_data = {
-                    "path_to_model": path_to_model,
-                    "path_to_plot": path_to_plot,
-                    "hidden_shape": dims,
-                    "input_features": math.prod(input_shape),
-                    "output_features": outsize,
-                    "hidden_activation": hidden_function,
-                    "output_activation": output_activation,
-                    "optimizer": optimizer,
-                    "trainable_params": trainable_params,
-                    "non-trainable_params": non_trainable_params,
-                    "test_acc": test_acc,
-                    "test_loss": test_loss,
-                    "num_epochs": epochs,
-                    "batch_size": batch_size,
-                    "training_time": training_time,
-                    "final_training_acc": train_acc[-1],
-                    "final_training_loss": train_losses[-1]
-                    }
+                    # training data to be saved in the metrics.csv file
+                    training_data = {
+                        "path_to_model": path_to_model,
+                        "path_to_plot": path_to_plot,
+                        "hidden_shape": dims,
+                        "input_features": math.prod(input_shape),
+                        "output_features": outsize,
+                        "hidden_activation": hidden_function,
+                        "output_activation": output_activation,
+                        "optimizer": optimizer,
+                        "trainable_params": trainable_params,
+                        "non-trainable_params": non_trainable_params,
+                        "test_acc": test_acc,
+                        "test_loss": test_loss,
+                        "num_epochs": epochs,
+                        "batch_size": batch_size,
+                        "training_time": training_time,
+                        "final_training_acc": train_acc[-1],
+                        "final_training_loss": train_losses[-1]
+                        }
 
-                # add the image init method to the training metrics only if the network is complex
-                if model_datatype == tf.as_dtype(np.complex64):
-                    training_data["imag_comp_init_method"] = imag_init_method
+                    # add the image init method to the training metrics only if the network is complex
+                    if model_datatype == tf.as_dtype(np.complex64):
+                        training_data["imag_comp_init_method"] = imag_init_method
 
-                for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
-                    training_data[f"epoch_{epoch}_loss"] = loss
-                    training_data[f"epoch_{epoch}_acc"] = acc
-                
-                # save model and training info
-                save_model(model, models_dir, filename=model_filename)
-                save_model_metrics(training_data, metrics_dir, filename=metrics_filename)
-                save_training_chart(train_losses, train_acc, plots_dir, plot_filename)
+                    for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
+                        training_data[f"epoch_{epoch}_loss"] = loss
+                        training_data[f"epoch_{epoch}_acc"] = acc
+                    
+                    # save model and training info
+                    save_model(model, models_dir, filename=model_filename)
+                    save_model_metrics(training_data, metrics_dir, filename=metrics_filename)
+                    save_training_chart(train_losses, train_acc, plots_dir, plot_filename)
 
 
 if __name__ == "__main__":
