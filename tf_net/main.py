@@ -272,7 +272,7 @@ def main():
     real_datatype = tf.as_dtype(np.float32)
     complex_datatype = tf.as_dtype(np.complex64)
     model_datatype = complex_datatype
-    epochs = 1
+    epochs = 100
     batch_size = 64
     batch_norm = False
     input_shape = (28, 28)
