@@ -159,75 +159,239 @@ def save_training_chart(
         print(f"Error creating directory {path}: {e}")
 
 
-def get_resnet():
-    pass
+def complex_residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.complex64, activation='crelu'):
+    """Complex-valued residual block implementation.
+    
+    Args:
+        x: Input tensor
+        filters: Number of filters in the conv layers
+        stage: Current stage number
+        block: Current block number in the stage
+        strides: Strides for the first conv layer
+        dtype: Data type (complex64 for complex networks)
+        activation: Activation function to use
+    
+    Returns:
+        Output tensor after applying residual block
+    """
+    conv_name_base = f'res{stage}{block}_branch'
+    bn_name_base = f'bn{stage}{block}_branch'
+    
+    # Activation function mapping
+    activation_map = {
+        'crelu': crelu,
+        'modrelu': modrelu,
+        'zrelu': zrelu,
+        'complex_cardioid': complex_cardioid
+    }
+    
+    # Store the input for shortcut connection
+    shortcut = x
+    
+    # First conv layer: BN → Activation → Conv
+    x = complex_layers.ComplexBatchNormalization(name=bn_name_base + '2a')(x)
+    
+    if dtype == tf.complex64:
+        activation_fn = activation_map.get(activation, crelu)
+        x = activation_fn(x)
+    else:
+        x = tf.keras.layers.ReLU(name=f'{conv_name_base}2a_activation')(x)
+    
+    x = complex_layers.ComplexConv2D(
+        filters, (3, 3), strides=strides, padding='same',
+        name=conv_name_base + '2a', dtype=dtype
+    )(x)
+    
+    # Second conv layer: BN → Activation → Conv
+    x = complex_layers.ComplexBatchNormalization(name=bn_name_base + '2b')(x)
+    
+    if dtype == tf.complex64:
+        activation_fn = activation_map.get(activation, crelu)
+        x = activation_fn(x)
+    else:
+        x = tf.keras.layers.ReLU(name=f'{conv_name_base}2b_activation')(x)
+    
+    x = complex_layers.ComplexConv2D(
+        filters, (3, 3), padding='same',
+        name=conv_name_base + '2b', dtype=dtype
+    )(x)
+    
+    # Check if we need to project the shortcut
+    input_filters = shortcut.shape[-1]
+    projection_needed = (strides != (1, 1)) or (input_filters != filters)
+    
+    if projection_needed:
+        # Apply downsampling if needed
+        if strides != (1, 1):
+            if dtype == tf.complex64:
+                shortcut = complex_layers.ComplexAvgPooling2D((2, 2), strides=(2, 2))(shortcut)
+            else:
+                shortcut = tf.keras.layers.AveragePooling2D((2, 2), strides=(2, 2))(shortcut)
+        
+        # Project to match filter dimensions
+        if dtype == tf.complex64:
+            shortcut = complex_layers.ComplexConv2D(
+                filters, (1, 1), strides=(1, 1), padding='same',
+                name=conv_name_base + '1', dtype=dtype
+            )(shortcut)
+        else:
+            shortcut = tf.keras.layers.Conv2D(
+                filters, (1, 1), strides=(1, 1), padding='same',
+                name=conv_name_base + '1'
+            )(shortcut)
+    
+    # Add shortcut connection
+    x = tf.keras.layers.Add()([x, shortcut])
+    
+    return x
 
-# 
-# def get_linear_model(
-#     input_shape: tuple,
-#     outsize: int,
-#     hidden_widths: list[int],
-#     batch_size: int,
-#     hidden_activations: list[str],
-#     name: str,
-#     batch_norm: bool = False,
-#     weight_initializer: str = "ComplexGlorotUniform",
-#     output_activation: str = "convert_to_real_with_abs",
-#     dtype=tf.as_dtype(np.complex64),
-# ) -> tf.keras.Model:
-#     """Generates a feedforward model.
-#     Args:
-#         insize (tuple(int)): Shape of the input data.
-#         outsize (int): Dimensionality of the output data.
-#         hidden_widths (list[int]): List of layer width values excluding input and output layers.
-#         batch_size (int): Batch size used by the input layer during training.
-#         hidden_activations (list[str]): List of activation functions to use after each hidden layer. See cvnn docs for options.
-#         name (str): Optional. The name to assign to the keras object. Defaults to None.
-#         batch_norm (bool): Optional. If True batch normalization layers will be used.
-#         weight_initializer (str): The weight initialization algorithm to be used: Options are ComplexGlorotUniform, ComplexGlorotNormal, ComplexHeUniform, ComplexHeNormal. Defaults to ComplexGlorotUnivorm.
-#                                 NOTE: These intiializers work for both real and complex layers.
-#         output_activation (Callable): Activation function to use on the output layer. Defaults to None.
-#         dtype: The datatype to use for the layer parameters and expected inputs. Defaults to tf.compex64.
-#     Returns:
-#         (tf.keras.Model): A generated feedforward keras model.
-#     """
-# 
-#     if len(hidden_widths) != len(hidden_activations):
-#         raise ValueError(
-#             f"Mismatched length between hidden_widths ({len(hidden_widths)}) and hidden_activations ({len(hidden_widths)}).\nThe length of these lists must be identical."
-#         )
-# 
-#     print("\n-- Initializing Model --")
-# 
-#     # generate model and fill layers
-#     model = tf.keras.models.Sequential(name=name)
-#     # input and flattening layers
-#     model.add(
-#         complex_layers.ComplexInput(
-#             input_shape=input_shape, batch_size=batch_size, dtype=dtype
-#         )
-#     )
-#     if len(input_shape) > 1:
-#         model.add(complex_layers.ComplexFlatten(dtype=dtype))
-#     # hidden layers
-#     for width, activation in zip(hidden_widths, hidden_activations):
-#         model.add(
-#             complex_layers.ComplexDense(
-#                 width,
-#                 activation='linear',
-#                 kernel_initializer=weight_initializer,
-#                 dtype=dtype,
-#             )
-#         )
-#         if batch_norm:
-#             model.add(complex_layers.ComplexBatchNormalization(dtype=dtype))
-# 
-#         model.add()
-#     # output layer
-#     model.add(
-#         complex_layers.ComplexDense(outsize, activation=output_activation, dtype=dtype)
-#     )
-#     return model
+
+def imaginary_learning_block(x, filters, dtype=tf.complex64):
+    """Learning block to generate imaginary components from real inputs.
+    
+    Implements: BN → ReLU → Conv → BN → ReLU → Conv
+    
+    Args:
+        x: Real-valued input tensor
+        filters: Number of filters
+        dtype: Data type
+    
+    Returns:
+        Complex tensor with learned imaginary component
+    """
+    # This block operates on real data to learn imaginary components
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.ReLU()(x)
+    x = tf.keras.layers.Conv2D(filters, (3, 3), padding='same')(x)
+    
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.ReLU()(x)
+    imaginary_part = tf.keras.layers.Conv2D(x.shape[-1], (3, 3), padding='same')(x)
+    
+    # Convert to complex by combining real input with learned imaginary
+    real_part = tf.cast(x, tf.float32)
+    imaginary_part = tf.cast(imaginary_part, tf.float32)
+    
+    complex_output = tf.complex(real_part, imaginary_part)
+    return complex_output
+
+
+def get_resnet(input_shape, num_classes, architecture_type='IB', activation_function='crelu', dtype=tf.complex64):
+    """Build ResNet architecture following He et al. (2016) with complex modifications.
+    
+    Args:
+        input_shape: Shape of input data (height, width, channels)
+        num_classes: Number of output classes
+        architecture_type: 'WS' (Wide Shallow), 'DN' (Deep Narrow), or 'IB' (In-Between)
+        activation_function: Activation function to use ('crelu', 'modrelu', 'zrelu', 'complex_cardioid')
+        dtype: tf.complex64 for complex networks, tf.float32 for real networks
+    
+    Returns:
+        tf.keras.Model: Compiled ResNet model
+    """
+    
+    # Architecture configurations (targeting ~1.7M parameters)
+    if dtype == tf.complex64:
+        configs = {
+            'WS': {'filters': 12, 'blocks_per_stage': 16},  # Wide Shallow
+            'DN': {'filters': 10, 'blocks_per_stage': 23},  # Deep Narrow  
+            'IB': {'filters': 11, 'blocks_per_stage': 19}   # In-Between
+        }
+    else:
+        configs = {
+            'WS': {'filters': 18, 'blocks_per_stage': 14},  # Wide Shallow
+            'DN': {'filters': 14, 'blocks_per_stage': 23},  # Deep Narrow
+            'IB': {'filters': 16, 'blocks_per_stage': 18}   # In-Between
+        }
+    
+    config = configs[architecture_type]
+    initial_filters = config['filters']
+    blocks_per_stage = config['blocks_per_stage']
+    
+    # Activation function mapping
+    activation_map = {
+        'crelu': crelu,
+        'modrelu': modrelu,
+        'zrelu': zrelu,
+        'complex_cardioid': complex_cardioid
+    }
+    
+    # Input layer
+    if dtype == tf.complex64:
+        inputs = complex_layers.complex_input(shape=input_shape)
+    else:
+        inputs = tf.keras.layers.Input(shape=input_shape)
+    
+    x = inputs
+    
+    # For complex networks: learn imaginary components
+    if dtype == tf.complex64:
+        x = imaginary_learning_block(x, initial_filters, dtype)
+    
+    # Initial Conv → BN → Activation (instead of Conv → MaxPooling)
+    if dtype == tf.complex64:
+        x = complex_layers.ComplexConv2D(
+            initial_filters, (3, 3), strides=(1, 1), padding='same',
+            name='conv1', dtype=dtype
+        )(x)
+        x = complex_layers.ComplexBatchNormalization(name='bn_conv1')(x)
+        activation_fn = activation_map.get(activation_function, crelu)
+        x = activation_fn(x)
+    else:
+        x = tf.keras.layers.Conv2D(
+            initial_filters, (3, 3), strides=(1, 1), padding='same',
+            name='conv1'
+        )(x)
+        x = tf.keras.layers.BatchNormalization(name='bn_conv1')(x)
+        x = tf.keras.layers.ReLU(name='activation_conv1')(x)
+    
+    # Stage 1: Initial filters, no downsampling
+    current_filters = initial_filters
+    for i in range(blocks_per_stage):
+        x = complex_residual_block(
+            x, current_filters, stage=1, block=i+1, 
+            strides=(1, 1), dtype=dtype, activation=activation_function
+        )
+    
+    # Stage 2: Double filters, downsample
+    current_filters *= 2
+    for i in range(blocks_per_stage):
+        strides = (2, 2) if i == 0 else (1, 1)  # Downsample on first block
+        x = complex_residual_block(
+            x, current_filters, stage=2, block=i+1,
+            strides=strides, dtype=dtype, activation=activation_function
+        )
+    
+    # Stage 3: Double filters again, downsample
+    current_filters *= 2
+    for i in range(blocks_per_stage):
+        strides = (2, 2) if i == 0 else (1, 1)  # Downsample on first block
+        x = complex_residual_block(
+            x, current_filters, stage=3, block=i+1,
+            strides=strides, dtype=dtype, activation=activation_function
+        )
+    
+    # Global Average Pooling
+    if dtype == tf.complex64:
+        # Use flatten + dense since ComplexGlobalAveragePooling2D might not exist
+        x = complex_layers.ComplexFlatten()(x)
+        x = complex_layers.ComplexDense(
+            num_classes, activation='convert_to_real_with_abs',
+            name='predictions', dtype=dtype
+        )(x)
+    else:
+        x = tf.keras.layers.GlobalAveragePooling2D()(x)
+        # Final fully connected layer with softmax
+        x = tf.keras.layers.Dense(
+            num_classes, activation='linear',
+            name='predictions'
+        )(x)
+    
+    # Create model
+    model_name = f'ResNet_{architecture_type}_{"Complex" if dtype == tf.complex64 else "Real"}'
+    model = tf.keras.Model(inputs, x, name=model_name)
+    
+    return model
 
 
 def get_linear_model(
@@ -382,11 +546,9 @@ def main():
     batch_norm = False
     input_shape = (32, 32, 3)
     outsize = 10
-    complex_hidden_widths_list = [[32] * 3, [64] * 3, [128] * 3, [256] * 3]
-    real_hidden_widths_list = [
-        [2 * val for val in layer] for layer in complex_hidden_widths_list
-    ]  # real networks have half the number of trainable parameters as complex ones of the same "size"
-    complex_activation_functions = ["modrelu", "zrelu", "crelu", "complex_cardioid"]
+    # ResNet architecture configurations: WS (Wide Shallow), DN (Deep Narrow), IB (In-Between)
+    architecture_types = ['WS', 'DN', 'IB']
+    complex_activation_functions = ["crelu", "modrelu", "zrelu", "complex_cardioid"]
     real_activation_functions = ["relu"]
     real_output_activation_function = "convert_to_real_with_abs"
     complex_output_activation = "convert_to_real_with_abs"
@@ -407,7 +569,6 @@ def main():
     ]  # add 'transform' to this once you figure out how to do this.
 
     # placeholders that are filled based on datatype of the network
-    hidden_widths_list = None
     output_activation = None
     activation_functions = None
 
@@ -420,11 +581,9 @@ def main():
         )
 
         if model_datatype == complex_datatype:
-            hidden_widths_list = complex_hidden_widths_list
             output_activation = complex_output_activation
             activation_functions = complex_activation_functions
         else:
-            hidden_widths_list = real_hidden_widths_list
             output_activation = real_output_activation_function
             activation_functions = real_activation_functions
 
@@ -446,26 +605,25 @@ def main():
                 imag_init=imag_init_method,
             )
 
-            # flatten images
             print(
-                f"Using:\n\t- {hidden_widths_list}\n\t-{output_activation}\n\t-{activation_functions}"
+                f"Using:\n\t- ResNet architectures: {architecture_types}\n\t- Output activation: {output_activation}\n\t- Activation functions: {activation_functions}"
             )
 
-            for hidden_function in activation_functions:  # try every hidden activation
-                for hidden_widths in hidden_widths_list:
-                    hidden_activations = [hidden_function]*len(hidden_widths)
-                    name = f"CIFAR10_complex_linear_{'-'.join(map(str, hidden_widths))}" if model_datatype == tf.as_dtype(np.complex64) else f"CIFAR10_real_linear_{'-'.join(map(str, hidden_widths))}"
-                    model = get_linear_model(
-                        input_shape,
-                        outsize,
-                        hidden_widths,
-                        batch_size,
-                        hidden_activations,
-                        output_activation=output_activation,
-                        batch_norm=batch_norm,
-                        name=name,
-                        dtype=model_datatype,
+            for arch_type in architecture_types:  # try every architecture type
+                for hidden_function in activation_functions:  # try every hidden activation
+                    name = f"CIFAR10_complex_ResNet_{arch_type}_{hidden_function}" if model_datatype == tf.as_dtype(np.complex64) else f"CIFAR10_real_ResNet_{arch_type}_{hidden_function}"
+                    
+                    # Create ResNet model
+                    model = get_resnet(
+                        input_shape=input_shape,
+                        num_classes=outsize,
+                        architecture_type=arch_type,
+                        activation_function=hidden_function,
+                        dtype=model_datatype
                     )
+                    
+                    # Update model name
+                    model._name = name
 
                     model.compile(
                         optimizer=optimizer,
@@ -516,7 +674,6 @@ def main():
                     print(f"Test acc: {test_acc:.4f}")
 
                     train_acc = history["accuracy"]
-                    dims = "-".join(map(str, hidden_widths))
                     trainable_params = sum(
                         count_params(layer) for layer in model.trainable_weights
                     )
@@ -559,13 +716,13 @@ def main():
                     training_data = {
                         "path_to_model": path_to_model,
                         "path_to_plot": path_to_plot,
-                        "hidden_shape": dims,
+                        "architecture_type": arch_type,
                         "input_features": math.prod(input_shape),
                         "output_features": outsize,
                         "hidden_activation": hidden_function,
                         "output_activation": output_activation,
-                        "optimizer": optimizer,
                         "initial_learning_rate": initial_learning_rate,
+                        "learning_rate_schedule": "He et al. 2016 style",
                         "momentum": momentum,
                         "clip_norm": clip_norm,
                         "optimizer": optimizer.name,
