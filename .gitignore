@@ -1,4 +1,4 @@
 /torch_net/data/
 /data/
-
+/tf_net/.env
 /tf_net/*log_slurm*

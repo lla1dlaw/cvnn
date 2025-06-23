@@ -8,6 +8,11 @@ Date: June 2025
 python version: 3.10.18
 """
 
+import smtplib
+from email.message import EmailMessage
+
+from dotenv import load_dotenv
+
 import pretty_errors
 import os
 from datetime import datetime
@@ -753,7 +758,22 @@ def main():
                     save_training_chart(
                         train_losses, train_acc, plots_dir, plot_filename
                     )
+    # send email saying that training is done
+    load_dotenv()
+    email = os.getenv("EMAIL")
+    msg = EmailMessage()
+    msg.set_content("Finished Training Networks")
+    msg['Subject'] = "-- Training Completion Notification --"
+    msg['From'] = email
+    msg['To'] = email
 
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server: # For Gmail
+            server.login(email, email)
+            server.send_message(msg)
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
 
 if __name__ == "__main__":
     main()
