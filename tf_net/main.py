@@ -15,8 +15,10 @@ from pathlib import Path
 
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 import tensorflow as tf
+from tensorflow.keras import datasets
 import numpy as np
 import cvnn.layers as complex_layers
+from cvnn.activations import modrelu, zrelu, crelu, complex_cardioid, cart_relu
 import matplotlib.pyplot as plt
 import pandas as pd
 from keras.utils.layer_utils import count_params
@@ -87,7 +89,7 @@ def save_model_metrics(metrics: dict, path: str, filename=None) -> None:
         print(f"Error creating directory {path}: {e}")
 
     if not filename:
-        filename = "complex_linear_MNIST_training_metrics.csv"
+        filename = "complex_linear_CIFAR10_training_metrics.csv"
 
     # load metrics into a pandas dataframe:
     data = pd.DataFrame([metrics])
@@ -157,6 +159,77 @@ def save_training_chart(
         print(f"Error creating directory {path}: {e}")
 
 
+def get_resnet():
+    pass
+
+# 
+# def get_linear_model(
+#     input_shape: tuple,
+#     outsize: int,
+#     hidden_widths: list[int],
+#     batch_size: int,
+#     hidden_activations: list[str],
+#     name: str,
+#     batch_norm: bool = False,
+#     weight_initializer: str = "ComplexGlorotUniform",
+#     output_activation: str = "convert_to_real_with_abs",
+#     dtype=tf.as_dtype(np.complex64),
+# ) -> tf.keras.Model:
+#     """Generates a feedforward model.
+#     Args:
+#         insize (tuple(int)): Shape of the input data.
+#         outsize (int): Dimensionality of the output data.
+#         hidden_widths (list[int]): List of layer width values excluding input and output layers.
+#         batch_size (int): Batch size used by the input layer during training.
+#         hidden_activations (list[str]): List of activation functions to use after each hidden layer. See cvnn docs for options.
+#         name (str): Optional. The name to assign to the keras object. Defaults to None.
+#         batch_norm (bool): Optional. If True batch normalization layers will be used.
+#         weight_initializer (str): The weight initialization algorithm to be used: Options are ComplexGlorotUniform, ComplexGlorotNormal, ComplexHeUniform, ComplexHeNormal. Defaults to ComplexGlorotUnivorm.
+#                                 NOTE: These intiializers work for both real and complex layers.
+#         output_activation (Callable): Activation function to use on the output layer. Defaults to None.
+#         dtype: The datatype to use for the layer parameters and expected inputs. Defaults to tf.compex64.
+#     Returns:
+#         (tf.keras.Model): A generated feedforward keras model.
+#     """
+# 
+#     if len(hidden_widths) != len(hidden_activations):
+#         raise ValueError(
+#             f"Mismatched length between hidden_widths ({len(hidden_widths)}) and hidden_activations ({len(hidden_widths)}).\nThe length of these lists must be identical."
+#         )
+# 
+#     print("\n-- Initializing Model --")
+# 
+#     # generate model and fill layers
+#     model = tf.keras.models.Sequential(name=name)
+#     # input and flattening layers
+#     model.add(
+#         complex_layers.ComplexInput(
+#             input_shape=input_shape, batch_size=batch_size, dtype=dtype
+#         )
+#     )
+#     if len(input_shape) > 1:
+#         model.add(complex_layers.ComplexFlatten(dtype=dtype))
+#     # hidden layers
+#     for width, activation in zip(hidden_widths, hidden_activations):
+#         model.add(
+#             complex_layers.ComplexDense(
+#                 width,
+#                 activation='linear',
+#                 kernel_initializer=weight_initializer,
+#                 dtype=dtype,
+#             )
+#         )
+#         if batch_norm:
+#             model.add(complex_layers.ComplexBatchNormalization(dtype=dtype))
+# 
+#         model.add()
+#     # output layer
+#     model.add(
+#         complex_layers.ComplexDense(outsize, activation=output_activation, dtype=dtype)
+#     )
+#     return model
+
+
 def get_linear_model(
     input_shape: tuple,
     outsize: int,
@@ -171,7 +244,7 @@ def get_linear_model(
 ) -> tf.keras.Model:
     """Generates a feedforward model.
     Args:
-        insize (tuple(int)): Shape of the input data.
+        input_shape (tuple(int)): Shape of the input data.
         outsize (int): Dimensionality of the output data.
         hidden_widths (list[int]): List of layer width values excluding input and output layers.
         batch_size (int): Batch size used by the input layer during training.
@@ -185,65 +258,65 @@ def get_linear_model(
     Returns:
         (tf.keras.Model): A generated feedforward keras model.
     """
+    
+    activations_map = {
+        "crelu": crelu,
+        "modrelu": modrelu,
+        "zrelu": modrelu,
+        "complex_cardioid": complex_cardioid,
+        "relu": crelu, # should only use the real component for real values
+    }
 
     if len(hidden_widths) != len(hidden_activations):
         raise ValueError(
             f"Mismatched length between hidden_widths ({len(hidden_widths)}) and hidden_activations ({len(hidden_widths)}).\nThe length of these lists must be identical."
         )
 
-    print("\n-- Initializing Model --\n")
+    print("\n-- Initializing Model --")
 
     # generate model and fill layers
-    model = tf.keras.models.Sequential(name=name)
-    # input and flattening layers
-    model.add(
-        complex_layers.ComplexInput(
-            input_shape=input_shape, batch_size=batch_size, dtype=dtype
-        )
-    )
-    if len(input_shape) > 1:
-        model.add(complex_layers.ComplexFlatten(dtype=dtype))
-    # hidden layers
-    for width, activation in zip(hidden_widths, hidden_activations):
-        model.add(
-            complex_layers.ComplexDense(
-                width,
-                activation=activation,
-                kernel_initializer=weight_initializer,
-                dtype=dtype,
-            )
-        )
+
+    inputs = complex_layers.complex_input(shape=input_shape, batch_size=batch_size, dtype=dtype)
+    previous_layer = inputs
+
+    if len(input_shape) > 1: # flatten data if its input shape is 2d
+        previous_layer = complex_layers.ComplexFlatten()(previous_layer)        
+
+    for width, hidden_activation in zip(hidden_widths, hidden_activations):
+        current_layer = complex_layers.ComplexDense(width, activation='linear', kernel_initializer=weight_initializer, dtype=dtype)(previous_layer)
+        previous_layer = current_layer
+
         if batch_norm:
-            model.add(complex_layers.ComplexBatchNormalization(dtype=dtype))
-    # output layer
-    model.add(
-        complex_layers.ComplexDense(outsize, activation=output_activation, dtype=dtype)
-    )
-    return model
+            previous_layer = complex_layers.ComplexBatchNormalization(dtype=dtype)(current_layer)
+        # ensures that activation function is applied after batch normalization if it is specified
+        current_activation = activations_map[hidden_activation](previous_layer) 
+
+    output = complex_layers.ComplexDense(outsize, activation=output_activation, kernel_initializer=weight_initializer, dtype=dtype)(current_activation)
+    return tf.keras.Model(inputs, output, name=name)
 
 
 def load_complex_dataset(
-    x_train, y_train, x_test, y_test, one_hot_y: bool = True, imag_init: str = "fft"
+    x_train, y_train, x_test, y_test, one_hot_y: bool = True, imag_init: str = 'zero'
 ):
-    """Loads the MNIST dataset and applies the 2D Discrete Fourier Transform (DFT) to each image.
+    """Loads the inputed dataset and applies the 2D Discrete Fourier Transform (DFT) to each image.
     Args:
         x_train (numpy.ndarray): The training images, shape (num_samples, 28, 28).
         y_train (numpy.ndarray): The labels for the training images.
         x_test (numpy.ndarray): The test images, shape (num_samples, 28, 28).
         y_test (numpy.ndarray): The labels for the test images.
         one_hot_y (bool, optional): Whether to one-hot-encode classification labels
-        imag_init (str, optional): The method used for initialization of the complex value. Options are: 'fft', 'zero', 'transform'
+        imag_init (str, optional): The method used for initialization of the complex value. Options are: 'fft', 'zero'
     Returns:
         (tuple): A tuple containing the transformed training and test datasets.
     """
     try:
-        assert imag_init in ["fft", "zero", "transform"]
+        assert imag_init in ["fft", "zero"]
     except AssertionError:
         print(
             f"Incorrect argument: {imag_init} for imag_init. Available options: 'fft', 'zero', or 'transform'"
         )
     print(
-        f"\n-- Generating Complex MNIST using {imag_init} imaginary initialization --\n"
+        f"\n-- Generating Complex CIFAR10 using {imag_init} imaginary initialization --\n"
     )
 
     x_train_complex = np.copy(x_train)
@@ -258,11 +331,6 @@ def load_complex_dataset(
         # The output of the DFT is often shifted to have the zero-frequency component (DC component) in the center for visualization purposes.
         x_train_complex = np.fft.fftshift(x_train_complex)
         x_test_complex = np.fft.fftshift(x_test_complex)
-
-    elif imag_init == "transform":
-        raise ValueError(
-            "Transform imaginary component intialization is not available at this time."
-        )
 
     elif imag_init == "zero":
         # casting real values to complex zeros the imaginary component of the number and sets the real component to the original real value
@@ -280,16 +348,39 @@ def load_complex_dataset(
     return (x_train_complex, one_hot_y_train), (x_test_complex, one_hot_y_test)
 
 
+def create_custom_lr_schedule():
+    """Creates a custom learning rate schedule based on He et al. (2016).
+    
+    Schedule:
+    - Epochs 1-10: 0.01 (warmup)
+    - Epochs 10-100: 0.1 
+    - Epochs 100-120: 0.1
+    - Epochs 120-150: 0.01 (annealed by factor of 10)
+    - Epochs 150-200: 0.001 (annealed by factor of 10 again)
+    """
+    def lr_schedule(epoch, lr):
+        if epoch < 10:
+            return 0.01
+        elif epoch < 120:
+            return 0.1
+        elif epoch < 150:
+            return 0.01
+        else:
+            return 0.001
+    
+    return tf.keras.callbacks.LearningRateScheduler(lr_schedule, verbose=1)
+
+
 def main():
     # training meta data
     real_datatype = tf.as_dtype(np.float32)
     complex_datatype = tf.as_dtype(np.complex64)
-    #    datatypes = [real_datatype, complex_datatype]
-    datatypes = [real_datatype]
-    epochs = 50
+    datatypes = [complex_datatype, real_datatype]
+    # datatypes = [real_datatype]
+    epochs = 200  # Updated to match the paper
     batch_size = 64
     batch_norm = False
-    input_shape = (28, 28)
+    input_shape = (32, 32, 3)
     outsize = 10
     complex_hidden_widths_list = [[32] * 3, [64] * 3, [128] * 3, [256] * 3]
     real_hidden_widths_list = [
@@ -297,9 +388,19 @@ def main():
     ]  # real networks have half the number of trainable parameters as complex ones of the same "size"
     complex_activation_functions = ["modrelu", "zrelu", "crelu", "complex_cardioid"]
     real_activation_functions = ["relu"]
-    real_output_activation_function = "cart_softmax"
+    real_output_activation_function = "convert_to_real_with_abs"
     complex_output_activation = "convert_to_real_with_abs"
-    optimizer = "adam"
+
+    # Initial learning rate - will be controlled by the scheduler
+    initial_learning_rate = 0.01
+    momentum = 0.9
+    clip_norm = 1.0
+    # Create optimizer with initial learning rate
+    optimizer = tf.keras.optimizers.SGD(learning_rate=initial_learning_rate, momentum=momentum, clipnorm=clip_norm, nesterov=True)
+    
+    # Create the learning rate scheduler
+    lr_scheduler = create_custom_lr_schedule()
+
     imaginary_component_init_methods = [
         "zero",
         "fft",
@@ -315,10 +416,10 @@ def main():
     for datatype in datatypes:
         model_datatype = datatype  # real data is only loaded once
         (real_images_train, labels_train), (real_images_test, labels_test) = (
-            tf.keras.datasets.mnist.load_data()
+            datasets.cifar10.load_data()
         )
 
-        if model_datatype == tf.as_dtype(np.complex64):
+        if model_datatype == complex_datatype:
             hidden_widths_list = complex_hidden_widths_list
             output_activation = complex_output_activation
             activation_functions = complex_activation_functions
@@ -352,12 +453,8 @@ def main():
 
             for hidden_function in activation_functions:  # try every hidden activation
                 for hidden_widths in hidden_widths_list:
-                    name = (
-                        f"MNIST_complex_linear_{'-'.join(map(str, hidden_widths))}"
-                        if model_datatype == tf.as_dtype(np.complex64)
-                        else f"MNIST_real_linear_{'-'.join(map(str, hidden_widths))}"
-                    )
-                    hidden_activations = [hidden_function] * len(hidden_widths)
+                    hidden_activations = [hidden_function]*len(hidden_widths)
+                    name = f"CIFAR10_complex_linear_{'-'.join(map(str, hidden_widths))}" if model_datatype == tf.as_dtype(np.complex64) else f"CIFAR10_real_linear_{'-'.join(map(str, hidden_widths))}"
                     model = get_linear_model(
                         input_shape,
                         outsize,
@@ -384,13 +481,14 @@ def main():
 
                     history = None  # history placeholder
 
-                    if model_datatype == tf.as_dtype(np.complex64):
+                    if model_datatype == complex_datatype: 
                         history = model.fit(
                             complex_images_train,
                             labels_train,
                             epochs=epochs,
                             batch_size=batch_size,
                             shuffle=True,
+                            callbacks=[lr_scheduler],
                         ).history
                     else:
                         history = model.fit(
@@ -399,11 +497,12 @@ def main():
                             epochs=epochs,
                             batch_size=batch_size,
                             shuffle=True,
+                            callbacks=[lr_scheduler],
                         ).history
                     end_time = datetime.now()
                     training_time = end_time - start_time
 
-                    if model_datatype == tf.as_dtype(np.complex64):
+                    if model_datatype == complex_datatype:
                         test_loss, test_acc = model.evaluate(
                             complex_images_test, labels_test, verbose=2
                         )
@@ -428,30 +527,30 @@ def main():
                     # save paths
                     models_dir = (
                         "./complex_models"
-                        if model_datatype == tf.as_dtype(np.complex64)
+                        if model_datatype == complex_datatype
                         else "./real_models"
                     )
                     model_filename = (
                         f"{model.name}_{hidden_function}_{imag_init_method}.keras"
-                        if model_datatype == tf.as_dtype(np.complex64)
+                        if model_datatype == complex_datatype
                         else f"{model.name}_{hidden_function}.keras"
                     )  # real models have no imag init method
                     path_to_model = os.path.join(models_dir, model_filename)
                     plots_dir = (
                         "./complex_plots"
-                        if model_datatype == tf.as_dtype(np.complex64)
+                        if model_datatype == complex_datatype
                         else "./real_plots"
                     )
                     plot_filename = (
                         f"{model.name}_{hidden_function}_{imag_init_method}.png"
-                        if model_datatype == tf.as_dtype(np.complex64)
+                        if model_datatype == complex_datatype
                         else f"{model.name}_{hidden_function}.png"
                     )  # real models have no imag init method
 
                     path_to_plot = os.path.join(plots_dir, plot_filename)
                     metrics_dir = (
                         "./complex_metrics"
-                        if model_datatype == tf.as_dtype(np.complex64)
+                        if model_datatype == complex_datatype
                         else "./real_metrics"
                     )
                     metrics_filename = f"{model.name}.csv"
@@ -466,6 +565,10 @@ def main():
                         "hidden_activation": hidden_function,
                         "output_activation": output_activation,
                         "optimizer": optimizer,
+                        "initial_learning_rate": initial_learning_rate,
+                        "momentum": momentum,
+                        "clip_norm": clip_norm,
+                        "optimizer": optimizer.name,
                         "trainable_params": trainable_params,
                         "non-trainable_params": non_trainable_params,
                         "test_acc": test_acc,
@@ -478,7 +581,7 @@ def main():
                     }
 
                     # add the image init method to the training metrics only if the network is complex
-                    if model_datatype == tf.as_dtype(np.complex64):
+                    if model_datatype == complex_datatype:
                         training_data["imag_comp_init_method"] = imag_init_method
 
                     for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
