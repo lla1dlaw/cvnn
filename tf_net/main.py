@@ -691,6 +691,7 @@ def main():
                         real_images_train.astype(np.float32),
                         labels_train,
                         epochs=epochs,
+                        validation_data=(real_images_test.astype(np.float32), labels_train), 
                         batch_size=batch_size,
                         shuffle=True,
                         callbacks=[lr_scheduler],
@@ -708,7 +709,7 @@ def main():
                     print(f"Test acc: {test_acc:.4f}")
 
                     train_acc = history["accuracy"]
-                    # Parameter counts already calculated above
+                    val_acc = history["val_accuracy"]
 
                     # save paths
                     models_dir = (
@@ -771,9 +772,10 @@ def main():
                     training_data["imag_comp_init_method"] = imaginary_component_init_method
                     training_data["learn_imaginary_component"] = learn_imaginary
 
-                for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
+                for epoch, (loss, acc, val_accur) in enumerate(zip(train_losses, train_acc, val_acc)):
                     training_data[f"epoch_{epoch}_loss"] = loss
                     training_data[f"epoch_{epoch}_acc"] = acc
+                    training_data[f"epoch_{epoch}_val_acc"] = val_accur
 
                 # save model and training info
                 save_model(model, models_dir, filename=model_filename)
