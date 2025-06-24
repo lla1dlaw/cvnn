@@ -854,7 +854,7 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except RuntimeError as e:
+    except Exception as e:
         send_error_email(str(e))
     
 
