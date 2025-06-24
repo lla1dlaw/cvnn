@@ -164,7 +164,7 @@ def save_training_chart(
         print(f"Error creating directory {path}: {e}")
 
 
-def complex_residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.complex64, activation='crelu'):
+def residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.complex64, activation='crelu'):
     """Complex-valued residual block implementation.
     
     Args:
@@ -179,6 +179,7 @@ def complex_residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.co
     Returns:
         Output tensor after applying residual block
     """
+    print(f"Generating Residual Block of dtype: {dtype}")
     conv_name_base = f'res{stage}{block}_branch'
     bn_name_base = f'bn{stage}{block}_branch'
     
@@ -194,7 +195,10 @@ def complex_residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.co
     shortcut = x
     
     # First conv layer: BN → Activation → Conv
-    x = complex_layers.ComplexBatchNormalization(name=bn_name_base + '2a')(x)
+    if dtype == tf.complex64:
+        x = complex_layers.ComplexBatchNormalization(name=bn_name_base + '2a')(x)
+    else:
+        x = tf.keras.layers.BatchNormalization(name=bn_name_base + '2a') (x)
     
     if dtype == tf.complex64:
         activation_fn = activation_map.get(activation, crelu)
@@ -208,7 +212,10 @@ def complex_residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.co
     )(x)
     
     # Second conv layer: BN → Activation → Conv
-    x = complex_layers.ComplexBatchNormalization(name=bn_name_base + '2b')(x)
+    if dtype == tf.complex64:
+        x = complex_layers.ComplexBatchNormalization(name=bn_name_base + '2b')(x)
+    else:
+        x = tf.keras.layers.BatchNormalization(name=bn_name_base + '2b')(x)
     
     if dtype == tf.complex64:
         activation_fn = activation_map.get(activation, crelu)
@@ -216,10 +223,13 @@ def complex_residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.co
     else:
         x = tf.keras.layers.ReLU(name=f'{conv_name_base}2b_activation')(x)
     
-    x = complex_layers.ComplexConv2D(
-        filters, (3, 3), padding='same',
-        name=conv_name_base + '2b', dtype=dtype
-    )(x)
+    if dtype == tf.complex64:
+        x = complex_layers.ComplexConv2D(
+            filters, (3, 3), padding='same',
+            name=conv_name_base + '2b', dtype=dtype
+        )(x)
+    else:
+        x = tf.keras.layers.Conv2D(filters, (3, 3), padding='same', name=conv_name_base + '2b', dtype=dtype)(x)
     
     # Check if we need to project the shortcut
     input_filters = shortcut.shape[-1]
@@ -251,7 +261,7 @@ def complex_residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.co
     return x
 
 
-def imaginary_learning_block(x, filters, dtype=tf.complex64):
+def imaginary_learning_block(x, filters):
     """Learning block to generate imaginary components from real inputs.
     
     Implements: BN → ReLU → Conv → BN → ReLU → Conv
@@ -259,7 +269,6 @@ def imaginary_learning_block(x, filters, dtype=tf.complex64):
     Args:
         x: Real-valued input tensor
         filters: Number of filters
-        dtype: Data type
     
     Returns:
         Complex tensor with learned imaginary component
@@ -281,7 +290,7 @@ def imaginary_learning_block(x, filters, dtype=tf.complex64):
     return complex_output
 
 
-def get_resnet(input_shape, num_classes, architecture_type='IB', activation_function='crelu', dtype=tf.complex64):
+def get_resnet(input_shape, num_classes, architecture_type='IB', activation_function='crelu', learn_imaginary_component: bool = True, dtype=tf.complex64):
     """Build ResNet architecture following He et al. (2016) with complex modifications.
     
     Args:
@@ -289,24 +298,31 @@ def get_resnet(input_shape, num_classes, architecture_type='IB', activation_func
         num_classes: Number of output classes
         architecture_type: 'WS' (Wide Shallow), 'DN' (Deep Narrow), or 'IB' (In-Between)
         activation_function: Activation function to use ('crelu', 'modrelu', 'zrelu', 'complex_cardioid')
+        learn_imaginary_component (bool): Whether to use the residual network to learn the imaginary component of input data. If False, imaginary components are zeroed.
         dtype: tf.complex64 for complex networks, tf.float32 for real networks
     
     Returns:
         tf.keras.Model: Compiled ResNet model
     """
     
-    # Architecture configurations (targeting ~1.7M parameters)
+    # Validation: if learning imaginary component, network must be complex
+    if learn_imaginary_component and dtype != tf.complex64:
+        raise ValueError(f"If learn_imaginary_component=True, dtype must be tf.complex64, got {dtype}")
+
+    # SIGNIFICANTLY REDUCED architectures for faster training (targeting ~150K-300K parameters)
+    # Complex networks have ~2x parameters due to real/imaginary components
     if dtype == tf.complex64:
         configs = {
-            'WS': {'filters': 12, 'blocks_per_stage': 16},  # Wide Shallow
-            'DN': {'filters': 10, 'blocks_per_stage': 23},  # Deep Narrow  
-            'IB': {'filters': 11, 'blocks_per_stage': 19}   # In-Between
+            'WS': {'filters': 16, 'blocks_per_stage': 2},   # Wide Shallow: fewer blocks, more filters
+            'DN': {'filters': 12, 'blocks_per_stage': 4},   # Deep Narrow: more blocks, fewer filters
+            'IB': {'filters': 14, 'blocks_per_stage': 3}    # In-Between: balanced
         }
     else:
+        # Real networks need more filters to match parameter count of complex networks
         configs = {
-            'WS': {'filters': 18, 'blocks_per_stage': 14},  # Wide Shallow
-            'DN': {'filters': 14, 'blocks_per_stage': 23},  # Deep Narrow
-            'IB': {'filters': 16, 'blocks_per_stage': 18}   # In-Between
+            'WS': {'filters': 24, 'blocks_per_stage': 2},   # ~300K params to match complex WS
+            'DN': {'filters': 18, 'blocks_per_stage': 4},   # ~250K params to match complex DN
+            'IB': {'filters': 20, 'blocks_per_stage': 3}    # ~280K params to match complex IB
         }
     
     config = configs[architecture_type]
@@ -321,17 +337,20 @@ def get_resnet(input_shape, num_classes, architecture_type='IB', activation_func
         'complex_cardioid': complex_cardioid
     }
     
-    # Input layer
+    # Input layer - always start with real inputs
     if dtype == tf.complex64:
-        inputs = complex_layers.complex_input(shape=input_shape)
+        inputs = complex_layers.ComplexInput(shape=input_shape, dtype=dtype)
     else:
-        inputs = tf.keras.layers.Input(shape=input_shape)
-    
+        inputs = tf.keras.layers.Input(shape=input_shape, dtype=dtype)
+
     x = inputs
     
-    # For complex networks: learn imaginary components
-    if dtype == tf.complex64:
-        x = imaginary_learning_block(x, initial_filters, dtype)
+    # For complex networks with imaginary learning: convert real inputs to complex
+    if dtype == tf.complex64 and learn_imaginary_component:
+        x = imaginary_learning_block(x, initial_filters)
+    elif dtype == tf.complex64 and not learn_imaginary_component:
+        # Complex network without imaginary learning: cast real to complex (zero imaginary)
+        x = tf.cast(x, tf.complex64)
     
     # Initial Conv → BN → Activation (instead of Conv → MaxPooling)
     if dtype == tf.complex64:
@@ -353,7 +372,7 @@ def get_resnet(input_shape, num_classes, architecture_type='IB', activation_func
     # Stage 1: Initial filters, no downsampling
     current_filters = initial_filters
     for i in range(blocks_per_stage):
-        x = complex_residual_block(
+        x = residual_block(
             x, current_filters, stage=1, block=i+1, 
             strides=(1, 1), dtype=dtype, activation=activation_function
         )
@@ -362,19 +381,13 @@ def get_resnet(input_shape, num_classes, architecture_type='IB', activation_func
     current_filters *= 2
     for i in range(blocks_per_stage):
         strides = (2, 2) if i == 0 else (1, 1)  # Downsample on first block
-        x = complex_residual_block(
+        x = residual_block(
             x, current_filters, stage=2, block=i+1,
             strides=strides, dtype=dtype, activation=activation_function
         )
     
-    # Stage 3: Double filters again, downsample
-    current_filters *= 2
-    for i in range(blocks_per_stage):
-        strides = (2, 2) if i == 0 else (1, 1)  # Downsample on first block
-        x = complex_residual_block(
-            x, current_filters, stage=3, block=i+1,
-            strides=strides, dtype=dtype, activation=activation_function
-        )
+    # REMOVED Stage 3 for faster training
+    # Only using 2 stages instead of 3
     
     # Global Average Pooling
     if dtype == tf.complex64:
@@ -528,11 +541,12 @@ def create_custom_lr_schedule():
     - Epochs 150-200: 0.001 (annealed by factor of 10 again)
     """
     def lr_schedule(epoch, lr):
-        if epoch < 10:
+        # Faster learning rate schedule for 50 epochs
+        if epoch < 5:
             return 0.01
-        elif epoch < 120:
+        elif epoch < 30:
             return 0.1
-        elif epoch < 150:
+        elif epoch < 40:
             return 0.01
         else:
             return 0.001
@@ -542,12 +556,12 @@ def create_custom_lr_schedule():
 
 def main():
     # training meta data
-    real_datatype = tf.as_dtype(np.float32)
-    complex_datatype = tf.as_dtype(np.complex64)
-    datatypes = [complex_datatype, real_datatype]
+    real_datatype = tf.float32
+    complex_datatype = tf.complex64
+    datatypes = [real_datatype, complex_datatype]
     # datatypes = [real_datatype]
-    epochs = 200  # Updated to match the paper
-    batch_size = 64
+    epochs = 50   # REDUCED from 200 for faster training
+    batch_size = 128  # INCREASED for faster training (if memory allows)
     batch_norm = False
     input_shape = (32, 32, 3)
     outsize = 10
@@ -567,11 +581,8 @@ def main():
     
     # Create the learning rate scheduler
     lr_scheduler = create_custom_lr_schedule()
-
-    imaginary_component_init_methods = [
-        "zero",
-        "fft",
-    ]  # add 'transform' to this once you figure out how to do this.
+    # Use only the 'zero' init method for complex data
+    imaginary_component_init_method = "zero"
 
     # placeholders that are filled based on datatype of the network
     output_activation = None
@@ -592,12 +603,8 @@ def main():
             output_activation = real_output_activation_function
             activation_functions = real_activation_functions
 
-        for i, imag_init_method in enumerate(imaginary_component_init_methods):
-            # break the loop after the first imaginary init method has been used (no need to repeat training for real networks)
-            if model_datatype != tf.as_dtype(np.complex64) and i == 1:
-                break
-
-            # complex data (loaded multiple times because the image_init_method may change if desired)
+        if model_datatype == tf.as_dtype(np.complex64):
+            # Load complex data with 'zero' initialization
             (
                 (complex_images_train, one_hot_y_train),
                 (complex_images_test, one_hot_y_test),
@@ -607,16 +614,36 @@ def main():
                 real_images_test,
                 labels_test,
                 one_hot_y=True,
-                imag_init=imag_init_method,
+                imag_init=imaginary_component_init_method,
             )
+        else:
+            # Use real data
+            one_hot_y_train = np.eye(10)[labels_train.squeeze()]
+            one_hot_y_test = np.eye(10)[labels_test.squeeze()]
 
-            print(
-                f"Using:\n\t- ResNet architectures: {architecture_types}\n\t- Output activation: {output_activation}\n\t- Activation functions: {activation_functions}"
-            )
+        print(
+            f"Using:\n\t- ResNet architectures: {architecture_types}\n\t- Output activation: {output_activation}\n\t- Activation functions: {activation_functions}"
+        )
 
+        # Test all three cases:
+        # 1. Complex with imaginary learning (learn_imaginary=True, dtype=complex64)
+        # 2. Complex without imaginary learning (learn_imaginary=False, dtype=complex64) 
+        # 3. Real network (learn_imaginary=False, dtype=float32)
+        if model_datatype == complex_datatype:
+            learn_imaginary_options = [True, False]  # Complex networks: test both
+        else:
+            learn_imaginary_options = [False]  # Real networks: only False
+        
+        for learn_imaginary in learn_imaginary_options:
             for arch_type in architecture_types:  # try every architecture type
                 for hidden_function in activation_functions:  # try every hidden activation
-                    name = f"CIFAR10_complex_ResNet_{arch_type}_{hidden_function}" if model_datatype == tf.as_dtype(np.complex64) else f"CIFAR10_real_ResNet_{arch_type}_{hidden_function}"
+                    if model_datatype == tf.as_dtype(np.complex64):
+                        if learn_imaginary:
+                            name = f"CIFAR10_complex_ResNet_{arch_type}_{hidden_function}_with_imag_learning"
+                        else:
+                            name = f"CIFAR10_complex_ResNet_{arch_type}_{hidden_function}_zero_imag"
+                    else:
+                        name = f"CIFAR10_real_ResNet_{arch_type}_{hidden_function}"
                     
                     # Create ResNet model
                     model = get_resnet(
@@ -624,6 +651,7 @@ def main():
                         num_classes=outsize,
                         architecture_type=arch_type,
                         activation_function=hidden_function,
+                        learn_imaginary_component=learn_imaginary,
                         dtype=model_datatype
                     )
                     
@@ -637,54 +665,50 @@ def main():
                             from_logits=True
                         ),
                     )
-                    model.summary()
+                    
+                    # Print parameter counts for comparison
+                    trainable_params = sum(count_params(layer) for layer in model.trainable_weights)
+                    non_trainable_params = sum(count_params(layer) for layer in model.non_trainable_weights)
+                    total_params = trainable_params + non_trainable_params
+                    
+                    print(f"\n{'='*60}")
+                    print(f"Model: {name}")
+                    print(f"Architecture: {arch_type} | Activation: {hidden_function}")
+                    print(f"Trainable parameters: {trainable_params:,}")
+                    print(f"Non-trainable parameters: {non_trainable_params:,}")
+                    print(f"Total parameters: {total_params:,}")
+                    print(f"{'='*60}\n")
+                    
+                    # model.summary()
 
                     # Train and evaluate
                     start_time = datetime.now()
 
                     history = None  # history placeholder
 
-                    if model_datatype == complex_datatype: 
-                        history = model.fit(
-                            complex_images_train,
-                            labels_train,
-                            epochs=epochs,
-                            batch_size=batch_size,
-                            shuffle=True,
-                            callbacks=[lr_scheduler],
-                        ).history
-                    else:
-                        history = model.fit(
-                            real_images_train,
-                            labels_train,
-                            epochs=epochs,
-                            batch_size=batch_size,
-                            shuffle=True,
-                            callbacks=[lr_scheduler],
-                        ).history
+                    # All networks now use real inputs (complex networks handle conversion internally)
+                    history = model.fit(
+                        real_images_train.astype(np.float32),
+                        labels_train,
+                        epochs=epochs,
+                        batch_size=batch_size,
+                        shuffle=True,
+                        callbacks=[lr_scheduler],
+                    ).history
                     end_time = datetime.now()
                     training_time = end_time - start_time
 
-                    if model_datatype == complex_datatype:
-                        test_loss, test_acc = model.evaluate(
-                            complex_images_test, labels_test, verbose=2
-                        )
-                    else:
-                        test_loss, test_acc = model.evaluate(
-                            real_images_test, labels_test, verbose=2
-                        )
+                    # All networks now use real inputs for testing
+                    test_loss, test_acc = model.evaluate(
+                        real_images_test.astype(np.float32), labels_test, verbose=2
+                    )
 
                     train_losses = history["loss"]
                     print(f"\nTest loss: {test_loss:.4f}")
                     print(f"Test acc: {test_acc:.4f}")
 
                     train_acc = history["accuracy"]
-                    trainable_params = sum(
-                        count_params(layer) for layer in model.trainable_weights
-                    )
-                    non_trainable_params = sum(
-                        count_params(layer) for layer in model.non_trainable_weights
-                    )
+                    # Parameter counts already calculated above
 
                     # save paths
                     models_dir = (
@@ -693,7 +717,7 @@ def main():
                         else "./real_models"
                     )
                     model_filename = (
-                        f"{model.name}_{hidden_function}_{imag_init_method}.keras"
+                        f"{model.name}_{hidden_function}_{imaginary_component_init_method}.keras"
                         if model_datatype == complex_datatype
                         else f"{model.name}_{hidden_function}.keras"
                     )  # real models have no imag init method
@@ -704,7 +728,7 @@ def main():
                         else "./real_plots"
                     )
                     plot_filename = (
-                        f"{model.name}_{hidden_function}_{imag_init_method}.png"
+                        f"{model.name}_{hidden_function}_{imaginary_component_init_method}.png"
                         if model_datatype == complex_datatype
                         else f"{model.name}_{hidden_function}.png"
                     )  # real models have no imag init method
@@ -720,44 +744,47 @@ def main():
                     # training data to be saved in the metrics.csv file
                     training_data = {
                         "path_to_model": path_to_model,
-                        "path_to_plot": path_to_plot,
-                        "architecture_type": arch_type,
-                        "input_features": math.prod(input_shape),
-                        "output_features": outsize,
-                        "hidden_activation": hidden_function,
-                        "output_activation": output_activation,
-                        "initial_learning_rate": initial_learning_rate,
-                        "learning_rate_schedule": "He et al. 2016 style",
-                        "momentum": momentum,
-                        "clip_norm": clip_norm,
-                        "optimizer": optimizer.name,
-                        "trainable_params": trainable_params,
-                        "non-trainable_params": non_trainable_params,
-                        "test_acc": test_acc,
-                        "test_loss": test_loss,
-                        "num_epochs": epochs,
-                        "batch_size": batch_size,
-                        "training_time": training_time,
-                        "final_training_acc": train_acc[-1],
-                        "final_training_loss": train_losses[-1],
-                    }
+                    "path_to_plot": path_to_plot,
+                    "architecture_type": arch_type,
+                    "input_features": math.prod(input_shape),
+                    "output_features": outsize,
+                    "hidden_activation": hidden_function,
+                    "output_activation": output_activation,
+                    "initial_learning_rate": initial_learning_rate,
+                    "learning_rate_schedule": "He et al. 2016 style",
+                    "momentum": momentum,
+                    "clip_norm": clip_norm,
+                    "optimizer": optimizer.name,
+                    "trainable_params": trainable_params,
+                    "non-trainable_params": non_trainable_params,
+                    "test_acc": test_acc,
+                    "test_loss": test_loss,
+                    "num_epochs": epochs,
+                    "batch_size": batch_size,
+                    "training_time": training_time,
+                    "final_training_acc": train_acc[-1],
+                    "final_training_loss": train_losses[-1],
+                }
 
-                    # add the image init method to the training metrics only if the network is complex
-                    if model_datatype == complex_datatype:
-                        training_data["imag_comp_init_method"] = imag_init_method
+                # add the image init method and learning type to the training metrics
+                if model_datatype == complex_datatype:
+                    training_data["imag_comp_init_method"] = imaginary_component_init_method
+                    training_data["learn_imaginary_component"] = learn_imaginary
 
-                    for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
-                        training_data[f"epoch_{epoch}_loss"] = loss
-                        training_data[f"epoch_{epoch}_acc"] = acc
+                for epoch, (loss, acc) in enumerate(zip(train_losses, train_acc)):
+                    training_data[f"epoch_{epoch}_loss"] = loss
+                    training_data[f"epoch_{epoch}_acc"] = acc
 
-                    # save model and training info
-                    save_model(model, models_dir, filename=model_filename)
-                    save_model_metrics(
-                        training_data, metrics_dir, filename=metrics_filename
-                    )
-                    save_training_chart(
-                        train_losses, train_acc, plots_dir, plot_filename
-                    )
+                # save model and training info
+                save_model(model, models_dir, filename=model_filename)
+                save_model_metrics(
+                    training_data, metrics_dir, filename=metrics_filename
+                )
+                save_training_chart(
+                    train_losses, train_acc, plots_dir, plot_filename
+                )
+
+
     # send email saying that training is done
     load_dotenv()
     email = os.getenv("EMAIL")
