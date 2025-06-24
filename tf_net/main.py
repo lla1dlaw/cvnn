@@ -20,6 +20,7 @@ from pathlib import Path
 
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 import tensorflow as tf
+from tensorflow.keras.metrics import (Precision, Recall, AUC, TopKCategoricalAccuracy)
 from tensorflow.keras import datasets
 import numpy as np
 import cvnn.layers as complex_layers
@@ -27,6 +28,8 @@ from cvnn.activations import modrelu, zrelu, crelu, complex_cardioid, cart_relu
 import matplotlib.pyplot as plt
 import pandas as pd
 from keras.utils.layer_utils import count_params
+from tensorflow.keras.utils import to_categorical
+from tensorflow_addons.metrics import F1Score
 import math
 
 
@@ -273,6 +276,9 @@ def imaginary_learning_block(x, filters):
     Returns:
         Complex tensor with learned imaginary component
     """
+
+    real_part = tf.cast(x, tf.float32)
+
     # This block operates on real data to learn imaginary components
     x = tf.keras.layers.BatchNormalization()(x)
     x = tf.keras.layers.ReLU()(x)
@@ -283,7 +289,6 @@ def imaginary_learning_block(x, filters):
     imaginary_part = tf.keras.layers.Conv2D(x.shape[-1], (3, 3), padding='same')(x)
     
     # Convert to complex by combining real input with learned imaginary
-    real_part = tf.cast(x, tf.float32)
     imaginary_part = tf.cast(imaginary_part, tf.float32)
     
     complex_output = tf.complex(real_part, imaginary_part)
@@ -551,7 +556,61 @@ def create_custom_lr_schedule():
         else:
             return 0.001
     
-    return tf.keras.callbacks.LearningRateScheduler(lr_schedule, verbose=1)
+    return tf.keras.callbacks.LearningRateScheduler(lr_schedule, verbose=0)
+
+
+def send_error_email(error_message: str) -> None:
+    """Sends an error email to the provided address using googles smtp servers.
+    
+    Args:
+        error_message (str): The error message to send. 
+
+    Returns:
+        None. 
+    """
+
+    # send email saying that training is done
+    load_dotenv()
+    email = os.getenv("EMAIL")
+    msg = EmailMessage()
+    msg.set_content(f"An error occured during training:\n{error_message}")
+    msg['Subject'] = "ERROR"
+    msg['From'] = email
+    msg['To'] = email
+
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server: # For Gmail
+            server.login(email, email)
+            server.send_message(msg)
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
+
+def send_success_email() -> None:
+    """Sends an email to the provided address using googles smtp servers.
+
+    Returns:
+        None. 
+    """
+
+    # send email saying that training is done
+    load_dotenv()
+    email = os.getenv("EMAIL")
+    msg = EmailMessage()
+    msg.set_content("Finished Training Networks")
+    msg['Subject'] = "-- Training Completion Notification --"
+    msg['From'] = email
+    msg['To'] = email
+
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server: # For Gmail
+            server.login(email, email)
+            server.send_message(msg)
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+
 
 
 def main():
@@ -562,7 +621,6 @@ def main():
     # datatypes = [real_datatype]
     epochs = 50   # REDUCED from 200 for faster training
     batch_size = 128  # INCREASED for faster training (if memory allows)
-    batch_norm = False
     input_shape = (32, 32, 3)
     outsize = 10
     # ResNet architecture configurations: WS (Wide Shallow), DN (Deep Narrow), IB (In-Between)
@@ -596,6 +654,17 @@ def main():
             datasets.cifar10.load_data()
         )
 
+        one_hot_y_train, one_hot_y_test = to_categorical(labels_train,  num_classes=outsize), to_categorical(labels_test,  num_classes=outsize)
+        if model_datatype == complex_datatype:
+            x_train = real_images_train.astype(np.complex64)
+            x_test = real_images_test.astype(np.complex64)
+            output_activation = complex_output_activation
+            activation_functions = complex_activation_functions
+        else:
+            output_activation = real_output_activation_function
+            activation_functions = real_activation_functions
+        print(f"Ex. One_hot label shape: {one_hot_y_test.shape}")
+
         if model_datatype == complex_datatype:
             output_activation = complex_output_activation
             activation_functions = complex_activation_functions
@@ -603,23 +672,7 @@ def main():
             output_activation = real_output_activation_function
             activation_functions = real_activation_functions
 
-        if model_datatype == tf.as_dtype(np.complex64):
-            # Load complex data with 'zero' initialization
-            (
-                (complex_images_train, one_hot_y_train),
-                (complex_images_test, one_hot_y_test),
-            ) = load_complex_dataset(
-                real_images_train,
-                labels_train,
-                real_images_test,
-                labels_test,
-                one_hot_y=True,
-                imag_init=imaginary_component_init_method,
-            )
-        else:
-            # Use real data
-            one_hot_y_train = np.eye(10)[labels_train.squeeze()]
-            one_hot_y_test = np.eye(10)[labels_test.squeeze()]
+        
 
         print(
             f"Using:\n\t- ResNet architectures: {architecture_types}\n\t- Output activation: {output_activation}\n\t- Activation functions: {activation_functions}"
@@ -658,10 +711,21 @@ def main():
                     # Update model name
                     model._name = name
 
+                    metrics_list = [
+                    'acc',
+                    F1Score(num_classes=10, average='macro', name='mic_f1'),
+                    F1Score(num_classes=10, average='micro', name='mac_f1'),
+                    F1Score(num_classes=10, average='weighted', name='wtd_f1'),
+                    Precision(name="mic_prec"),
+                    Recall(name="mic_rec"),
+                    AUC(name="auc"),
+                    TopKCategoricalAccuracy(k=5, name="T5_acc")
+                    ]
+
                     model.compile(
                         optimizer=optimizer,
-                        metrics=["accuracy"],
-                        loss=tf.keras.losses.SparseCategoricalCrossentropy(
+                        metrics=metrics_list,
+                        loss=tf.keras.losses.CategoricalCrossentropy(
                             from_logits=True
                         ),
                     )
@@ -687,9 +751,9 @@ def main():
                     # All networks now use real inputs (complex networks handle conversion internally)
                     history = model.fit(
                         real_images_train.astype(np.float32),
-                        labels_train,
+                        one_hot_y_train,
                         epochs=epochs,
-                        validation_data=(real_images_test.astype(np.float32), labels_test), 
+                        validation_data=(real_images_test.astype(np.float32), one_hot_y_test),
                         batch_size=batch_size,
                         shuffle=True,
                         callbacks=[lr_scheduler],
@@ -698,13 +762,13 @@ def main():
                     training_time = end_time - start_time
 
                     # All networks now use real inputs for testing
-                    test_loss, test_acc = model.evaluate(
-                        real_images_test.astype(np.float32), labels_test, verbose=2
+                    training_metrics: dict = model.evaluate(
+                        real_images_test.astype(np.float32), one_hot_y_test, verbose=2, return_dict=True
                     )
 
                     train_losses = history["loss"]
-                    print(f"\nTest loss: {test_loss:.4f}")
-                    print(f"Test acc: {test_acc:.4f}")
+                    print(f"\nTest loss: {training_metrics['loss']:.4f}")
+                    print(f"Test acc: {training_metrics['accuracy']:.4f}")
 
                     train_acc = history["accuracy"]
                     val_acc = history["val_accuracy"]
@@ -744,65 +808,55 @@ def main():
                     # training data to be saved in the metrics.csv file
                     training_data = {
                         "path_to_model": path_to_model,
-                    "path_to_plot": path_to_plot,
-                    "architecture_type": arch_type,
-                    "input_features": math.prod(input_shape),
-                    "output_features": outsize,
-                    "hidden_activation": hidden_function,
-                    "output_activation": output_activation,
-                    "initial_learning_rate": initial_learning_rate,
-                    "learning_rate_schedule": "He et al. 2016 style",
-                    "momentum": momentum,
-                    "clip_norm": clip_norm,
-                    "optimizer": optimizer.name,
-                    "trainable_params": trainable_params,
-                    "non-trainable_params": non_trainable_params,
-                    "test_acc": test_acc,
-                    "test_loss": test_loss,
-                    "num_epochs": epochs,
-                    "batch_size": batch_size,
-                    "training_time": training_time,
-                    "final_training_acc": train_acc[-1],
-                    "final_training_loss": train_losses[-1],
-                }
+                        "path_to_plot": path_to_plot,
+                        "architecture_type": arch_type,
+                        "input_features": math.prod(input_shape),
+                        "output_features": outsize,
+                        "hidden_activation": hidden_function,
+                        "output_activation": output_activation,
+                        "initial_learning_rate": initial_learning_rate,
+                        "learning_rate_schedule": "He et al. 2016 style",
+                        "momentum": momentum,
+                        "clip_norm": clip_norm,
+                        "optimizer": optimizer.name,
+                        "trainable_params": trainable_params,
+                        "non-trainable_params": non_trainable_params,
+                        "num_epochs": epochs,
+                        "batch_size": batch_size,
+                        "training_time": training_time,
+                        "final_training_acc": train_acc[-1],
+                        "final_training_loss": train_losses[-1],
+                    }
 
-                # add the image init method and learning type to the training metrics
-                if model_datatype == complex_datatype:
-                    training_data["imag_comp_init_method"] = imaginary_component_init_method
-                    training_data["learn_imaginary_component"] = learn_imaginary
+                    training_data = training_metrics.update(training_data) # merge existing training_data list with list of training metrics
 
-                for epoch, (loss, acc, val_accur, val_loss) in enumerate(zip(train_losses, train_acc, val_acc, val_losses)):
-                    training_data[f"epoch_{epoch}_loss"] = loss
-                    training_data[f"epoch_{epoch}_acc"] = acc
-                    training_data[f"epoch_{epoch}_val_acc"] = val_accur
-                    training_data[f"epoch_{epoch}_val_loss"] = val_loss
+                    # add the image init method and learning type to the training metrics
+                    if model_datatype == complex_datatype:
+                        training_data["imag_comp_init_method"] = imaginary_component_init_method
+                        training_data["learn_imaginary_component"] = learn_imaginary
 
-                # save model and training info
-                save_model(model, models_dir, filename=model_filename)
-                save_model_metrics(
-                    training_data, metrics_dir, filename=metrics_filename
-                )
-                save_training_chart(
-                    train_losses, train_acc, plots_dir, plot_filename
-                )
+                    for epoch, (loss, acc, val_accur, val_loss) in enumerate(zip(train_losses, train_acc, val_acc, val_losses)):
+                        training_data[f"epoch_{epoch}_loss"] = loss
+                        training_data[f"epoch_{epoch}_acc"] = acc
+                        training_data[f"epoch_{epoch}_val_acc"] = val_accur
+                        training_data[f"epoch_{epoch}_val_loss"] = val_loss
 
-
-    # send email saying that training is done
-    load_dotenv()
-    email = os.getenv("EMAIL")
-    msg = EmailMessage()
-    msg.set_content("Finished Training Networks")
-    msg['Subject'] = "-- Training Completion Notification --"
-    msg['From'] = email
-    msg['To'] = email
-
-    try:
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server: # For Gmail
-            server.login(email, email)
-            server.send_message(msg)
-        print("Email sent successfully!")
-    except Exception as e:
-        print(f"Failed to send email: {e}")
+                    # save model and training info
+                    save_model(model, models_dir, filename=model_filename)
+                    save_model_metrics(
+                        training_data, metrics_dir, filename=metrics_filename
+                    )
+                    save_training_chart(
+                        train_losses, train_acc, plots_dir, plot_filename
+                    )
+    send_success_email()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except RuntimeError as e:
+        send_error_email(str(e))
+    
+
+
+
