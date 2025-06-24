@@ -708,7 +708,7 @@ def main():
 
                     train_acc = history["accuracy"]
                     val_acc = history["val_accuracy"]
-		    val_losses = history["val_loss"]
+                    val_losses = history["val_loss"]
 
                     # save paths
                     models_dir = (
@@ -775,7 +775,7 @@ def main():
                     training_data[f"epoch_{epoch}_loss"] = loss
                     training_data[f"epoch_{epoch}_acc"] = acc
                     training_data[f"epoch_{epoch}_val_acc"] = val_accur
-		    training_data[f"epoch_{epoch}_val_loss"] = val_loss
+                    training_data[f"epoch_{epoch}_val_loss"] = val_loss
 
                 # save model and training info
                 save_model(model, models_dir, filename=model_filename)
