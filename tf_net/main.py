@@ -691,7 +691,7 @@ def main():
                         real_images_train.astype(np.float32),
                         labels_train,
                         epochs=epochs,
-                        validation_data=(real_images_test.astype(np.float32), labels_train), 
+                        validation_data=(real_images_test.astype(np.float32), labels_test), 
                         batch_size=batch_size,
                         shuffle=True,
                         callbacks=[lr_scheduler],
