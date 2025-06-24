@@ -684,8 +684,6 @@ def main():
                     # Train and evaluate
                     start_time = datetime.now()
 
-                    history = None  # history placeholder
-
                     # All networks now use real inputs (complex networks handle conversion internally)
                     history = model.fit(
                         real_images_train.astype(np.float32),
@@ -710,6 +708,7 @@ def main():
 
                     train_acc = history["accuracy"]
                     val_acc = history["val_accuracy"]
+		    val_losses = history["val_loss"]
 
                     # save paths
                     models_dir = (
@@ -772,10 +771,11 @@ def main():
                     training_data["imag_comp_init_method"] = imaginary_component_init_method
                     training_data["learn_imaginary_component"] = learn_imaginary
 
-                for epoch, (loss, acc, val_accur) in enumerate(zip(train_losses, train_acc, val_acc)):
+                for epoch, (loss, acc, val_accur, val_loss) in enumerate(zip(train_losses, train_acc, val_acc, val_losses)):
                     training_data[f"epoch_{epoch}_loss"] = loss
                     training_data[f"epoch_{epoch}_acc"] = acc
                     training_data[f"epoch_{epoch}_val_acc"] = val_accur
+		    training_data[f"epoch_{epoch}_val_loss"] = val_loss
 
                 # save model and training info
                 save_model(model, models_dir, filename=model_filename)
