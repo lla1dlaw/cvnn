@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH -J NVIDIASMI        # job name
-#SBATCH -o training_log.txt    # output and error file name (%j expands to jobID)
+#SBATCH -o log.txt    # output and error file name (%j expands to jobID)
 #SBATCH -c 48                # cpus per task
 #SBATCH -N 1                # number of nodes you want to run on
 #SBATCH --gres=gpu:4       # request a gpu
