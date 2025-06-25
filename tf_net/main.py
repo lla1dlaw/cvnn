@@ -623,8 +623,7 @@ def main():
     initial_learning_rate = 0.01
     momentum = 0.9
     clip_norm = 1.0
-    # Create optimizer with initial learning rate
-    optimizer = tf.keras.optimizers.SGD(learning_rate=initial_learning_rate, momentum=momentum, clipnorm=clip_norm, nesterov=True)
+
     
     # Create the learning rate scheduler
     lr_scheduler = create_custom_lr_schedule()
@@ -686,6 +685,9 @@ def main():
                             name = f"CIFAR10_complex_ResNet_{arch_type}_{hidden_function}_zero_imag"
                     else:
                         name = f"CIFAR10_real_ResNet_{arch_type}_{hidden_function}"
+
+                    # Create optimizer with initial learning rate
+                    optimizer = tf.keras.optimizers.SGD(learning_rate=initial_learning_rate, momentum=momentum, clipnorm=clip_norm, nesterov=True)
                     
                     # Create ResNet model
                     model = get_resnet(
@@ -726,6 +728,7 @@ def main():
                     
                     print(f"\n{'='*60}")
                     print(f"Model: {name}")
+                    print(f"dtype: {datatype}")
                     print(f"Architecture: {arch_type} | Activation: {hidden_function}")
                     print(f"Trainable parameters: {trainable_params:,}")
                     print(f"Non-trainable parameters: {non_trainable_params:,}")
