@@ -56,6 +56,7 @@ def save_model(model: tf.keras.Model, path: str, filename=None) -> str:
         os.makedirs(path, exist_ok=True)
     except OSError as e:
         print(f"Error creating directory {path}: {e}")
+        send_email(subject="Could not create Directory", message=f"Error creating directory '{path}' for model: {model.name}:\n\t{str(e)}")
 
     # Determine the filename for the model.
     if not filename:
@@ -77,6 +78,7 @@ def save_model(model: tf.keras.Model, path: str, filename=None) -> str:
         print(f"✅ Model successfully saved to: {full_path}")
     except Exception as e:
         print(f"❌ Error saving model: {e}")
+        send_email(subject=f"Error Saving Model: {model.name}", message=f"Error saving model: {model.name}:\n\t{str(e)}")
 
     return full_path
 
@@ -95,6 +97,7 @@ def save_model_metrics(metrics: dict, path: str, filename=None) -> None:
         os.makedirs(path, exist_ok=True)
     except OSError as e:
         print(f"Error creating directory {path}: {e}")
+        send_email(subject="Could not create Directory", message=f"Error creating directory '{path}' for model: {metrics["name"]}:\n\t{str(e)}")
 
     if not filename:
         filename = "complex_linear_CIFAR10_training_metrics.csv"
@@ -114,6 +117,7 @@ def save_model_metrics(metrics: dict, path: str, filename=None) -> None:
         print("-- Metrics saved --")
     except Exception as e:
         print(f"Error saving metrics to {full_path}: {e}")
+        send_email(subject=f"Error Saving Metrics for model: {metrics["name"]}", message=f"Error saving metrics for model: {metrics["name"]}:\n\t{str(e)}")
 
 
 def save_training_chart(
@@ -165,6 +169,7 @@ def save_training_chart(
         print("-- Chart saved --")
     except Exception as e:
         print(f"Error creating directory {path}: {e}")
+        send_email(subject="Could not create Directory", message=f"Error creating directory '{path}' for plot: {chart_name}:\n\t{str(e)}")
 
 
 def residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.complex64, activation='crelu'):
@@ -559,54 +564,31 @@ def create_custom_lr_schedule():
     return tf.keras.callbacks.LearningRateScheduler(lr_schedule, verbose=0)
 
 
-def send_error_email(error_message: str) -> None:
-    """Sends an error email to the provided address using googles smtp servers.
-    
+def send_email(subject: str, message: str) -> None:
+    """Sends a message from the email provided in the environement to the email provided in the environment. 
     Args:
-        error_message (str): The error message to send. 
-
+        subject (str): Subject line for email.
+        message (str): Message to send. 
     Returns:
         None. 
     """
 
     # send email saying that training is done
     load_dotenv()
-    email = os.getenv("EMAIL")
+    sender = os.getenv("SENDER_ADDRESS")
+    reciever = os.getenv("RECIEVER_ADDRESS")
+    password = os.getenv("PASSWORD")
     msg = EmailMessage()
-    msg.set_content(f"An error occured during training:\n{error_message}")
-    msg['Subject'] = "ERROR"
-    msg['From'] = email
-    msg['To'] = email
+    msg.set_content(message)
+    msg['Subject'] = subject
+    msg['From'] = sender
+    msg['To'] = reciever
 
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server: # For Gmail
-            server.login(email, email)
+            server.login(sender, password)
             server.send_message(msg)
-        print("Email sent successfully!")
-    except Exception as e:
-        print(f"Failed to send email: {e}")
-
-
-def send_success_email() -> None:
-    """Sends an email to the provided address using googles smtp servers.
-
-    Returns:
-        None. 
-    """
-
-    # send email saying that training is done
-    load_dotenv()
-    email = os.getenv("EMAIL")
-    msg = EmailMessage()
-    msg.set_content("Finished Training Networks")
-    msg['Subject'] = "-- Training Completion Notification --"
-    msg['From'] = email
-    msg['To'] = email
-
-    try:
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server: # For Gmail
-            server.login(email, email)
-            server.send_message(msg)
+            server.quit()
         print("Email sent successfully!")
     except Exception as e:
         print(f"Failed to send email: {e}")
@@ -614,6 +596,7 @@ def send_success_email() -> None:
 
 
 def main():
+    program_start_time = datetime.now()
     # training meta data
     real_datatype = tf.float32
     complex_datatype = tf.complex64
@@ -849,13 +832,15 @@ def main():
                     save_training_chart(
                         train_losses, train_acc, plots_dir, plot_filename
                     )
-    send_success_email()
+    program_end_time = datetime.now()
+    total_program_time = program_end_time - program_start_time
+    send_email(subject="--Training Completed--", message=f"Network Training Completed!\nTime Elapsed: {total_program_time}")
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        send_error_email(str(e))
+        send_email(subject="TRAINING ERROR", message=f"An error occurred during trianing:\n\t{str(e)}")
     
 
 
