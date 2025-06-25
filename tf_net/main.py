@@ -12,7 +12,7 @@ import smtplib
 from email.message import EmailMessage
 
 from dotenv import load_dotenv
-
+import traceback
 import pretty_errors
 import os
 from datetime import datetime
@@ -56,6 +56,7 @@ def save_model(model: tf.keras.Model, path: str, filename=None) -> str:
         os.makedirs(path, exist_ok=True)
     except OSError as e:
         print(f"Error creating directory {path}: {e}")
+        traceback.print_exc()
         send_email(subject="Could not create Directory", message=f"Error creating directory '{path}' for model: {model.name}:\n\t{str(e)}")
 
     # Determine the filename for the model.
@@ -78,7 +79,8 @@ def save_model(model: tf.keras.Model, path: str, filename=None) -> str:
         print(f"✅ Model successfully saved to: {full_path}")
     except Exception as e:
         print(f"❌ Error saving model: {e}")
-        send_email(subject=f"Error Saving Model: {model.name}", message=f"Error saving model: {model.name}:\n\t{str(e)}")
+        traceback.print_exc()
+        send_email(subject=f"Error Saving Model: {model.name}", message=f"Error saving model: {model.name}:\n\t{str(e)}\nTraceback: {traceback.format_exc()}")
 
     return full_path
 
@@ -97,7 +99,8 @@ def save_model_metrics(metrics: dict, path: str, filename=None) -> None:
         os.makedirs(path, exist_ok=True)
     except OSError as e:
         print(f"Error creating directory {path}: {e}")
-        send_email(subject="Could not create Directory", message=f"Error creating directory '{path}' for model: {metrics["name"]}:\n\t{str(e)}")
+        traceback.print_exc()
+        send_email(subject="Could not create Directory", message=f"Error creating directory '{path}' for model: {metrics['name']}:\n\t{str(e)}\nTraceback: {traceback.format_exc()}")
 
     if not filename:
         filename = "complex_linear_CIFAR10_training_metrics.csv"
@@ -117,7 +120,8 @@ def save_model_metrics(metrics: dict, path: str, filename=None) -> None:
         print("-- Metrics saved --")
     except Exception as e:
         print(f"Error saving metrics to {full_path}: {e}")
-        send_email(subject=f"Error Saving Metrics for model: {metrics["name"]}", message=f"Error saving metrics for model: {metrics["name"]}:\n\t{str(e)}")
+        traceback.print_exc()
+        send_email(subject=f"Error Saving Metrics for model: {metrics['name']}", message=f"Error saving metrics for model: {metrics['name']}:\n\t{str(e)}\nTraceback: {traceback.format_exc()}")
 
 
 def save_training_chart(
@@ -169,7 +173,8 @@ def save_training_chart(
         print("-- Chart saved --")
     except Exception as e:
         print(f"Error creating directory {path}: {e}")
-        send_email(subject="Could not create Directory", message=f"Error creating directory '{path}' for plot: {chart_name}:\n\t{str(e)}")
+        traceback.print_exc()
+        send_email(subject="Could not create Directory", message=f"Error creating directory '{path}' for plot: {chart_name}:\n\t{str(e)}\nTraceback: {traceback.format_exc()}")
 
 
 def residual_block(x, filters, stage, block, strides=(1, 1), dtype=tf.complex64, activation='crelu'):
@@ -592,6 +597,7 @@ def send_email(subject: str, message: str) -> None:
         print("Email sent successfully!")
     except Exception as e:
         print(f"Failed to send email: {e}")
+        traceback.print_exc()
 
 
 
@@ -602,7 +608,7 @@ def main():
     complex_datatype = tf.complex64
     datatypes = [real_datatype, complex_datatype]
     # datatypes = [real_datatype]
-    epochs = 50   # REDUCED from 200 for faster training
+    epochs = 1   # REDUCED from 200 for faster training
     batch_size = 128  # INCREASED for faster training (if memory allows)
     input_shape = (32, 32, 3)
     outsize = 10
@@ -751,10 +757,10 @@ def main():
 
                     train_losses = history["loss"]
                     print(f"\nTest loss: {training_metrics['loss']:.4f}")
-                    print(f"Test acc: {training_metrics['accuracy']:.4f}")
+                    print(f"Test acc: {training_metrics['acc']:.4f}")
 
-                    train_acc = history["accuracy"]
-                    val_acc = history["val_accuracy"]
+                    train_acc = history["acc"]
+                    val_acc = history["val_acc"]
                     val_losses = history["val_loss"]
 
                     # save paths
@@ -811,7 +817,7 @@ def main():
                         "final_training_loss": train_losses[-1],
                     }
 
-                    training_data = training_metrics.update(training_data) # merge existing training_data list with list of training metrics
+                    training_data.update(training_metrics) # merge existing training_data list with list of training metrics
 
                     # add the image init method and learning type to the training metrics
                     if model_datatype == complex_datatype:
@@ -840,7 +846,9 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        send_email(subject="TRAINING ERROR", message=f"An error occurred during trianing:\n\t{str(e)}")
+        print(f"An error occurred:")
+        traceback.print_exc()
+        send_email(subject="TRAINING ERROR", message=f"An error occurred during trianing:\n\t{e}\nTraceback: {traceback.format_exc()}")
     
 
 
