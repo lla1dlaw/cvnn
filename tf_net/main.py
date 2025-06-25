@@ -287,8 +287,8 @@ def imaginary_learning_block(x, filters):
         Complex tensor with learned imaginary component
     """
 
-    real_part = tf.math.real(x)
-    imaginary_part = tf.math.imag(x)
+    real_part = tf.cast(tf.math.real(x), tf.float32)
+    imaginary_part = tf.cast(tf.math.imag(x), tf.float32)
 
     # This block operates on real data to learn imaginary components
     imaginary_part = tf.keras.layers.BatchNormalization()(imaginary_part)
