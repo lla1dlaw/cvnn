@@ -606,7 +606,7 @@ def main():
     complex_datatype = tf.complex64
     datatypes = [complex_datatype, real_datatype]
     # datatypes = [real_datatype]
-    epochs = 1   # REDUCED from 200 for faster training
+    epochs = 50   # REDUCED from 200 for faster training
     batch_size = 128  # INCREASED for faster training (if memory allows)
     input_shape = (32, 32, 3)
     outsize = 10
