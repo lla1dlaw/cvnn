@@ -354,7 +354,7 @@ def get_resnet(input_shape, num_classes, architecture_type='IB', activation_func
     
     # Input layer - always start with real inputs
     if dtype == tf.complex64:
-        inputs = complex_layers.ComplexInput(shape=input_shape, dtype=dtype)
+        inputs = complex_layers.ComplexInput(input_shape=input_shape, dtype=dtype)
     else:
         inputs = tf.keras.layers.Input(shape=input_shape, dtype=dtype)
 
