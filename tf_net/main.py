@@ -287,19 +287,17 @@ def imaginary_learning_block(x, filters):
         Complex tensor with learned imaginary component
     """
 
-    real_part = tf.cast(x, tf.float32)
+    real_part = tf.math.real(x)
+    imaginary_part = tf.math.imag(x)
 
     # This block operates on real data to learn imaginary components
-    x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.ReLU()(x)
-    x = tf.keras.layers.Conv2D(filters, (3, 3), padding='same')(x)
+    imaginary_part = tf.keras.layers.BatchNormalization()(imaginary_part)
+    imaginary_part = tf.keras.layers.ReLU()(imaginary_part)
+    imaginary_part = tf.keras.layers.Conv2D(filters, (3, 3), padding='same')(imaginary_part)
     
-    x = tf.keras.layers.BatchNormalization()(x)
-    x = tf.keras.layers.ReLU()(x)
-    imaginary_part = tf.keras.layers.Conv2D(x.shape[-1], (3, 3), padding='same')(x)
-    
-    # Convert to complex by combining real input with learned imaginary
-    imaginary_part = tf.cast(imaginary_part, tf.float32)
+    imaginary_part = tf.keras.layers.BatchNormalization()(imaginary_part)
+    imaginary_part = tf.keras.layers.ReLU()(x)
+    imaginary_part = tf.keras.layers.Conv2D(x.shape[-1], (3, 3), padding='same')(imaginary_part)
     
     complex_output = tf.complex(real_part, imaginary_part)
     return complex_output
@@ -773,9 +771,9 @@ def main():
                         else "./real_models"
                     )
                     model_filename = (
-                        f"{model.name}_{hidden_function}_{imaginary_component_init_method}.keras"
+                        f"{model.name}_{imaginary_component_init_method}.keras"
                         if model_datatype == complex_datatype
-                        else f"{model.name}_{hidden_function}.keras"
+                        else f"{model.name}.keras"
                     )  # real models have no imag init method
                     path_to_model = os.path.join(models_dir, model_filename)
                     plots_dir = (
@@ -784,9 +782,9 @@ def main():
                         else "./real_plots"
                     )
                     plot_filename = (
-                        f"{model.name}_{hidden_function}_{imaginary_component_init_method}.png"
+                        f"{model.name}_{imaginary_component_init_method}.png"
                         if model_datatype == complex_datatype
-                        else f"{model.name}_{hidden_function}.png"
+                        else f"{model.name}.png"
                     )  # real models have no imag init method
 
                     path_to_plot = os.path.join(plots_dir, plot_filename)
