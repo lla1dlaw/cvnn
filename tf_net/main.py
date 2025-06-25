@@ -604,7 +604,7 @@ def main():
     # training meta data
     real_datatype = tf.float32
     complex_datatype = tf.complex64
-    datatypes = [real_datatype, complex_datatype]
+    datatypes = [complex_datatype, real_datatype]
     # datatypes = [real_datatype]
     epochs = 1   # REDUCED from 200 for faster training
     batch_size = 128  # INCREASED for faster training (if memory allows)
