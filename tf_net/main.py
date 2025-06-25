@@ -297,7 +297,7 @@ def imaginary_learning_block(x, filters):
     
     imaginary_part = tf.keras.layers.BatchNormalization()(imaginary_part)
     imaginary_part = tf.keras.layers.ReLU()(imaginary_part)
-    imaginary_part = tf.keras.layers.Conv2D(imaginary_part.shape[-1], (3, 3), padding='same')(imaginary_part)
+    imaginary_part = tf.keras.layers.Conv2D(x.shape[-1], (3, 3), padding='same')(imaginary_part)
     
     complex_output = tf.complex(real_part, imaginary_part)
     return complex_output
