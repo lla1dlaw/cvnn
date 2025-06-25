@@ -746,7 +746,7 @@ def main():
 
                     # All networks now use real inputs for testing
                     training_metrics: dict = model.evaluate(
-                        real_images_test.astype(np.float32), one_hot_y_test, verbose=2, return_dict=True
+                        real_images_test.astype(np.float32), one_hot_y_test, verbose=1, return_dict=True
                     )
 
                     train_losses = history["loss"]
