@@ -287,8 +287,8 @@ def imaginary_learning_block(x, filters):
         Complex tensor with learned imaginary component
     """
 
-    real_part = tf.cast(tf.math.real(x), tf.float32)
-    imaginary_part = tf.cast(tf.math.imag(x), tf.float32)
+    real_part = tf.math.real(x)
+    imaginary_part = tf.math.imag(x)
 
     # This block operates on real data to learn imaginary components
     imaginary_part = tf.keras.layers.BatchNormalization()(imaginary_part)
@@ -296,8 +296,8 @@ def imaginary_learning_block(x, filters):
     imaginary_part = tf.keras.layers.Conv2D(filters, (3, 3), padding='same')(imaginary_part)
     
     imaginary_part = tf.keras.layers.BatchNormalization()(imaginary_part)
-    imaginary_part = tf.keras.layers.ReLU()(x)
-    imaginary_part = tf.keras.layers.Conv2D(x.shape[-1], (3, 3), padding='same')(imaginary_part)
+    imaginary_part = tf.keras.layers.ReLU()(imaginary_part)
+    imaginary_part = tf.keras.layers.Conv2D(imaginary_part.shape[-1], (3, 3), padding='same')(imaginary_part)
     
     complex_output = tf.complex(real_part, imaginary_part)
     return complex_output
