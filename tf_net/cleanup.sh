@@ -19,7 +19,7 @@ DIRS_TO_DELETE=(
   "./complex_models"
 )
 
-log_file="./training_log.txt"
+log_file="./log.txt"
 
 # --- Execution ---
 
