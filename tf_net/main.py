@@ -840,7 +840,7 @@ def main():
                     )
     program_end_time = datetime.now()
     total_program_time = program_end_time - program_start_time
-    send_email(subject="--Training Completed--", message=f"Network Training Completed!\nTime Elapsed: {total_program_time}")
+    send_email(subject="--Training Completed--", message=f"Finished training all networks at: {datetime.now()}\nTotal training time for all networks: {total_program_time}")
 
 if __name__ == "__main__":
     try:
