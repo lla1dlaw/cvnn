@@ -20,8 +20,22 @@ from keras.utils.layer_utils import count_params
 from tensorflow.keras.utils import to_categorical
 from tensorflow_addons.metrics import F1Score
 import math
+import logging
 
 
+# setup logging
+try:
+    with open("log.txt", 'x') as file:
+        file.close():
+except:
+    pass
+
+logging.basicConfig(filename="log.txt",
+                    format='%(asctime)s  - %(levelname)s - %(message)s', 
+                    filemode='a')
+logger = logging.getLogger()
+
+    
 def main():
     program_start_time = datetime.now()
 
@@ -29,7 +43,7 @@ def main():
     real_datatype = tf.float32
     complex_datatype = tf.complex64
     datatypes = [complex_datatype, real_datatype]
-    epochs = 50   # REDUCED from 200 for faster training
+    epochs = 100   # REDUCED from 200 for faster training
     batch_size = 128  # INCREASED for faster training (if memory allows)
     input_shape = (32, 32, 3)
     outsize = 10
@@ -78,7 +92,6 @@ def main():
             output_activation = real_output_activation_function
             activation_functions = real_activation_functions
 
-        
 
         print(
             f"Using:\n\t- ResNet architectures: {architecture_types}\n\t- Output activation: {output_activation}\n\t- Activation functions: {activation_functions}"
@@ -258,6 +271,7 @@ def main():
                         train_losses, train_acc, plots_dir, plot_filename
                     )
 
+                    logger.info(f"Network: {model.name} finished training.")
                     send_email(subject="Network Trained", message=f"Network: {model.name} has finished training at {datetime.now()}\nTraining this network took: {training_data['training_time']}")
     program_end_time = datetime.now()
     total_program_time = program_end_time - program_start_time
@@ -270,6 +284,7 @@ if __name__ == "__main__":
         print(f"An error occurred:")
         traceback.print_exc()
         send_email(subject="TRAINING ERROR", message=f"An error occurred during trianing:\n\t{e}\nTraceback: {traceback.format_exc()}")
+        logger.error(f"An error occured: {e}. Traceback: {traceback.format_exc()}")
     
 
 
