@@ -164,15 +164,14 @@ def main():
                         validation_data=(real_images_test.astype(np.float32), one_hot_y_test),
                         batch_size=batch_size,
                         shuffle=True,
-                        verbose=1
-                        #callbacks=[lr_scheduler],
+                        callbacks=[lr_scheduler],
                     ).history
                     end_time = datetime.now()
                     training_time = end_time - start_time
 
                     # All networks now use real inputs for testing
                     training_metrics: dict = model.evaluate(
-                        real_images_test.astype(np.float32), one_hot_y_test, verbose=0, return_dict=True
+                        real_images_test.astype(np.float32), one_hot_y_test, verbose=1, return_dict=True
                     )
 
                     train_losses = history["loss"]
@@ -185,9 +184,9 @@ def main():
 
                     # save paths
                     models_dir = (
-                        "./complex_models_nolrs"
+                        "./complex_models"
                         if model_datatype == complex_datatype
-                        else "./real_models_nolrs"
+                        else "./real_models"
                     )
                     model_filename = (
                         f"{model.name}_{imaginary_component_init_method}.keras"
@@ -196,9 +195,9 @@ def main():
                     )  # real models have no imag init method
                     path_to_model = os.path.join(models_dir, model_filename)
                     plots_dir = (
-                        "./complex_plots_nolrs"
+                        "./complex_plots"
                         if model_datatype == complex_datatype
-                        else "./real_plots_nolrs"
+                        else "./real_plots"
                     )
                     plot_filename = (
                         f"{model.name}_{imaginary_component_init_method}.png"
@@ -208,9 +207,9 @@ def main():
 
                     path_to_plot = os.path.join(plots_dir, plot_filename)
                     metrics_dir = (
-                        "./complex_metrics_nolrs"
+                        "./complex_metrics"
                         if model_datatype == complex_datatype
-                        else "./real_metrics_nolrs"
+                        else "./real_metrics"
                     )
                     metrics_filename = f"{model.name}.csv"
 
@@ -224,7 +223,7 @@ def main():
                         "hidden_activation": hidden_function,
                         "output_activation": output_activation,
                         "initial_learning_rate": initial_learning_rate,
-                        "learning_rate_schedule": "none",
+                        "learning_rate_schedule": "He et al. 2016 style",
                         "momentum": momentum,
                         "clip_norm": clip_norm,
                         "optimizer": optimizer.name,
@@ -241,6 +240,7 @@ def main():
 
                     # add the image init method and learning type to the training metrics
                     if model_datatype == complex_datatype:
+                        training_data["imag_comp_init_method"] = imaginary_component_init_method
                         training_data["learn_imaginary_component"] = learn_imaginary
 
                     for epoch, (loss, acc, val_accur, val_loss) in enumerate(zip(train_losses, train_acc, val_acc, val_losses)):

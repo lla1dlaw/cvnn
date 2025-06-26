@@ -19,6 +19,7 @@ DIRS_TO_DELETE=(
   "./complex_models"
 )
 
+output_log_file="output_log.txt"
 log_file="./log.txt"
 
 # --- Execution ---
@@ -33,6 +34,11 @@ for dir in "${DIRS_TO_DELETE[@]}"; do
     echo "Deleted $dir"
   fi
 done
+
+if [ -f "$output_log_file" ]; then
+  rm "$log_file"
+  echo "Deleted $output_log_file"
+fi
 
 if [ -f "$log_file" ]; then
   rm "$log_file"
