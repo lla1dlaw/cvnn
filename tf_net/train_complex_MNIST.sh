@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J NVIDIASMI        # job name
+#SBATCH -J Complex_Network_Train        # job name
 #SBATCH -o output_log.txt    # output and error file name (%j expands to jobID)
 #SBATCH -c 48                # cpus per task
 #SBATCH -N 1                # number of nodes you want to run on
