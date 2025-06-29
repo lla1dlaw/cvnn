@@ -9,34 +9,42 @@ Utilizes Sébastien M. Popoff's complexPyTorch framework. Available: https://git
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from complexPyTorch.complexLayers import ComplexBatchNorm2d, ComplexConv2d, ComplexLinear
-from complexPyTorch.complexFunctions import complex_relu, complex_max_pool2d
+from complexPyTorch.complexLayers import ComplexBatchNorm2d, ComplexConv2d, ComplexLinear, ComplexReLU, ComplexMaxPool2d
+from activations import ModReLU, ZReLU, ComplexCardioid
 from typing import Any 
 
 
 class MNIST_CVCNN(nn.Module):
-    """Designed for MNIST
-
-    """
-    def __init__(self, hidden_activation: str | Any, output_activation: Any | None):
+    def __init__(self, hidden_activation: str | Any, output_activation: str | None = None):
+        """Designed for MNIST
+        Args:
+            hidden_activation (str | Any): The activation function to use for the hidden layer/s. Can be either a string (the name of the function) or the module itself. 
+            output_activation (str | None, optional): The activation function to apply to the output. Same useage as hidden_activaiton. Defaults to None. 
+        Returns:
+            None
+        """
         super(MNIST_CVCNN, self).__init__()
 
         function_dispatcher = {
-            'crelu': complex_relu,
-            'cart_relu': complex_relu,
-            # add the other functions once you write them
+            'modrelu': ModReLU,
+            'zrelu': ZReLU,
+            'crelu': ComplexReLU,
+            'complex_cardioid': ComplexCardioid,
         }
 
         if output_activation != None:
             self.output_activation = function_dispatcher.get(output_activation, output_activation) # if output_activation is specified, try and get it from the dispatcher.
-
-        self.conv1 = ComplexConv2d(1, 10, 5, 1)
-        self.bn1  = ComplexBatchNorm2d(10)
-        self.hidden_activation = function_dispatcher.get(hidden_activation, hidden_activation)
-        self.conv2 = ComplexConv2d(10, 20, 5, 1)
-        self.bn2 = ComplexBatchNorm2d(20)
-        self.fc1 = ComplexLinear(4*4*20, 500)
-        self.fc2 = ComplexLinear(500, 10)
+        layers = [
+            ComplexConv2d(1, 10, 5, 1),
+            ComplexBatchNorm2d(10),
+            function_dispatcher.get(hidden_activation, hidden_activation)(), # if the hidden activation string is not found, the argument is assumed to be the module itself
+            ComplexConv2d(10, 20, 5, 1),
+            ComplexBatchNorm2d(20),
+            function_dispatcher.get(hidden_activation, hidden_activation)(), 
+            ComplexLinear(4*4*20, 500),
+            ComplexLinear(500, 10)
+        ]
+        self.layers = nn.Sequential(*layers)
 
 
     def forward(self, x):
