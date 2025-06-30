@@ -271,10 +271,11 @@ def main(args):
     
     arch_types, complex_activations, learn_imag_opts = ['WS', 'DN', 'IB'], ['crelu', 'zrelu', 'modrelu', 'complex_cardioid'], [True, False]
     experiment_configs = []
-    for arch in arch_types:
-        experiment_configs.append({'name': f"Real_ResNet_{arch}", 'model_type': 'Real', 'arch': arch, 'activation': 'relu', 'learn_imag': 'N/A'})
+
     for arch, act, learn in product(arch_types, complex_activations, learn_imag_opts):
         experiment_configs.append({'name': f"Complex_ResNet_{arch}_{act}_{'LearnImag' if learn else 'ZeroImag'}", 'model_type': 'Complex', 'arch': arch, 'activation': act, 'learn_imag': learn})
+    for arch in arch_types:
+        experiment_configs.append({'name': f"Real_ResNet_{arch}", 'model_type': 'Real', 'arch': arch, 'activation': 'relu', 'learn_imag': 'N/A'})
 
     train_dataset, test_dataset = get_datasets()
 

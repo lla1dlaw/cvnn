@@ -33,11 +33,15 @@ class ComplexBatchNorm2d(nn.Module):
         self.track_running_stats = track_running_stats
 
         # Learnable affine parameters: a complex bias (beta) and a 2x2 scaling matrix (gamma)
-        self.weight = Parameter(torch.Tensor(num_features, 3)) # For gamma: (rr, ii, ri)
-        self.bias = Parameter(torch.Tensor(num_features, 2))   # For beta: (r, i)
+        # gamma is represented by 3 values for the symmetric 2x2 matrix: (rr, ii, ri)
+        self.weight = Parameter(torch.Tensor(num_features, 3)) 
+        # beta is represented by 2 values for the complex number: (r, i)
+        self.bias = Parameter(torch.Tensor(num_features, 2))   
 
+        # Running statistics are stored as real tensors
         if self.track_running_stats:
-            self.register_buffer('running_mean', torch.zeros(num_features, dtype=torch.complex64))
+            # running_mean stores real and imaginary parts separately
+            self.register_buffer('running_mean', torch.zeros(num_features, 2))
             # running_cov stores V_rr, V_ii, V_ri
             self.register_buffer('running_cov', torch.zeros(num_features, 3))
             self.register_buffer('num_batches_tracked', torch.tensor(0, dtype=torch.long))
@@ -45,104 +49,97 @@ class ComplexBatchNorm2d(nn.Module):
             self.register_parameter('running_mean', None)
             self.register_parameter('running_cov', None)
             self.register_parameter('num_batches_tracked', None)
-            
+        
         self.reset_parameters()
 
-    def reset_running_stats(self):
-        """Resets the running statistics to their initial values."""
+    def reset_parameters(self):
+        """Initializes the parameters and running statistics."""
         if self.track_running_stats:
             self.running_mean.zero_()
             self.running_cov.zero_()
-            # Initialize covariance to identity matrix
-            self.running_cov[:, 0] = 1.0
-            self.running_cov[:, 1] = 1.0
+            # Initialize covariance to identity matrix (V_rr=1, V_ii=1, V_ri=0)
+            self.running_cov[:, 0] = 1 
+            self.running_cov[:, 1] = 1 
             self.num_batches_tracked.zero_()
-
-    def reset_parameters(self):
-        """Initializes the learnable parameters and running statistics."""
-        self.reset_running_stats()
-        # Initialize gamma to be an identity matrix
-        self.weight.data[:, 0].fill_(1)
-        self.weight.data[:, 1].fill_(1)
-        self.weight.data[:, 2].zero_()
-        # Initialize beta to zero
+        
+        # Initialize bias (beta) to zero
         self.bias.data.zero_()
+        
+        # Initialize weight (gamma) to identity matrix (gamma_rr=1, gamma_ii=1, gamma_ri=0)
+        self.weight.data.zero_()
+        self.weight.data[:, 0] = 1.0 
+        self.weight.data[:, 1] = 1.0
 
     def forward(self, x):
-        """
-        Performs the forward pass.
-        """
-        # Ensure input is complex
+        """Performs the forward pass."""
         if not x.is_complex():
-            raise ValueError("Input to ComplexBatchNorm2d must be complex.")
+            raise TypeError("Input must be a complex tensor.")
 
-        # Get the batch and spatial dimensions for calculations
-        batch_size, _, height, width = x.shape
-        num_elements = batch_size * height * width
-
-        # --- 1. Calculate Statistics ---
-        if self.training or not self.track_running_stats:
-            # Calculate mean across batch and spatial dimensions
-            # (B, C, H, W) -> (C)
-            mean = torch.mean(x, dim=[0, 2, 3])
+        # --- 1. Calculate or Retrieve Statistics ---
+        if self.training and self.track_running_stats:
+            # --- Training Mode: Calculate batch statistics and update running stats ---
             
-            # Center the input
-            centered_x = x - mean.view(1, self.num_features, 1, 1)
+            # Calculate batch mean (complex tensor of shape [num_features])
+            mean_complex = x.mean(dim=[0, 2, 3])
+            
+            # **FIX 1: Shape Mismatch**
+            # Convert complex mean to a real tensor of shape [num_features, 2] for update
+            mean_for_update = torch.stack([mean_complex.real, mean_complex.imag], dim=1).detach()
 
-            # Calculate covariance matrix components V
-            # V_rr = Var(real)
-            V_rr = torch.sum(centered_x.real ** 2, dim=[0, 2, 3]) / num_elements
-            # V_ii = Var(imag)
-            V_ii = torch.sum(centered_x.imag ** 2, dim=[0, 2, 3]) / num_elements
-            # V_ri = Cov(real, imag)
-            V_ri = torch.sum(centered_x.real * centered_x.imag, dim=[0, 2, 3]) / num_elements
+            # Update running mean
+            self.num_batches_tracked.add_(1)
+            self.running_mean.data = (1 - self.momentum) * self.running_mean.data + self.momentum * mean_for_update
 
-            # Update running stats during training
-            if self.training and self.track_running_stats:
-                self.num_batches_tracked += 1
-                # Update running mean
-                self.running_mean.data = (1 - self.momentum) * self.running_mean.data + self.momentum * mean.detach()
-                # Update running covariance (with unbiased estimator correction)
-                unbiased_factor = num_elements / (num_elements - 1) if num_elements > 1 else 1.0
-                self.running_cov.data[:, 0] = (1 - self.momentum) * self.running_cov.data[:, 0] + self.momentum * V_rr.detach() * unbiased_factor
-                self.running_cov.data[:, 1] = (1 - self.momentum) * self.running_cov.data[:, 1] + self.momentum * V_ii.detach() * unbiased_factor
-                self.running_cov.data[:, 2] = (1 - self.momentum) * self.running_cov.data[:, 2] + self.momentum * V_ri.detach() * unbiased_factor
+            # Center the data using the calculated batch mean
+            centered_x = x - mean_complex.view(1, self.num_features, 1, 1)
 
-        else: # During evaluation, use the running stats
-            mean = self.running_mean
-            centered_x = x - mean.view(1, self.num_features, 1, 1)
-            V_rr = self.running_cov[:, 0]
-            V_ii = self.running_cov[:, 1]
-            V_ri = self.running_cov[:, 2]
+            # Calculate covariance matrix elements
+            V_rr = (centered_x.real ** 2).mean(dim=[0, 2, 3])
+            V_ii = (centered_x.imag ** 2).mean(dim=[0, 2, 3])
+            V_ri = (centered_x.real * centered_x.imag).mean(dim=[0, 2, 3])
+            
+            # Stack covariance elements for update and detach
+            cov_for_update = torch.stack([V_rr, V_ii, V_ri], dim=1).detach()
 
-        # --- 2. Whiten the Data ---
-        # Add epsilon for numerical stability
-        V_rr = V_rr + self.eps
-        V_ii = V_ii + self.eps
+            # Update running covariance
+            self.running_cov.data = (1 - self.momentum) * self.running_cov.data + self.momentum * cov_for_update
+            
+            # Use batch statistics for normalization during training
+            mean_to_use = mean_complex
+            cov_to_use = torch.stack([V_rr, V_ii, V_ri], dim=1)
 
-        # Calculate the inverse square root of the covariance matrix
-        # (V_rr, V_ri)
-        # (V_ri, V_ii)
-        det = V_rr * V_ii - V_ri**2
-        s = torch.sqrt(det)
-        t = torch.sqrt(V_rr + V_ii + 2 * s)
+        else:
+            # --- Evaluation Mode: Use running statistics ---
+            mean_to_use = torch.complex(self.running_mean[:, 0], self.running_mean[:, 1])
+            cov_to_use = self.running_cov
         
-        # Prevent division by zero
+        # --- 2. Whiten the Data ---
+        # Reshape mean for broadcasting
+        mean_reshaped = mean_to_use.view(1, self.num_features, 1, 1)
+        centered_x = x - mean_reshaped
+        
+        # Extract covariance components and reshape for broadcasting
+        V_rr = cov_to_use[:, 0].view(1, self.num_features, 1, 1)
+        V_ii = cov_to_use[:, 1].view(1, self.num_features, 1, 1)
+        V_ri = cov_to_use[:, 2].view(1, self.num_features, 1, 1)
+        
+        # Calculate the inverse square root of the covariance matrix
+        # s = determinant of the covariance matrix
+        s = V_rr * V_ii - V_ri ** 2
+        # t = sqrt of the determinant
+        t = torch.sqrt(s + self.eps)
+        # inv_t = 1 / t
         inv_t = 1.0 / (t + self.eps)
         
-        Rrr = (V_ii + s) * inv_t
-        Rii = (V_rr + s) * inv_t
+        # **FIX 2: Mathematical Error**
+        # The whitening matrix components are functions of t (sqrt of det), not s (det).
+        Rrr = (V_ii + t) * inv_t
+        Rii = (V_rr + t) * inv_t
         Rri = -V_ri * inv_t
-
-        # Reshape for broadcasting
-        Rrr = Rrr.view(1, self.num_features, 1, 1)
-        Rii = Rii.view(1, self.num_features, 1, 1)
-        Rri = Rri.view(1, self.num_features, 1, 1)
 
         # Apply the whitening transformation
         real_part = Rrr * centered_x.real + Rri * centered_x.imag
         imag_part = Rri * centered_x.real + Rii * centered_x.imag
-        
         whitened_x = torch.complex(real_part, imag_part)
 
         # --- 3. Apply Affine Transformation (gamma * x_hat + beta) ---
@@ -153,11 +150,13 @@ class ComplexBatchNorm2d(nn.Module):
         beta_r = self.bias[:, 0].view(1, self.num_features, 1, 1)
         beta_i = self.bias[:, 1].view(1, self.num_features, 1, 1)
 
-        # Apply the learnable transformation
+        # Apply affine transformation
         out_real = gamma_rr * whitened_x.real + gamma_ri * whitened_x.imag + beta_r
         out_imag = gamma_ri * whitened_x.real + gamma_ii * whitened_x.imag + beta_i
 
         return torch.complex(out_real, out_imag)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self.num_features}, eps={self.eps}, momentum={self.momentum}, track_running_stats={self.track_running_stats})'
+        return (f'{self.__class__.__name__}({self.num_features}, '
+                f'eps={self.eps}, momentum={self.momentum}, '
+                f'track_running_stats={self.track_running_stats})')

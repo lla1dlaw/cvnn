@@ -33,7 +33,7 @@ class ZeroImag(nn.Module):
         Returns:
             torch.Tensor: The complex-valued output tensor with a zero imaginary part.
         """
-        return x.to(torch.complex64)
+        return torch.zeros_like(x)
 
 class LearnImag(nn.Module):
     """A real-valued module that learns an imaginary component from a real input.
