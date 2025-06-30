@@ -14,11 +14,11 @@
 # --- SLURM JOB PARAMETERS ---
 
 # Job name
-#SBATCH --job-name=resnet_comparison_max
+#SBATCH --job-name=resnet_comparison
 
 # Output and error files. These will be overwritten on each run.
-#SBATCH --output=resnet_comparison_max.out
-#SBATCH --error=resnet_comparison_max.err
+#SBATCH --output=resnet_comparison.out
+#SBATCH --error=resnet_comparison.err
 
 # Resource requests - Maximized for the V100 GPU nodes
 #SBATCH --partition=gpu             # Request the partition with V100 GPUs
@@ -46,21 +46,27 @@ echo "------------------------------------------------------"
 module purge
 module load anaconda3
 
-# 2. Activate your Conda environment using mamba
+# 2. Activate your Conda environment using 'source activate'
+#    This is the correct method for non-interactive scripts.
 #    Replace 'torch_cvnn' with the name of your actual Conda environment.
-mamba activate torch_cvnn
-echo "Activated Mamba environment: $CONDA_DEFAULT_ENV"
+source activate torch_cvnn
+echo "Activated Conda environment: $CONDA_DEFAULT_ENV"
 
 # 3. Load the specific CUDA/cuDNN module (CRITICAL STEP)
 #    This makes the NVIDIA drivers and CUDA toolkit available to your job.
 module load cudnn8.5-cuda11.7/8.5.0.96
 echo "CUDA/cuDNN module loaded."
 
-# 4. Navigate to the directory containing your script
+# 4. Diagnostic check: Verify that PyTorch can see the GPU
+echo "Verifying PyTorch CUDA availability..."
+python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'Number of GPUs: {torch.cuda.device_count()}')"
+echo "------------------------------------------------------"
+
+# 5. Navigate to the directory containing your script
 #    This line is optional if you submit the job from the correct directory.
 # cd /path/to/your/project/directory
 
-# 5. Run the Python training script
+# 6. Run the Python training script
 #    - The script will use all allocated GPUs automatically.
 #    - Email notifications are now handled via a .env file.
 echo "Starting Python training script..."
