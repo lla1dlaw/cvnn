@@ -9,7 +9,8 @@ It iterates through all specified permutations of architectures, activation func
 and other settings, logging results and saving them to a CSV file.
 
 Features:
-- Automated comparison of multiple model configurations.
+- Multi-GPU training using torch.nn.DataParallel.
+- Securely loads email credentials from a .env file.
 - Optional K-Fold Cross-Validation for robust evaluation.
 - Saves per-epoch training/validation history (loss, accuracy) for standard splits.
 - Saves the trained weights (state_dict) for each successful experiment/fold.
@@ -20,25 +21,25 @@ Features:
 - Optional email notifications for errors during training.
 
 Usage:
-    # Standard train/test split with per-epoch history saved
+    # To run this script, first create a .env file with your email credentials.
+    # Then, install the required library:
+    # pip install python-dotenv torchmetrics scikit-learn
+
+    # Standard train/test split
     python train.py
 
-    # With 5-Fold Cross-Validation (saves mean/std of final metrics)
+    # With 5-Fold Cross-Validation on the training set
     python train.py --folds 5
-
-    # With email notifications
-    python train.py --email-user YOUR_EMAIL --email-pass YOUR_APP_PASSWORD
 
 Note on Cross-Validation: Using K-Fold CV will multiply the total training
 time by K. It is recommended for final, robust evaluation of specific models.
-Per-epoch history is not saved to the CSV for CV runs to keep the results summary clean.
 """
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Subset, ConcatDataset
+from torch.utils.data import DataLoader, Subset
 from torch.utils.data.sampler import SubsetRandomSampler
 
 import os
@@ -51,6 +52,7 @@ from itertools import product
 from datetime import datetime
 import traceback
 import numpy as np
+from dotenv import load_dotenv
 
 from residual import ComplexResNet, RealResNet, RealResidualBlock, ComplexResidualBlock
 
@@ -62,7 +64,7 @@ try:
     )
     from sklearn.model_selection import StratifiedKFold
 except ImportError:
-    print("Dependencies not found. Please install them: pip install torchmetrics scikit-learn")
+    print("Dependencies not found. Please install them: pip install torchmetrics scikit-learn python-dotenv")
     exit()
 
 # --- UTILITY FUNCTIONS ---
@@ -78,19 +80,25 @@ def setup_logging():
         ]
     )
 
-def send_email_notification(subject, body, args):
-    """Sends an email notification if email arguments are provided."""
-    if not args.email_user or not args.email_pass:
+def send_email_notification(subject, body):
+    """Sends an email notification using credentials from a .env file."""
+    load_dotenv()
+    email_user = os.getenv("EMAIL_USER")
+    email_pass = os.getenv("EMAIL_PASS")
+
+    if not email_user or not email_pass:
+        logging.warning("EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.")
         return
+
     msg = MIMEText(body)
     msg['Subject'] = f"[ResNet Training] {subject}"
-    msg['From'] = args.email_user
-    msg['To'] = args.email_user
+    msg['From'] = email_user
+    msg['To'] = email_user
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
-            smtp_server.login(args.email_user, args.email_pass)
-            smtp_server.sendmail(args.email_user, args.email_user, msg.as_string())
-        logging.info(f"Successfully sent notification email to {args.email_user}")
+            smtp_server.login(email_user, email_pass)
+            smtp_server.sendmail(email_user, email_user, msg.as_string())
+        logging.info(f"Successfully sent notification email to {email_user}")
     except Exception as e:
         logging.error(f"Failed to send email: {e}")
 
@@ -102,7 +110,13 @@ def save_model(model, config, directory="saved_models", fold=None):
     fold_str = f"_fold{fold}" if fold is not None else ""
     filename = f"{config['name']}{fold_str}.pth"
     filepath = os.path.join(directory, filename)
-    torch.save(model.state_dict(), filepath)
+
+    # If using DataParallel, save the underlying model's state_dict
+    if isinstance(model, nn.DataParallel):
+        torch.save(model.module.state_dict(), filepath)
+    else:
+        torch.save(model.state_dict(), filepath)
+
     logging.info(f"Saved model state_dict to {filepath}")
     return filepath
 
@@ -154,12 +168,18 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
     """Runs a single training and validation experiment for one fold."""
     logging.info(f"--- Starting Fold {fold_num} for Experiment: {config['name']} on {device} ---")
 
+    # Model Instantiation
     if config['model_type'] == 'Real':
         model = RealResNet(block_class=RealResidualBlock, architecture_type=config['arch'], num_classes=10)
     else:
         model = ComplexResNet(block_class=ComplexResidualBlock, activation_function=config['activation'], architecture_type=config['arch'], learn_imaginary_component=config['learn_imag'], num_classes=10)
-    model.to(device)
     
+    # Multi-GPU Setup
+    model.to(device)
+    if device == 'cuda' and torch.cuda.device_count() > 1:
+        logging.info(f"Using {torch.cuda.device_count()} GPUs via DataParallel.")
+        model = nn.DataParallel(model)
+
     optimizer = optim.SGD(model.parameters(), lr=args.learning_rate, momentum=0.9, nesterov=True)
     criterion = nn.CrossEntropyLoss()
     val_accuracy_metric = MulticlassAccuracy(num_classes=10, average='micro').to(device)
@@ -215,7 +235,7 @@ def main(args):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logging.info(f"Starting training process on device: {device}")
     
-    arch_types, complex_activations, learn_imag_opts = ['WS', 'DN', 'IB'], ['crelu',  'complex_cardioid'], [True, False]
+    arch_types, complex_activations, learn_imag_opts = ['WS', 'DN', 'IB'], ['crelu', 'zrelu', 'modrelu', 'complex_cardioid'], [True, False]
     experiment_configs = []
     for arch in arch_types:
         experiment_configs.append({'name': f"Real_ResNet_{arch}", 'model_type': 'Real', 'arch': arch, 'activation': 'relu', 'learn_imag': 'N/A'})
@@ -227,29 +247,35 @@ def main(args):
     for config in experiment_configs:
         start_time = datetime.now()
         try:
-            if args.folds > 1:
-                full_dataset = ConcatDataset([train_dataset, test_dataset])
-                targets = np.concatenate([train_dataset.targets, test_dataset.targets])
-                skf = StratifiedKFold(n_splits=args.folds, shuffle=True, random_state=42)
-                splits = list(skf.split(np.zeros(len(full_dataset)), targets))
-            else:
-                train_idx = np.arange(len(train_dataset))
-                val_idx = np.arange(len(test_dataset))
-                splits = [(train_idx, val_idx)]
-            
             fold_results = []
+            
+            # --- Cross-Validation Logic ---
+            if args.folds > 1:
+                # Use Stratified K-Fold on the training dataset
+                targets = np.array(train_dataset.targets)
+                skf = StratifiedKFold(n_splits=args.folds, shuffle=True, random_state=42)
+                splits = skf.split(np.zeros(len(targets)), targets)
+            else:
+                # Use a single standard train/test split
+                splits = [(np.arange(len(train_dataset)), np.arange(len(test_dataset)))]
+            
             for fold, (train_idx, val_idx) in enumerate(splits):
                 fold_num = fold + 1
                 
+                # Create samplers for the current fold
+                train_sampler = SubsetRandomSampler(train_idx)
+                
+                # Determine the validation set and create its loader
                 if args.folds > 1:
-                    train_data = Subset(full_dataset, train_idx)
-                    val_data = Subset(full_dataset, val_idx)
-                    train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True, num_workers=2)
-                    val_loader = DataLoader(val_data, batch_size=args.batch_size, shuffle=False, num_workers=2)
+                    # For CV, validation set is a part of the training set
+                    # No data augmentation for validation, so we need a new dataset object with test transforms
+                    val_dataset_no_aug = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=get_datasets()[1].transform)
+                    val_loader = DataLoader(Subset(val_dataset_no_aug, val_idx), batch_size=args.batch_size, shuffle=False)
+                    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, sampler=train_sampler)
                 else: 
-                    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2)
-                    val_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
-
+                    # For standard run, the validation set is the test set
+                    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
+                    val_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False)
 
                 model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
                 model_path = save_model(model, config, fold=fold_num)
@@ -262,9 +288,9 @@ def main(args):
                         fold_data[f"epoch_{i+1}_val_acc"] = history['val_acc'][i]
                 fold_results.append(fold_data)
 
+            # --- Aggregate and Save Results ---
             final_save_data = {'status': 'Completed', **config}
             if args.folds > 1:
-                # Get the keys from the first fold's metrics to average
                 metric_keys = metrics.keys()
                 for key in metric_keys:
                     values = [res[key] for res in fold_results]
@@ -283,20 +309,17 @@ def main(args):
             error_results = {**config, 'status': 'Failed', 'error': str(e)}
             save_results_to_csv(error_results)
             error_body = f"Experiment '{config['name']}' failed.\n\nError:\n{e}\n\nTraceback:\n{traceback.format_exc()}"
-            send_email_notification("Training Script ERROR", error_body, args)
+            send_email_notification("Training Script ERROR", error_body)
 
     logging.info("--- All experiments finished ---")
-    send_email_notification("Training Complete", "All ResNet experiments have finished running.", args)
+    send_email_notification("Training Complete", "All ResNet experiments have finished running.")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="PyTorch ResNet Comparison Training Script")
     parser.add_argument('--epochs', type=int, default=50, help='Number of training epochs.')
-    parser.add_argument('--batch-size', type=int, default=128, help='Batch size.')
+    parser.add_argument('--batch-size', type=int, default=128, help='Batch size for training.')
     parser.add_argument('--learning-rate', type=float, default=0.01, help='Initial learning rate.')
     parser.add_argument('--folds', type=int, default=1, help='Number of K-Folds for cross-validation. Default is 1 (standard train/test split).')
-    
-    parser.add_argument('--email-user', type=str, default=None, help='Your Gmail address for sending notifications.')
-    parser.add_argument('--email-pass', type=str, default=None, help='Your Gmail App Password.')
     
     args = parser.parse_args()
     main(args)
