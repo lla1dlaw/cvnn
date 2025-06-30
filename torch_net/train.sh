@@ -16,9 +16,9 @@
 # Job name
 #SBATCH --job-name=resnet_comparison_max
 
-# Output and error files. %j will be replaced by the job ID.
-#SBATCH --output=resnet_comparison.out
-#SBATCH --error=resnet_comparison.err
+# Output and error files. These will be overwritten on each run.
+#SBATCH --output=resnet_comparison_max.out
+#SBATCH --error=resnet_comparison_max.err
 
 # Resource requests - Maximized for the V100 GPU nodes
 #SBATCH --partition=gpu             # Request the partition with V100 GPUs
@@ -31,10 +31,10 @@
 
 # Email notifications for job status
 #SBATCH --mail-type=ALL             # Send email on job start, end, and failure
-#SBATCH --mail-user=liamlaidlaw04@gmail.com # <<< REPLACE WITH YOUR EMAIL
+#SBATCH --mail-user=liamlaidlaw@boisestate.edu  # Email for SLURM notifications
 
 # --- JOB EXECUTION ---
-./cleanup.sh
+
 # Print job information
 echo "Starting job $SLURM_JOB_ID on host $HOSTNAME"
 echo "Job allocated to partition ${SLURM_JOB_PARTITION}"
@@ -42,13 +42,27 @@ echo "Job allocated ${SLURM_CPUS_ON_NODE} CPUs and ${SLURM_MEM_PER_NODE} MB of m
 echo "Job allocated GPUs: $CUDA_VISIBLE_DEVICES"
 echo "------------------------------------------------------"
 
-module load cudnn8.5-cuda11.7/8.5.0.96
-echo "CUDA/cuDNN module loaded."
+# 1. Purge modules and load the Anaconda/Mamba module
+module purge
+module load anaconda3
 
-mamba init bash
+# 2. Activate your Conda environment using mamba
+#    Replace 'torch_cvnn' with the name of your actual Conda environment.
 mamba activate torch_cvnn
 echo "Activated Mamba environment: $CONDA_DEFAULT_ENV"
 
+# 3. Load the specific CUDA/cuDNN module (CRITICAL STEP)
+#    This makes the NVIDIA drivers and CUDA toolkit available to your job.
+module load cudnn8.5-cuda11.7/8.5.0.96
+echo "CUDA/cuDNN module loaded."
+
+# 4. Navigate to the directory containing your script
+#    This line is optional if you submit the job from the correct directory.
+# cd /path/to/your/project/directory
+
+# 5. Run the Python training script
+#    - The script will use all allocated GPUs automatically.
+#    - Email notifications are now handled via a .env file.
 echo "Starting Python training script..."
 python train_resnets.py \
   --epochs 50 \
