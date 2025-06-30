@@ -31,7 +31,7 @@
 
 # Email notifications for job status
 #SBATCH --mail-type=ALL             # Send email on job start, end, and failure
-#SBATCH --mail-user=YOUR_EMAIL@u.boisestate.edu  # <<< REPLACE WITH YOUR EMAIL
+#SBATCH --mail-user=liamlaidlaw04@gmail.com # <<< REPLACE WITH YOUR EMAIL
 
 # --- JOB EXECUTION ---
 
