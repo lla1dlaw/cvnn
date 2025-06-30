@@ -34,7 +34,7 @@
 #SBATCH --mail-user=liamlaidlaw04@gmail.com # <<< REPLACE WITH YOUR EMAIL
 
 # --- JOB EXECUTION ---
-
+./cleanup.sh
 # Print job information
 echo "Starting job $SLURM_JOB_ID on host $HOSTNAME"
 echo "Job allocated to partition ${SLURM_JOB_PARTITION}"
