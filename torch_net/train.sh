@@ -42,22 +42,25 @@ echo "Job allocated ${SLURM_CPUS_ON_NODE} CPUs and ${SLURM_MEM_PER_NODE} MB of m
 echo "Job allocated GPUs: $CUDA_VISIBLE_DEVICES"
 echo "------------------------------------------------------"
 
-# 1. Purge modules and load the Anaconda/Mamba module
+# 1. Purge modules and load the Anaconda module
 module purge
 module load anaconda3
 
-# 2. Activate your Conda environment using 'source activate'
-#    This is the correct method for non-interactive scripts.
+# 2. Load the specific CUDA/cuDNN module FIRST (CRITICAL STEP)
+#    This sets up the environment variables (like LD_LIBRARY_PATH) correctly.
+module load cudnn8.5-cuda11.7/8.5.0.96
+echo "CUDA/cuDNN module loaded."
+
+# 3. Activate your Conda environment using 'source activate' SECOND
+#    The conda environment will now inherit the CUDA paths.
 #    Replace 'torch_cvnn' with the name of your actual Conda environment.
 source activate torch_cvnn
 echo "Activated Conda environment: $CONDA_DEFAULT_ENV"
 
-# 3. Load the specific CUDA/cuDNN module (CRITICAL STEP)
-#    This makes the NVIDIA drivers and CUDA toolkit available to your job.
-module load cudnn8.5-cuda11.7/8.5.0.96
-echo "CUDA/cuDNN module loaded."
-
-# 4. Diagnostic check: Verify that PyTorch can see the GPU
+# 4. Diagnostic checks:
+echo "--- Running Diagnostics ---"
+echo "LD_LIBRARY_PATH is: $LD_LIBRARY_PATH" # Check if NVIDIA libs are in the path
+echo "Which python: $(which python)"
 echo "Verifying PyTorch CUDA availability..."
 python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'Number of GPUs: {torch.cuda.device_count()}')"
 echo "------------------------------------------------------"
