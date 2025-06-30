@@ -26,7 +26,7 @@ import logging
 # setup logging
 try:
     with open("log.txt", 'x') as file:
-        file.close():
+        file.close()
 except:
     pass
 
