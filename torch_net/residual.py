@@ -7,8 +7,9 @@ View original paper here: https://openreview.net/forum?id=H1T2hmZAb
 
 import torch
 import torch.nn as nn
-from complexPyTorch.complexLayers import ComplexBatchNorm2d, ComplexConv2d, ComplexLinear
+from complexPyTorch.complexLayers import  ComplexConv2d, ComplexLinear
 from activations import ModReLU, ZReLU, CReLU, ComplexCardioid # Assuming activations.py is in the same directory
+from custom_complex_layers import ComplexBatchNorm2d
 
 # MODULE: UTILITY & INITIALIZATION
 # =================================
