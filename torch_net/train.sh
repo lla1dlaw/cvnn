@@ -42,15 +42,12 @@ echo "Job allocated ${SLURM_CPUS_ON_NODE} CPUs and ${SLURM_MEM_PER_NODE} MB of m
 echo "Job allocated GPUs: $CUDA_VISIBLE_DEVICES"
 echo "------------------------------------------------------"
 
-# 1. Purge modules and load the Anaconda module
-module purge
-module load conda
-conda init bash
+# 1. Purge modules
 # 2. Activate your Conda environment
 #    Replace 'my_pytorch_env' with the name of your actual Conda environment
 #    that has PyTorch and all dependencies installed.
-conda activate torch_cvnn
-echo "Activated Conda environment: $CONDA_DEFAULT_ENV"
+mamba activate torch_cvnn
+echo "Activated Mamba environment: $CONDA_DEFAULT_ENV"
 
 # 3. Load the specific CUDA/cuDNN module (CRITICAL STEP)
 #    This makes the NVIDIA drivers and CUDA toolkit available to your job.
