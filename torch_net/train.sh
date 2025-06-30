@@ -59,10 +59,13 @@ echo "Activated Conda environment: $CONDA_DEFAULT_ENV"
 
 # 4. Diagnostic checks:
 echo "--- Running Diagnostics ---"
-echo "LD_LIBRARY_PATH is: $LD_LIBRARY_PATH" # Check if NVIDIA libs are in the path
+echo "--- Checking GPU Driver with nvidia-smi ---"
+nvidia-smi
+echo "---"
+echo "LD_LIBRARY_PATH is: $LD_LIBRARY_PATH"
 echo "Which python: $(which python)"
 echo "Verifying PyTorch CUDA availability..."
-python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'Number of GPUs: {torch.cuda.device_count()}')"
+python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'PyTorch CUDA version: {torch.version.cuda}'); print(f'Number of GPUs: {torch.cuda.device_count()}')"
 echo "------------------------------------------------------"
 
 # 5. Navigate to the directory containing your script
