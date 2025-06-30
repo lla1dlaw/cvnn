@@ -266,21 +266,11 @@ class ComplexResNet(nn.Module):
 
 
 class RealResNet(nn.Module):
-    """A real-valued ResNet designed for fair comparison with the ComplexResNet.
-
-    This model mirrors the architecture of the ComplexResNet but uses real-valued
-    operations. It doubles the number of filters at each stage to have a
-    parameter count that is comparable to its complex counterpart.
+    """
+    A real-valued ResNet with a mirrored architecture for fair comparison.
     """
     def __init__(self, block_class, architecture_type, input_channels=3, num_classes=10):
-        """Initializes the RealResNet model.
-
-        Args:
-            block_class (nn.Module): The class for the residual block (e.g., RealResidualBlock).
-            architecture_type (str): The type of architecture ('WS', 'DN', 'IB').
-            input_channels (int, optional): The number of channels in the input image. Defaults to 3.
-            num_classes (int, optional): The number of output classes. Defaults to 10.
-        """
+        """Initializes the RealResNet model."""
         super(RealResNet, self).__init__()
 
         configs = {
@@ -289,6 +279,7 @@ class RealResNet(nn.Module):
             'IB': {'filters': 14, 'blocks_per_stage': [3, 3, 3]}
         }
         config = configs[architecture_type]
+        # Double the filters to have a comparable number of parameters to the complex model
         self.initial_filters = config['filters'] * 2
         self.blocks_per_stage = config['blocks_per_stage']
         
@@ -304,58 +295,40 @@ class RealResNet(nn.Module):
             self.stages.append(self._make_stage(block_class, in_channels, num_blocks))
             in_channels *= 2
         
+        final_channels = self.initial_filters * (2**(len(self.blocks_per_stage)))
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(self.initial_filters * (2**(len(self.blocks_per_stage)-1)), num_classes)
+        self.fc = nn.Linear(final_channels, num_classes)
 
     def _make_stage(self, block_class, channels, num_blocks):
-        """Creates a single stage of the real-valued ResNet.
-
-        Args:
-            block_class (nn.Module): The class of the residual block to use.
-            channels (int): The number of channels for the blocks in this stage.
-            num_blocks (int): The number of residual blocks in this stage.
-
-        Returns:
-            nn.Sequential: A sequential container of the residual blocks for the stage.
-        """
+        """Creates a single stage of the real-valued ResNet."""
         blocks = []
         for _ in range(num_blocks):
             blocks.append(block_class(channels))
         return nn.Sequential(*blocks)
-    
-    def _make_projection(self, in_channels, out_channels):
-        """Creates the real-valued projection layer for downsampling.
-
-        Args:
-            in_channels (int): The number of input channels.
-            out_channels (int): The number of output channels.
-
-        Returns:
-            nn.Sequential: The projection layer.
-        """
-        return nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=2, bias=False),
-            nn.BatchNorm2d(out_channels)
-        )
 
     def forward(self, x):
-        """Performs the forward pass for the RealResNet.
-
-        Args:
-            x (torch.Tensor): A batch of real-valued input images.
-
-        Returns:
-            torch.Tensor: Real-valued logits for classification.
-        """
+        """Performs the forward pass for the RealResNet."""
         x = self.initial_op(x)
         
         for i, stage in enumerate(self.stages):
             x = stage(x)
-            if i < len(self.stages) - 1:
-                in_ch = x.shape[1]
-                out_ch = in_ch * 2
-                projection = self._make_projection(in_ch, out_ch).to(x.device)
-                x = projection(x)
+            if i < len(self.stages):
+                # Mirror the complex network's downsampling logic for a fair comparison.
+                # 1. Apply a 1x1 convolution.
+                projection_conv = nn.Conv2d(
+                    in_channels=x.shape[1], 
+                    out_channels=x.shape[1], # Same number of filters
+                    kernel_size=1, 
+                    stride=1,
+                    bias=False
+                ).to(x.device)
+                projected_x = projection_conv(x)
+                
+                # 2. Concatenate along the channel dimension to double the channels.
+                x = torch.cat([x, projected_x], dim=1)
+                
+                # 3. Subsample using average pooling to halve spatial dimensions.
+                x = F.avg_pool2d(x, kernel_size=2, stride=2)
         
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
