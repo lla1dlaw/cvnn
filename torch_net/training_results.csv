@@ -1,0 +1,520 @@
+status,name,model_type,arch,activation,learn_imag,fold,model_path,accuracy,top_5_accuracy,precision_macro,recall_macro,f1_score_micro,f1_score_macro,f1_score_weighted,auroc,epoch_1_train_loss,epoch_1_train_acc,epoch_1_val_loss,epoch_1_val_acc,epoch_2_train_loss,epoch_2_train_acc,epoch_2_val_loss,epoch_2_val_acc,epoch_3_train_loss,epoch_3_train_acc,epoch_3_val_loss,epoch_3_val_acc,epoch_4_train_loss,epoch_4_train_acc,epoch_4_val_loss,epoch_4_val_acc,epoch_5_train_loss,epoch_5_train_acc,epoch_5_val_loss,epoch_5_val_acc,epoch_6_train_loss,epoch_6_train_acc,epoch_6_val_loss,epoch_6_val_acc,epoch_7_train_loss,epoch_7_train_acc,epoch_7_val_loss,epoch_7_val_acc,epoch_8_train_loss,epoch_8_train_acc,epoch_8_val_loss,epoch_8_val_acc,epoch_9_train_loss,epoch_9_train_acc,epoch_9_val_loss,epoch_9_val_acc,epoch_10_train_loss,epoch_10_train_acc,epoch_10_val_loss,epoch_10_val_acc,epoch_11_train_loss,epoch_11_train_acc,epoch_11_val_loss,epoch_11_val_acc,epoch_12_train_loss,epoch_12_train_acc,epoch_12_val_loss,epoch_12_val_acc,epoch_13_train_loss,epoch_13_train_acc,epoch_13_val_loss,epoch_13_val_acc,epoch_14_train_loss,epoch_14_train_acc,epoch_14_val_loss,epoch_14_val_acc,epoch_15_train_loss,epoch_15_train_acc,epoch_15_val_loss,epoch_15_val_acc,epoch_16_train_loss,epoch_16_train_acc,epoch_16_val_loss,epoch_16_val_acc,epoch_17_train_loss,epoch_17_train_acc,epoch_17_val_loss,epoch_17_val_acc,epoch_18_train_loss,epoch_18_train_acc,epoch_18_val_loss,epoch_18_val_acc,epoch_19_train_loss,epoch_19_train_acc,epoch_19_val_loss,epoch_19_val_acc,epoch_20_train_loss,epoch_20_train_acc,epoch_20_val_loss,epoch_20_val_acc,epoch_21_train_loss,epoch_21_train_acc,epoch_21_val_loss,epoch_21_val_acc,epoch_22_train_loss,epoch_22_train_acc,epoch_22_val_loss,epoch_22_val_acc,epoch_23_train_loss,epoch_23_train_acc,epoch_23_val_loss,epoch_23_val_acc,epoch_24_train_loss,epoch_24_train_acc,epoch_24_val_loss,epoch_24_val_acc,epoch_25_train_loss,epoch_25_train_acc,epoch_25_val_loss,epoch_25_val_acc,epoch_26_train_loss,epoch_26_train_acc,epoch_26_val_loss,epoch_26_val_acc,epoch_27_train_loss,epoch_27_train_acc,epoch_27_val_loss,epoch_27_val_acc,epoch_28_train_loss,epoch_28_train_acc,epoch_28_val_loss,epoch_28_val_acc,epoch_29_train_loss,epoch_29_train_acc,epoch_29_val_loss,epoch_29_val_acc,epoch_30_train_loss,epoch_30_train_acc,epoch_30_val_loss,epoch_30_val_acc,epoch_31_train_loss,epoch_31_train_acc,epoch_31_val_loss,epoch_31_val_acc,epoch_32_train_loss,epoch_32_train_acc,epoch_32_val_loss,epoch_32_val_acc,epoch_33_train_loss,epoch_33_train_acc,epoch_33_val_loss,epoch_33_val_acc,epoch_34_train_loss,epoch_34_train_acc,epoch_34_val_loss,epoch_34_val_acc,epoch_35_train_loss,epoch_35_train_acc,epoch_35_val_loss,epoch_35_val_acc,epoch_36_train_loss,epoch_36_train_acc,epoch_36_val_loss,epoch_36_val_acc,epoch_37_train_loss,epoch_37_train_acc,epoch_37_val_loss,epoch_37_val_acc,epoch_38_train_loss,epoch_38_train_acc,epoch_38_val_loss,epoch_38_val_acc,epoch_39_train_loss,epoch_39_train_acc,epoch_39_val_loss,epoch_39_val_acc,epoch_40_train_loss,epoch_40_train_acc,epoch_40_val_loss,epoch_40_val_acc,epoch_41_train_loss,epoch_41_train_acc,epoch_41_val_loss,epoch_41_val_acc,epoch_42_train_loss,epoch_42_train_acc,epoch_42_val_loss,epoch_42_val_acc,epoch_43_train_loss,epoch_43_train_acc,epoch_43_val_loss,epoch_43_val_acc,epoch_44_train_loss,epoch_44_train_acc,epoch_44_val_loss,epoch_44_val_acc,epoch_45_train_loss,epoch_45_train_acc,epoch_45_val_loss,epoch_45_val_acc,epoch_46_train_loss,epoch_46_train_acc,epoch_46_val_loss,epoch_46_val_acc,epoch_47_train_loss,epoch_47_train_acc,epoch_47_val_loss,epoch_47_val_acc,epoch_48_train_loss,epoch_48_train_acc,epoch_48_val_loss,epoch_48_val_acc,epoch_49_train_loss,epoch_49_train_acc,epoch_49_val_loss,epoch_49_val_acc,epoch_50_train_loss,epoch_50_train_acc,epoch_50_val_loss,epoch_50_val_acc,training_time_seconds
+Completed,Real_ResNet_WS,Real,WS,relu,N/A,1,saved_models/Real_ResNet_WS_fold1.pth,0.4043999910354614,0.8971999883651733,0.5007001161575317,0.4043999910354614,0.4043999910354614,0.37730681896209717,0.37730681896209717,0.8710538744926453,2.0264113979876193,0.19543999433517456,1.900918701027013,0.24959999322891235,1.8667418999440224,0.26627999544143677,1.8123668175709398,0.29089999198913574,1.7951596737517725,0.3052400052547455,1.7307576484318021,0.33719998598098755,1.7307675866519703,0.33719998598098755,1.6879295503036886,0.3521000146865845,1.6790300955248,0.36160001158714294,1.6450685443757456,0.36970001459121704,1.648468337705373,0.3746199905872345,1.6212213492091698,0.37779998779296875,1.6235794057626554,0.38515999913215637,1.6011160838453076,0.38449999690055847,1.6032226853968237,0.3949199914932251,1.5720514707927462,0.4050999879837036,1.5811026288420342,0.4039599895477295,1.5766934548752218,0.4050999879837036,1.5678352053513003,0.4130200147628784,1.5267188503772398,0.42080000042915344,1.548754614332448,0.4200400114059448,1.5304325668117669,0.4171000123023987,1.5268713470615085,0.4291599988937378,1.496271183219137,0.4415999948978424,1.5099927583313963,0.4399600028991699,1.496530303472205,0.43799999356269836,1.489099722993953,0.44697999954223633,1.4745891456362568,0.45010000467300415,1.4779325891333772,0.45232000946998596,1.4670614215392102,0.45210000872612,1.4625576694908045,0.45739999413490295,1.45462868183474,0.45669999718666077,1.4467132762265023,0.4644399881362915,1.4608315546301347,0.45410001277923584,1.4332228667290925,0.46998000144958496,1.4324300032627733,0.4641000032424927,1.4169703002476022,0.4791400134563446,1.425420581539975,0.4666999876499176,1.397771315196591,0.4821400046348572,1.4344231871109974,0.46700000762939453,1.3801659495019547,0.4915600121021271,1.4449717907965938,0.46219998598098755,1.3629264108970036,0.49818000197410583,1.5054709639730333,0.4456999897956848,1.3397406589649523,0.5050399899482727,1.5025602171692667,0.4431999921798706,1.329435762541983,0.5109400153160095,1.564899185035802,0.4259999990463257,1.3105277252928984,0.5170400142669678,1.6537825095502636,0.40630000829696655,1.2937636802263577,0.5255200266838074,1.5865524086771132,0.43209999799728394,1.2786023564960645,0.5310999751091003,1.5416569755047183,0.4408999979496002,1.2617559208894324,0.5375400185585022,1.6157146631916868,0.41679999232292175,1.255267506670159,0.5385199785232544,1.6100600837152215,0.41670000553131104,1.2429200229437456,0.5446000099182129,1.614231206193755,0.41530001163482666,1.2232720229936682,0.552619993686676,1.581174204621134,0.4287000000476837,1.223790794687198,0.5529599785804749,1.5887694283376765,0.42480000853538513,1.2047498517329125,0.5588799715042114,1.7369152956371066,0.38989999890327454,1.1950074809286602,0.5654199719429016,1.5967854035051563,0.4113999903202057,1.180967188704654,0.5694800019264221,1.530383968655067,0.43540000915527344,1.175158264082106,0.5710200071334839,1.6133753966681565,0.4156999886035919,1.1702082995563516,0.574400007724762,1.600546580326708,0.4108999967575073,1.1638909467041034,0.5756199955940247,1.7107817191111891,0.3882000148296356,1.1543570607519515,0.5796800255775452,1.574528144884713,0.4235999882221222,1.1428327090904842,0.5854799747467041,1.6075396673588813,0.41029998660087585,1.142981407130161,0.5862799882888794,1.50618300105952,0.4514000117778778,1.1302626666510502,0.5902799963951111,1.6464295855051354,0.4117000102996826,1.1203772785413602,0.5950199961662292,1.627342999735965,0.41370001435279846,1.1164761188694887,0.5944200158119202,1.6138463171222541,0.41510000824928284,1.10867851484767,0.599560022354126,1.6612425620042826,0.4043000042438507,1.105977787081238,0.6000800132751465,1.6470139720771886,0.4117000102996826,1.0982849357073263,0.600600004196167,1.6308686401270613,0.41269999742507935,1.0960610836668088,0.6037600040435791,1.56538563136813,0.42329999804496765,1.0814352360222956,0.6072400212287903,1.6981293642068211,0.4059999883174896,1.080480051772369,0.6083800196647644,1.6596498836444904,0.4077000021934509,497.049962
+Completed,Real_ResNet_DN,Real,DN,relu,N/A,1,saved_models/Real_ResNet_DN_fold1.pth,0.5709999799728394,0.9514999985694885,0.6073322892189026,0.5709999799728394,0.5709999799728394,0.562423825263977,0.562423825263977,0.922818660736084,1.9926550336506055,0.2042199969291687,1.871372877796994,0.2556999921798706,1.8455718557548035,0.27063998579978943,1.7865874495687364,0.3086000084877014,1.769244051345474,0.3156599998474121,1.7105519937563547,0.34360000491142273,1.6940491263518858,0.3531799912452698,1.6669122373001486,0.36419999599456787,1.6439193996322123,0.37727999687194824,1.5890606113626986,0.3939000070095062,1.6025999272266007,0.3947199881076813,1.5340914952604077,0.41499999165534973,1.5648040676970616,0.409960001707077,1.5201656908928594,0.4262000024318695,1.527356055691419,0.42750000953674316,1.4904835903191869,0.43799999356269836,1.4959498393870985,0.4401000142097473,1.458489650412451,0.4544999897480011,1.4658813003993705,0.4537400007247925,1.503468563285055,0.4465000033378601,1.440014994662741,0.46535998582839966,1.4254220211053197,0.46650001406669617,1.417544412795845,0.47727999091148376,1.4222442168223708,0.46790000796318054,1.391741531279386,0.48677998781204224,1.38589152656024,0.48170000314712524,1.3702642591408147,0.4975999891757965,1.3586570899697799,0.49149999022483826,1.3450446095308075,0.5064399838447571,1.3695574923406673,0.4975999891757965,1.3304535644438567,0.5142599940299988,1.3318611398527893,0.5070000290870667,1.3068441492517282,0.5227000117301941,1.3133586992191364,0.5206000208854675,1.2882568406326997,0.5281599760055542,1.407274988633168,0.4853000044822693,1.2682262189552913,0.53711998462677,1.2713032417659518,0.5307999849319458,1.2524579793900785,0.5430799722671509,1.261887313444403,0.53329998254776,1.2399793482192643,0.5464400053024292,1.2538712764088111,0.5430999994277954,1.2235203792372018,0.554419994354248,1.2644034035598175,0.5356000065803528,1.2132055520096703,0.5604599714279175,1.2260313524475581,0.541700005531311,1.1969728680217968,0.5644199848175049,1.2832027198393134,0.5289000272750854,1.1830487243659662,0.5700200200080872,1.2347390176374702,0.5486999750137329,1.1677747164540888,0.5759199857711792,1.2724940414670147,0.5425999760627747,1.154608146308938,0.5819200277328491,1.2669524407084984,0.5464000105857849,1.1473738772180073,0.5837200284004211,1.2138080838360363,0.5526999831199646,1.1367618741891574,0.586080014705658,1.207133118110367,0.554099977016449,1.1239521181796823,0.591480016708374,1.214757211600678,0.5562999844551086,1.1120650618887313,0.5968400239944458,1.2604701767993878,0.5338000059127808,1.1061391280130353,0.5992799997329712,1.1939136506635932,0.5576000213623047,1.0924044117293394,0.605400025844574,1.2981422234185134,0.5278000235557556,1.0873534914172824,0.6102200150489807,1.2451041499270668,0.550599992275238,1.0752381040617023,0.6111400127410889,1.1864348416086994,0.5680999755859375,1.06608967220082,0.616599977016449,1.2681004819990713,0.5404000282287598,1.0563500770522505,0.6179599761962891,1.2192259347891505,0.5579000115394592,1.0508585854259598,0.6197400093078613,1.2842908803420732,0.5357999801635742,1.0435304786543103,0.6246600151062012,1.2085442195964764,0.5562999844551086,1.0352909491799982,0.6269199848175049,1.1786811283872098,0.5702999830245972,1.0246179401112334,0.6299600005149841,1.2676584396181227,0.5394999980926514,1.0202579162919614,0.6327000260353088,1.2518656299084048,0.5525000095367432,1.0148439073501645,0.6343399882316589,1.2010585801510871,0.5586000084877014,1.000645611597144,0.6392599940299988,1.19697734600381,0.557699978351593,0.9969022522497055,0.641040027141571,1.2173150242129458,0.5598999857902527,0.989948159745892,0.6454600095748901,1.2006560194341442,0.5611000061035156,0.9845980478979438,0.6466599702835083,1.252532128291794,0.5449000000953674,0.974724255406948,0.6509799957275391,1.2070082803315754,0.5630999803543091,0.9725240229645653,0.6504200100898743,1.1527411077595964,0.5759999752044678,0.9642644334022347,0.6546400189399719,1.178918333747719,0.5758000016212463,674.324034
+Completed,Real_ResNet_IB,Real,IB,relu,N/A,1,saved_models/Real_ResNet_IB_fold1.pth,0.4724999964237213,0.9198000431060791,0.5671789050102234,0.4724999964237213,0.4724999964237213,0.44647014141082764,0.44647014141082764,0.900030255317688,2.007706478733541,0.20576000213623047,1.9055315678632712,0.25099998712539673,1.8453608638490253,0.27465999126434326,1.7680442544478405,0.30140000581741333,1.7672892406468501,0.3138999938964844,1.6957777723481384,0.3434000015258789,1.698316871662579,0.34672001004219055,1.632981089097035,0.3698999881744385,1.6496254379487099,0.3707599937915802,1.6014585283738147,0.3847000002861023,1.6094036047415965,0.3839400112628937,1.5718153835851936,0.400299996137619,1.5823101646759932,0.39726001024246216,1.550949959815303,0.4129999876022339,1.557373673104874,0.4102799892425537,1.5444443935080419,0.41290000081062317,1.5291217916152056,0.4239799976348877,1.5022416824026952,0.4311999976634979,1.5043384842860423,0.4334000051021576,1.4553588055357147,0.4465999901294708,1.480013566553745,0.444240003824234,1.4423907421812225,0.4578000009059906,1.454083983245713,0.4579800069332123,1.485610986057716,0.4381999969482422,1.4340500075493932,0.46355998516082764,1.4029412752465358,0.4740999937057495,1.4148255620161285,0.4723399877548218,1.4299175014978722,0.4659999907016754,1.395190262428635,0.4805000126361847,1.4036185273641273,0.47110000252723694,1.3692998233658578,0.49531999230384827,1.3800301491459714,0.4821999967098236,1.3516160926550551,0.4988600015640259,1.369777339923231,0.4934000074863434,1.3349709977274355,0.5059599876403809,1.3970539132251014,0.4814999997615814,1.3131719516671223,0.518280029296875,1.4155926960933058,0.47780001163482666,1.293313865771379,0.5220400094985962,1.3622839782811418,0.4986000061035156,1.2729848135462807,0.5323200225830078,1.405301095564154,0.4853000044822693,1.260255250174676,0.5389800071716309,1.4062096665177164,0.4864000082015991,1.247018464995772,0.5420600175857544,1.4416326012792466,0.4659000039100647,1.2296510762570765,0.5486000180244446,1.50867957555795,0.4699000120162964,1.217636315414058,0.5537599921226501,1.4521392478218562,0.4722000062465668,1.1980295641647885,0.5614799857139587,1.4157669046257115,0.4729999899864197,1.1844869724015141,0.5682399868965149,1.4377429017537757,0.4691999852657318,1.1784524166065713,0.5742999911308289,1.4583279452746427,0.46380001306533813,1.160946019927559,0.5771399736404419,1.447702403309979,0.475600004196167,1.1450436578687195,0.5832800269126892,1.4634573369086543,0.45329999923706055,1.143237659693374,0.5837399959564209,1.4069165504431422,0.4864000082015991,1.1320542433987493,0.5900599956512451,1.5219369296786152,0.460999995470047,1.127696088207957,0.5894200205802917,1.4370248227179805,0.47440001368522644,1.121039764503079,0.594539999961853,1.5539737547500223,0.4564000070095062,1.1085715708525286,0.5978000164031982,1.4824910178969177,0.46149998903274536,1.0911213278465564,0.6046800017356873,1.4798468321184568,0.46389999985694885,1.0897513213364973,0.6031399965286255,1.4625562248350699,0.4772000014781952,1.0825678730559776,0.6100599765777588,1.5274447595016867,0.4498000144958496,1.072692805239002,0.6094800233840942,1.4979764223098755,0.45680001378059387,1.0732299037601636,0.6108999848365784,1.3916579786735246,0.49219998717308044,1.061722507562174,0.6159399747848511,1.4267830305461642,0.4661000072956085,1.0506317231356335,0.619979977607727,1.4474011704891543,0.47040000557899475,1.0503915165696303,0.6176199913024902,1.4811467173733288,0.4586000144481659,1.0420756372039581,0.6236000061035156,1.4814495738548568,0.4553999900817871,1.037989722645801,0.6245999932289124,1.5915383311766613,0.4404999911785126,1.024513909578933,0.6320000290870667,1.4309852817390538,0.4677000045776367,1.0186453172008094,0.6329200267791748,1.544504809983169,0.44200000166893005,1.017524573656604,0.6342200040817261,1.4818415837951853,0.4616999924182892,1.0146958283756091,0.6342200040817261,1.4771776395508005,0.4560999870300293,1.0106723979306038,0.6380400061607361,1.4068279764320277,0.4749999940395355,585.57567
+Complex_ResNet_WS_crelu_LearnImag,Complex,WS,crelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (16) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_WS_crelu_ZeroImag,Complex,WS,crelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_WS_zrelu_LearnImag,Complex,WS,zrelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (16) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_WS_zrelu_ZeroImag,Complex,WS,zrelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_WS_modrelu_LearnImag,Complex,WS,modrelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (16) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_WS_modrelu_ZeroImag,Complex,WS,modrelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_WS_complex_cardioid_LearnImag,Complex,WS,complex_cardioid,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (16) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_WS_complex_cardioid_ZeroImag,Complex,WS,complex_cardioid,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_DN_crelu_LearnImag,Complex,DN,crelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (12) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_DN_crelu_ZeroImag,Complex,DN,crelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_DN_zrelu_LearnImag,Complex,DN,zrelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (12) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_DN_zrelu_ZeroImag,Complex,DN,zrelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_DN_modrelu_LearnImag,Complex,DN,modrelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (12) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_DN_modrelu_ZeroImag,Complex,DN,modrelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_DN_complex_cardioid_LearnImag,Complex,DN,complex_cardioid,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (12) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_DN_complex_cardioid_ZeroImag,Complex,DN,complex_cardioid,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_IB_crelu_LearnImag,Complex,IB,crelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (14) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_IB_crelu_ZeroImag,Complex,IB,crelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_IB_zrelu_LearnImag,Complex,IB,zrelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (14) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_IB_zrelu_ZeroImag,Complex,IB,zrelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_IB_modrelu_LearnImag,Complex,IB,modrelu,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (14) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_IB_modrelu_ZeroImag,Complex,IB,modrelu,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"
+Complex_ResNet_IB_complex_cardioid_LearnImag,Complex,IB,complex_cardioid,True,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 277, in forward
+    x = self.initial_complex_op(x)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py"", line 250, in forward
+    input = module(input)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py"", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (14) must match the size of tensor b (2) at non-singleton dimension 1
+"
+Complex_ResNet_IB_complex_cardioid_ZeroImag,Complex,IB,complex_cardioid,False,Failed,"Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py"", line 96, in _worker
+    output = module(*input, **kwargs)
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File ""/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py"", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File ""/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py"", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+"

@@ -1,0 +1,52 @@
+Starting job 2011290 on host gpu111
+Job allocated to partition gpu
+Job allocated 16 CPUs and 65536 MB of memory
+Job allocated GPUs: 0,1,2,3
+------------------------------------------------------
+CUDA/cuDNN module loaded.
+Activated Conda environment: torch_cvnn
+--- Running Diagnostics ---
+--- Checking GPU Driver with nvidia-smi ---
+Sun Jun 29 23:40:18 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.05             Driver Version: 550.127.05     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L40S                    On  |   00000000:4A:00.0 Off |                    0 |
+| N/A   28C    P8             32W /  350W |       1MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA L40S                    On  |   00000000:61:00.0 Off |                    0 |
+| N/A   29C    P8             34W /  350W |       1MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA L40S                    On  |   00000000:CA:00.0 Off |                    0 |
+| N/A   28C    P8             33W /  350W |       1MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA L40S                    On  |   00000000:E1:00.0 Off |                    0 |
+| N/A   30C    P8             34W /  350W |       1MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+---
+LD_LIBRARY_PATH is: /cm/shared/apps/cudnn8.5-cuda11.7/8.5.0.96/lib64:/cm/shared/apps/cudnn8.5-cuda11.7/8.5.0.96/lib:/cm/local/apps/cuda/libs/current/lib64:/cm/shared/apps/cuda11.7/toolkit/11.7.1/targets/x86_64-linux/lib
+Which python: /bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/bin/python
+Verifying PyTorch CUDA availability...
+CUDA available: True
+PyTorch CUDA version: 11.8
+Number of GPUs: 4
+------------------------------------------------------
+Starting Python training script...
+------------------------------------------------------
+Job finished with exit code 0 at Mon Jun 30 00:09:51 MDT 2025

@@ -1,0 +1,2156 @@
+2025-06-29 22:30:29,843 - INFO - Starting training process on device: cpu
+2025-06-29 22:30:30,967 - INFO - CIFAR-10 datasets loaded successfully.
+2025-06-29 22:30:30,968 - INFO - 
+================================================================================
+2025-06-29 22:30:30,968 - INFO - STARTING NEW EXPERIMENT: Real_ResNet_WS
+2025-06-29 22:30:30,968 - INFO -   - Model Type: Real
+2025-06-29 22:30:30,968 - INFO -   - Architecture: WS
+2025-06-29 22:30:30,968 - INFO -   - Activation: relu
+2025-06-29 22:30:30,968 - INFO -   - Learn Imaginary: N/A
+2025-06-29 22:30:30,968 - INFO -   - Epochs: 50
+2025-06-29 22:30:30,968 - INFO -   - Batch Size: 128
+2025-06-29 22:30:30,968 - INFO -   - Learning Rate: 0.01
+2025-06-29 22:30:30,968 - INFO -   - Folds: 1
+2025-06-29 22:30:30,968 - INFO - ================================================================================
+2025-06-29 22:30:30,978 - INFO - Model and optimizer configured successfully.
+2025-06-29 22:30:30,978 - INFO - 
+Epoch 1/50
+2025-06-29 22:31:06,358 - INFO - Epoch 1 Summary | Train Loss: 2.0224 | Train Acc: 0.1958 | Val Loss: 1.9073 | Val Acc: 0.2374
+2025-06-29 22:31:06,358 - INFO - 
+Epoch 2/50
+2025-06-29 22:31:39,227 - INFO - Epoch 2 Summary | Train Loss: 1.8684 | Train Acc: 0.2516 | Val Loss: 1.8470 | Val Acc: 0.2711
+2025-06-29 22:31:39,228 - INFO - 
+Epoch 3/50
+2025-06-29 22:32:14,892 - INFO - Epoch 3 Summary | Train Loss: 1.8128 | Train Acc: 0.2868 | Val Loss: 1.7757 | Val Acc: 0.3010
+2025-06-29 22:32:14,892 - INFO - 
+Epoch 4/50
+2025-06-29 22:37:18,149 - INFO - Starting training process on device: cpu
+2025-06-29 22:37:19,273 - INFO - CIFAR-10 datasets loaded successfully.
+2025-06-29 22:37:19,274 - INFO - 
+================================================================================
+2025-06-29 22:37:19,274 - INFO - STARTING NEW EXPERIMENT: Real_ResNet_WS
+2025-06-29 22:37:19,274 - INFO -   - Model Type: Real
+2025-06-29 22:37:19,274 - INFO -   - Architecture: WS
+2025-06-29 22:37:19,274 - INFO -   - Activation: relu
+2025-06-29 22:37:19,274 - INFO -   - Learn Imaginary: N/A
+2025-06-29 22:37:19,274 - INFO -   - Epochs: 50
+2025-06-29 22:37:19,274 - INFO -   - Batch Size: 128
+2025-06-29 22:37:19,274 - INFO -   - Learning Rate: 0.01
+2025-06-29 22:37:19,274 - INFO -   - Folds: 1
+2025-06-29 22:37:19,274 - INFO - ================================================================================
+2025-06-29 22:37:19,284 - INFO - Model and optimizer configured successfully.
+2025-06-29 22:37:19,284 - INFO - 
+Epoch 1/50
+2025-06-29 22:37:55,701 - INFO - Epoch 1 Summary | Train Loss: 2.0259 | Train Acc: 0.2031 | Val Loss: 1.8986 | Val Acc: 0.2266
+2025-06-29 22:37:55,701 - INFO - 
+Epoch 2/50
+2025-06-29 22:38:29,590 - INFO - Epoch 2 Summary | Train Loss: 1.8711 | Train Acc: 0.2567 | Val Loss: 1.8198 | Val Acc: 0.2817
+2025-06-29 22:38:29,590 - INFO - 
+Epoch 3/50
+2025-06-29 22:44:59,907 - INFO - Starting training process on device: cpu
+2025-06-29 22:45:01,033 - INFO - CIFAR-10 datasets loaded successfully.
+2025-06-29 22:45:01,034 - INFO - 
+================================================================================
+2025-06-29 22:45:01,034 - INFO - STARTING NEW EXPERIMENT: Real_ResNet_WS
+2025-06-29 22:45:01,034 - INFO -   - Model Type: Real
+2025-06-29 22:45:01,034 - INFO -   - Architecture: WS
+2025-06-29 22:45:01,034 - INFO -   - Activation: relu
+2025-06-29 22:45:01,034 - INFO -   - Learn Imaginary: N/A
+2025-06-29 22:45:01,034 - INFO -   - Epochs: 50
+2025-06-29 22:45:01,034 - INFO -   - Batch Size: 128
+2025-06-29 22:45:01,034 - INFO -   - Learning Rate: 0.01
+2025-06-29 22:45:01,034 - INFO -   - Folds: 1
+2025-06-29 22:45:01,034 - INFO - ================================================================================
+2025-06-29 22:45:01,044 - INFO - Model and optimizer configured successfully.
+2025-06-29 22:45:01,044 - INFO - 
+Epoch 1/50
+2025-06-29 22:45:35,347 - INFO - Epoch 1 Summary | Train Loss: 2.0280 | Train Acc: 0.1969 | Val Loss: 1.8897 | Val Acc: 0.2419
+2025-06-29 22:45:35,348 - INFO - 
+Epoch 2/50
+2025-06-29 22:46:10,674 - INFO - Epoch 2 Summary | Train Loss: 1.8575 | Train Acc: 0.2628 | Val Loss: 1.7976 | Val Acc: 0.2941
+2025-06-29 22:46:10,674 - INFO - 
+Epoch 3/50
+2025-06-29 22:46:44,821 - INFO - Epoch 3 Summary | Train Loss: 1.7845 | Train Acc: 0.3050 | Val Loss: 1.7060 | Val Acc: 0.3392
+2025-06-29 22:46:44,821 - INFO - 
+Epoch 4/50
+2025-06-29 22:47:18,506 - INFO - Epoch 4 Summary | Train Loss: 1.7079 | Train Acc: 0.3415 | Val Loss: 1.6446 | Val Acc: 0.3680
+2025-06-29 22:47:18,506 - INFO - 
+Epoch 5/50
+2025-06-29 22:55:57,243 - INFO - Starting training process on device: cpu
+2025-06-29 22:55:58,368 - INFO - CIFAR-10 datasets loaded successfully.
+2025-06-29 22:55:58,368 - INFO - 
+================================================================================
+2025-06-29 22:55:58,368 - INFO - STARTING NEW EXPERIMENT: Real_ResNet_WS
+2025-06-29 22:55:58,368 - INFO -   - Model Type: Real
+2025-06-29 22:55:58,368 - INFO -   - Architecture: WS
+2025-06-29 22:55:58,368 - INFO -   - Activation: relu
+2025-06-29 22:55:58,368 - INFO -   - Learn Imaginary: N/A
+2025-06-29 22:55:58,368 - INFO -   - Epochs: 50
+2025-06-29 22:55:58,368 - INFO -   - Batch Size: 128
+2025-06-29 22:55:58,368 - INFO -   - Learning Rate: 0.01
+2025-06-29 22:55:58,368 - INFO -   - Folds: 1
+2025-06-29 22:55:58,368 - INFO - ================================================================================
+2025-06-29 22:55:58,378 - INFO - Model and optimizer configured successfully.
+2025-06-29 22:55:58,378 - INFO - 
+Epoch 1/50
+2025-06-29 23:01:55,201 - INFO - Starting training process on device: cpu
+2025-06-29 23:01:56,324 - INFO - CIFAR-10 datasets loaded successfully.
+2025-06-29 23:01:56,325 - INFO - 
+================================================================================
+2025-06-29 23:01:56,325 - INFO - STARTING NEW EXPERIMENT: Real_ResNet_WS
+2025-06-29 23:01:56,325 - INFO -   - Model Type: Real
+2025-06-29 23:01:56,325 - INFO -   - Architecture: WS
+2025-06-29 23:01:56,325 - INFO -   - Activation: relu
+2025-06-29 23:01:56,325 - INFO -   - Learn Imaginary: N/A
+2025-06-29 23:01:56,325 - INFO -   - Epochs: 50
+2025-06-29 23:01:56,325 - INFO -   - Batch Size: 128
+2025-06-29 23:01:56,325 - INFO -   - Learning Rate: 0.01
+2025-06-29 23:01:56,325 - INFO -   - Folds: 1
+2025-06-29 23:01:56,325 - INFO - ================================================================================
+2025-06-29 23:01:56,335 - INFO - Model and optimizer configured successfully.
+2025-06-29 23:01:56,335 - INFO - 
+Epoch 1/50
+2025-06-29 23:02:29,751 - INFO - Epoch 1 Summary | Train Loss: 2.0158 | Train Acc: 0.1931 | Val Loss: 1.8908 | Val Acc: 0.2349
+2025-06-29 23:02:29,751 - INFO - 
+Epoch 2/50
+2025-06-29 23:03:04,116 - INFO - Epoch 2 Summary | Train Loss: 1.8694 | Train Acc: 0.2546 | Val Loss: 1.8403 | Val Acc: 0.2682
+2025-06-29 23:03:04,116 - INFO - 
+Epoch 3/50
+2025-06-29 23:40:28,418 - INFO - Starting training process on device: cuda
+2025-06-29 23:40:29,565 - INFO - CIFAR-10 datasets loaded successfully.
+2025-06-29 23:40:29,565 - INFO - 
+================================================================================
+2025-06-29 23:40:29,565 - INFO - STARTING NEW EXPERIMENT: Real_ResNet_WS
+2025-06-29 23:40:29,565 - INFO -   - Model Type: Real
+2025-06-29 23:40:29,565 - INFO -   - Architecture: WS
+2025-06-29 23:40:29,565 - INFO -   - Activation: relu
+2025-06-29 23:40:29,565 - INFO -   - Learn Imaginary: N/A
+2025-06-29 23:40:29,565 - INFO -   - Epochs: 50
+2025-06-29 23:40:29,565 - INFO -   - Batch Size: 128
+2025-06-29 23:40:29,565 - INFO -   - Learning Rate: 0.01
+2025-06-29 23:40:29,565 - INFO -   - Folds: 1
+2025-06-29 23:40:29,565 - INFO - ================================================================================
+2025-06-29 23:40:29,676 - INFO - Using 4 GPUs via DataParallel.
+2025-06-29 23:40:29,679 - INFO - Model and optimizer configured successfully.
+2025-06-29 23:40:29,680 - INFO - 
+Epoch 1/50
+2025-06-29 23:40:40,641 - INFO - Epoch 1 Summary | Train Loss: 2.0264 | Train Acc: 0.1954 | Val Loss: 1.9009 | Val Acc: 0.2496
+2025-06-29 23:40:40,641 - INFO - 
+Epoch 2/50
+2025-06-29 23:40:50,645 - INFO - Epoch 2 Summary | Train Loss: 1.8667 | Train Acc: 0.2663 | Val Loss: 1.8124 | Val Acc: 0.2909
+2025-06-29 23:40:50,646 - INFO - 
+Epoch 3/50
+2025-06-29 23:41:00,721 - INFO - Epoch 3 Summary | Train Loss: 1.7952 | Train Acc: 0.3052 | Val Loss: 1.7308 | Val Acc: 0.3372
+2025-06-29 23:41:00,721 - INFO - 
+Epoch 4/50
+2025-06-29 23:41:10,740 - INFO - Epoch 4 Summary | Train Loss: 1.7308 | Train Acc: 0.3372 | Val Loss: 1.6879 | Val Acc: 0.3521
+2025-06-29 23:41:10,740 - INFO - 
+Epoch 5/50
+2025-06-29 23:41:20,804 - INFO - Epoch 5 Summary | Train Loss: 1.6790 | Train Acc: 0.3616 | Val Loss: 1.6451 | Val Acc: 0.3697
+2025-06-29 23:41:20,804 - INFO - 
+Epoch 6/50
+2025-06-29 23:41:30,343 - INFO - Epoch 6 Summary | Train Loss: 1.6485 | Train Acc: 0.3746 | Val Loss: 1.6212 | Val Acc: 0.3778
+2025-06-29 23:41:30,344 - INFO - 
+Epoch 7/50
+2025-06-29 23:41:40,291 - INFO - Epoch 7 Summary | Train Loss: 1.6236 | Train Acc: 0.3852 | Val Loss: 1.6011 | Val Acc: 0.3845
+2025-06-29 23:41:40,291 - INFO - 
+Epoch 8/50
+2025-06-29 23:41:50,211 - INFO - Epoch 8 Summary | Train Loss: 1.6032 | Train Acc: 0.3949 | Val Loss: 1.5721 | Val Acc: 0.4051
+2025-06-29 23:41:50,211 - INFO - 
+Epoch 9/50
+2025-06-29 23:41:59,998 - INFO - Epoch 9 Summary | Train Loss: 1.5811 | Train Acc: 0.4040 | Val Loss: 1.5767 | Val Acc: 0.4051
+2025-06-29 23:41:59,999 - INFO - 
+Epoch 10/50
+2025-06-29 23:42:10,088 - INFO - Epoch 10 Summary | Train Loss: 1.5678 | Train Acc: 0.4130 | Val Loss: 1.5267 | Val Acc: 0.4208
+2025-06-29 23:42:10,088 - INFO - 
+Epoch 11/50
+2025-06-29 23:42:20,002 - INFO - Epoch 11 Summary | Train Loss: 1.5488 | Train Acc: 0.4200 | Val Loss: 1.5304 | Val Acc: 0.4171
+2025-06-29 23:42:20,002 - INFO - 
+Epoch 12/50
+2025-06-29 23:42:29,912 - INFO - Epoch 12 Summary | Train Loss: 1.5269 | Train Acc: 0.4292 | Val Loss: 1.4963 | Val Acc: 0.4416
+2025-06-29 23:42:29,913 - INFO - 
+Epoch 13/50
+2025-06-29 23:42:39,832 - INFO - Epoch 13 Summary | Train Loss: 1.5100 | Train Acc: 0.4400 | Val Loss: 1.4965 | Val Acc: 0.4380
+2025-06-29 23:42:39,832 - INFO - 
+Epoch 14/50
+2025-06-29 23:42:49,866 - INFO - Epoch 14 Summary | Train Loss: 1.4891 | Train Acc: 0.4470 | Val Loss: 1.4746 | Val Acc: 0.4501
+2025-06-29 23:42:49,866 - INFO - 
+Epoch 15/50
+2025-06-29 23:42:59,812 - INFO - Epoch 15 Summary | Train Loss: 1.4779 | Train Acc: 0.4523 | Val Loss: 1.4671 | Val Acc: 0.4521
+2025-06-29 23:42:59,812 - INFO - 
+Epoch 16/50
+2025-06-29 23:43:09,710 - INFO - Epoch 16 Summary | Train Loss: 1.4626 | Train Acc: 0.4574 | Val Loss: 1.4546 | Val Acc: 0.4567
+2025-06-29 23:43:09,710 - INFO - 
+Epoch 17/50
+2025-06-29 23:43:19,518 - INFO - Epoch 17 Summary | Train Loss: 1.4467 | Train Acc: 0.4644 | Val Loss: 1.4608 | Val Acc: 0.4541
+2025-06-29 23:43:19,519 - INFO - 
+Epoch 18/50
+2025-06-29 23:43:29,378 - INFO - Epoch 18 Summary | Train Loss: 1.4332 | Train Acc: 0.4700 | Val Loss: 1.4324 | Val Acc: 0.4641
+2025-06-29 23:43:29,378 - INFO - 
+Epoch 19/50
+2025-06-29 23:43:39,226 - INFO - Epoch 19 Summary | Train Loss: 1.4170 | Train Acc: 0.4791 | Val Loss: 1.4254 | Val Acc: 0.4667
+2025-06-29 23:43:39,226 - INFO - 
+Epoch 20/50
+2025-06-29 23:43:49,086 - INFO - Epoch 20 Summary | Train Loss: 1.3978 | Train Acc: 0.4821 | Val Loss: 1.4344 | Val Acc: 0.4670
+2025-06-29 23:43:49,086 - INFO - 
+Epoch 21/50
+2025-06-29 23:43:59,041 - INFO - Epoch 21 Summary | Train Loss: 1.3802 | Train Acc: 0.4916 | Val Loss: 1.4450 | Val Acc: 0.4622
+2025-06-29 23:43:59,041 - INFO - 
+Epoch 22/50
+2025-06-29 23:44:08,787 - INFO - Epoch 22 Summary | Train Loss: 1.3629 | Train Acc: 0.4982 | Val Loss: 1.5055 | Val Acc: 0.4457
+2025-06-29 23:44:08,787 - INFO - 
+Epoch 23/50
+2025-06-29 23:44:18,680 - INFO - Epoch 23 Summary | Train Loss: 1.3397 | Train Acc: 0.5050 | Val Loss: 1.5026 | Val Acc: 0.4432
+2025-06-29 23:44:18,681 - INFO - 
+Epoch 24/50
+2025-06-29 23:44:28,612 - INFO - Epoch 24 Summary | Train Loss: 1.3294 | Train Acc: 0.5109 | Val Loss: 1.5649 | Val Acc: 0.4260
+2025-06-29 23:44:28,612 - INFO - 
+Epoch 25/50
+2025-06-29 23:44:38,439 - INFO - Epoch 25 Summary | Train Loss: 1.3105 | Train Acc: 0.5170 | Val Loss: 1.6538 | Val Acc: 0.4063
+2025-06-29 23:44:38,439 - INFO - 
+Epoch 26/50
+2025-06-29 23:44:48,330 - INFO - Epoch 26 Summary | Train Loss: 1.2938 | Train Acc: 0.5255 | Val Loss: 1.5866 | Val Acc: 0.4321
+2025-06-29 23:44:48,330 - INFO - 
+Epoch 27/50
+2025-06-29 23:44:58,333 - INFO - Epoch 27 Summary | Train Loss: 1.2786 | Train Acc: 0.5311 | Val Loss: 1.5417 | Val Acc: 0.4409
+2025-06-29 23:44:58,334 - INFO - 
+Epoch 28/50
+2025-06-29 23:45:08,106 - INFO - Epoch 28 Summary | Train Loss: 1.2618 | Train Acc: 0.5375 | Val Loss: 1.6157 | Val Acc: 0.4168
+2025-06-29 23:45:08,106 - INFO - 
+Epoch 29/50
+2025-06-29 23:45:17,956 - INFO - Epoch 29 Summary | Train Loss: 1.2553 | Train Acc: 0.5385 | Val Loss: 1.6101 | Val Acc: 0.4167
+2025-06-29 23:45:17,956 - INFO - 
+Epoch 30/50
+2025-06-29 23:45:27,849 - INFO - Epoch 30 Summary | Train Loss: 1.2429 | Train Acc: 0.5446 | Val Loss: 1.6142 | Val Acc: 0.4153
+2025-06-29 23:45:27,850 - INFO - 
+Epoch 31/50
+2025-06-29 23:45:37,747 - INFO - Epoch 31 Summary | Train Loss: 1.2233 | Train Acc: 0.5526 | Val Loss: 1.5812 | Val Acc: 0.4287
+2025-06-29 23:45:37,747 - INFO - 
+Epoch 32/50
+2025-06-29 23:45:47,745 - INFO - Epoch 32 Summary | Train Loss: 1.2238 | Train Acc: 0.5530 | Val Loss: 1.5888 | Val Acc: 0.4248
+2025-06-29 23:45:47,745 - INFO - 
+Epoch 33/50
+2025-06-29 23:45:57,429 - INFO - Epoch 33 Summary | Train Loss: 1.2047 | Train Acc: 0.5589 | Val Loss: 1.7369 | Val Acc: 0.3899
+2025-06-29 23:45:57,429 - INFO - 
+Epoch 34/50
+2025-06-29 23:46:07,304 - INFO - Epoch 34 Summary | Train Loss: 1.1950 | Train Acc: 0.5654 | Val Loss: 1.5968 | Val Acc: 0.4114
+2025-06-29 23:46:07,304 - INFO - 
+Epoch 35/50
+2025-06-29 23:46:17,218 - INFO - Epoch 35 Summary | Train Loss: 1.1810 | Train Acc: 0.5695 | Val Loss: 1.5304 | Val Acc: 0.4354
+2025-06-29 23:46:17,218 - INFO - 
+Epoch 36/50
+2025-06-29 23:46:27,141 - INFO - Epoch 36 Summary | Train Loss: 1.1752 | Train Acc: 0.5710 | Val Loss: 1.6134 | Val Acc: 0.4157
+2025-06-29 23:46:27,141 - INFO - 
+Epoch 37/50
+2025-06-29 23:46:36,968 - INFO - Epoch 37 Summary | Train Loss: 1.1702 | Train Acc: 0.5744 | Val Loss: 1.6005 | Val Acc: 0.4109
+2025-06-29 23:46:36,968 - INFO - 
+Epoch 38/50
+2025-06-29 23:46:46,982 - INFO - Epoch 38 Summary | Train Loss: 1.1639 | Train Acc: 0.5756 | Val Loss: 1.7108 | Val Acc: 0.3882
+2025-06-29 23:46:46,982 - INFO - 
+Epoch 39/50
+2025-06-29 23:46:56,705 - INFO - Epoch 39 Summary | Train Loss: 1.1544 | Train Acc: 0.5797 | Val Loss: 1.5745 | Val Acc: 0.4236
+2025-06-29 23:46:56,705 - INFO - 
+Epoch 40/50
+2025-06-29 23:47:06,517 - INFO - Epoch 40 Summary | Train Loss: 1.1428 | Train Acc: 0.5855 | Val Loss: 1.6075 | Val Acc: 0.4103
+2025-06-29 23:47:06,518 - INFO - 
+Epoch 41/50
+2025-06-29 23:47:16,416 - INFO - Epoch 41 Summary | Train Loss: 1.1430 | Train Acc: 0.5863 | Val Loss: 1.5062 | Val Acc: 0.4514
+2025-06-29 23:47:16,416 - INFO - 
+Epoch 42/50
+2025-06-29 23:47:26,284 - INFO - Epoch 42 Summary | Train Loss: 1.1303 | Train Acc: 0.5903 | Val Loss: 1.6464 | Val Acc: 0.4117
+2025-06-29 23:47:26,285 - INFO - 
+Epoch 43/50
+2025-06-29 23:47:36,191 - INFO - Epoch 43 Summary | Train Loss: 1.1204 | Train Acc: 0.5950 | Val Loss: 1.6273 | Val Acc: 0.4137
+2025-06-29 23:47:36,191 - INFO - 
+Epoch 44/50
+2025-06-29 23:47:45,916 - INFO - Epoch 44 Summary | Train Loss: 1.1165 | Train Acc: 0.5944 | Val Loss: 1.6138 | Val Acc: 0.4151
+2025-06-29 23:47:45,916 - INFO - 
+Epoch 45/50
+2025-06-29 23:47:55,794 - INFO - Epoch 45 Summary | Train Loss: 1.1087 | Train Acc: 0.5996 | Val Loss: 1.6612 | Val Acc: 0.4043
+2025-06-29 23:47:55,794 - INFO - 
+Epoch 46/50
+2025-06-29 23:48:05,632 - INFO - Epoch 46 Summary | Train Loss: 1.1060 | Train Acc: 0.6001 | Val Loss: 1.6470 | Val Acc: 0.4117
+2025-06-29 23:48:05,632 - INFO - 
+Epoch 47/50
+2025-06-29 23:48:15,532 - INFO - Epoch 47 Summary | Train Loss: 1.0983 | Train Acc: 0.6006 | Val Loss: 1.6309 | Val Acc: 0.4127
+2025-06-29 23:48:15,532 - INFO - 
+Epoch 48/50
+2025-06-29 23:48:25,339 - INFO - Epoch 48 Summary | Train Loss: 1.0961 | Train Acc: 0.6038 | Val Loss: 1.5654 | Val Acc: 0.4233
+2025-06-29 23:48:25,339 - INFO - 
+Epoch 49/50
+2025-06-29 23:48:35,236 - INFO - Epoch 49 Summary | Train Loss: 1.0814 | Train Acc: 0.6072 | Val Loss: 1.6981 | Val Acc: 0.4060
+2025-06-29 23:48:35,236 - INFO - 
+Epoch 50/50
+2025-06-29 23:48:44,940 - INFO - Epoch 50 Summary | Train Loss: 1.0805 | Train Acc: 0.6084 | Val Loss: 1.6596 | Val Acc: 0.4077
+2025-06-29 23:48:46,598 - INFO - SUCCESS: Final Metrics for Fold 1: {'accuracy': 0.4043999910354614, 'top_5_accuracy': 0.8971999883651733, 'precision_macro': 0.5007001161575317, 'recall_macro': 0.4043999910354614, 'f1_score_micro': 0.4043999910354614, 'f1_score_macro': 0.37730681896209717, 'f1_score_weighted': 0.37730681896209717, 'auroc': 0.8710538744926453}
+2025-06-29 23:48:46,615 - INFO - SUCCESS: Model state_dict saved to saved_models/Real_ResNet_WS_fold1.pth
+2025-06-29 23:48:46,615 - INFO - SUCCESS: Fold 1 for experiment Real_ResNet_WS completed.
+2025-06-29 23:48:46,618 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-29 23:48:46,618 - INFO - SUCCESS: Experiment Real_ResNet_WS fully completed and results saved.
+2025-06-29 23:48:46,618 - INFO - 
+================================================================================
+2025-06-29 23:48:46,618 - INFO - STARTING NEW EXPERIMENT: Real_ResNet_DN
+2025-06-29 23:48:46,618 - INFO -   - Model Type: Real
+2025-06-29 23:48:46,618 - INFO -   - Architecture: DN
+2025-06-29 23:48:46,618 - INFO -   - Activation: relu
+2025-06-29 23:48:46,618 - INFO -   - Learn Imaginary: N/A
+2025-06-29 23:48:46,618 - INFO -   - Epochs: 50
+2025-06-29 23:48:46,618 - INFO -   - Batch Size: 128
+2025-06-29 23:48:46,618 - INFO -   - Learning Rate: 0.01
+2025-06-29 23:48:46,618 - INFO -   - Folds: 1
+2025-06-29 23:48:46,618 - INFO - ================================================================================
+2025-06-29 23:48:46,626 - INFO - Using 4 GPUs via DataParallel.
+2025-06-29 23:48:46,628 - INFO - Model and optimizer configured successfully.
+2025-06-29 23:48:46,628 - INFO - 
+Epoch 1/50
+2025-06-29 23:49:00,292 - INFO - Epoch 1 Summary | Train Loss: 1.9927 | Train Acc: 0.2042 | Val Loss: 1.8714 | Val Acc: 0.2557
+2025-06-29 23:49:00,292 - INFO - 
+Epoch 2/50
+2025-06-29 23:49:13,795 - INFO - Epoch 2 Summary | Train Loss: 1.8456 | Train Acc: 0.2706 | Val Loss: 1.7866 | Val Acc: 0.3086
+2025-06-29 23:49:13,795 - INFO - 
+Epoch 3/50
+2025-06-29 23:49:27,340 - INFO - Epoch 3 Summary | Train Loss: 1.7692 | Train Acc: 0.3157 | Val Loss: 1.7106 | Val Acc: 0.3436
+2025-06-29 23:49:27,340 - INFO - 
+Epoch 4/50
+2025-06-29 23:49:40,744 - INFO - Epoch 4 Summary | Train Loss: 1.6940 | Train Acc: 0.3532 | Val Loss: 1.6669 | Val Acc: 0.3642
+2025-06-29 23:49:40,744 - INFO - 
+Epoch 5/50
+2025-06-29 23:49:54,118 - INFO - Epoch 5 Summary | Train Loss: 1.6439 | Train Acc: 0.3773 | Val Loss: 1.5891 | Val Acc: 0.3939
+2025-06-29 23:49:54,118 - INFO - 
+Epoch 6/50
+2025-06-29 23:50:07,545 - INFO - Epoch 6 Summary | Train Loss: 1.6026 | Train Acc: 0.3947 | Val Loss: 1.5341 | Val Acc: 0.4150
+2025-06-29 23:50:07,545 - INFO - 
+Epoch 7/50
+2025-06-29 23:50:20,989 - INFO - Epoch 7 Summary | Train Loss: 1.5648 | Train Acc: 0.4100 | Val Loss: 1.5202 | Val Acc: 0.4262
+2025-06-29 23:50:20,989 - INFO - 
+Epoch 8/50
+2025-06-29 23:50:34,370 - INFO - Epoch 8 Summary | Train Loss: 1.5274 | Train Acc: 0.4275 | Val Loss: 1.4905 | Val Acc: 0.4380
+2025-06-29 23:50:34,370 - INFO - 
+Epoch 9/50
+2025-06-29 23:50:47,804 - INFO - Epoch 9 Summary | Train Loss: 1.4959 | Train Acc: 0.4401 | Val Loss: 1.4585 | Val Acc: 0.4545
+2025-06-29 23:50:47,804 - INFO - 
+Epoch 10/50
+2025-06-29 23:51:01,196 - INFO - Epoch 10 Summary | Train Loss: 1.4659 | Train Acc: 0.4537 | Val Loss: 1.5035 | Val Acc: 0.4465
+2025-06-29 23:51:01,196 - INFO - 
+Epoch 11/50
+2025-06-29 23:51:14,663 - INFO - Epoch 11 Summary | Train Loss: 1.4400 | Train Acc: 0.4654 | Val Loss: 1.4254 | Val Acc: 0.4665
+2025-06-29 23:51:14,663 - INFO - 
+Epoch 12/50
+2025-06-29 23:51:28,180 - INFO - Epoch 12 Summary | Train Loss: 1.4175 | Train Acc: 0.4773 | Val Loss: 1.4222 | Val Acc: 0.4679
+2025-06-29 23:51:28,180 - INFO - 
+Epoch 13/50
+2025-06-29 23:51:41,555 - INFO - Epoch 13 Summary | Train Loss: 1.3917 | Train Acc: 0.4868 | Val Loss: 1.3859 | Val Acc: 0.4817
+2025-06-29 23:51:41,555 - INFO - 
+Epoch 14/50
+2025-06-29 23:51:54,903 - INFO - Epoch 14 Summary | Train Loss: 1.3703 | Train Acc: 0.4976 | Val Loss: 1.3587 | Val Acc: 0.4915
+2025-06-29 23:51:54,904 - INFO - 
+Epoch 15/50
+2025-06-29 23:52:08,283 - INFO - Epoch 15 Summary | Train Loss: 1.3450 | Train Acc: 0.5064 | Val Loss: 1.3696 | Val Acc: 0.4976
+2025-06-29 23:52:08,283 - INFO - 
+Epoch 16/50
+2025-06-29 23:52:21,689 - INFO - Epoch 16 Summary | Train Loss: 1.3305 | Train Acc: 0.5143 | Val Loss: 1.3319 | Val Acc: 0.5070
+2025-06-29 23:52:21,690 - INFO - 
+Epoch 17/50
+2025-06-29 23:52:35,271 - INFO - Epoch 17 Summary | Train Loss: 1.3068 | Train Acc: 0.5227 | Val Loss: 1.3134 | Val Acc: 0.5206
+2025-06-29 23:52:35,271 - INFO - 
+Epoch 18/50
+2025-06-29 23:52:48,694 - INFO - Epoch 18 Summary | Train Loss: 1.2883 | Train Acc: 0.5282 | Val Loss: 1.4073 | Val Acc: 0.4853
+2025-06-29 23:52:48,694 - INFO - 
+Epoch 19/50
+2025-06-29 23:53:02,020 - INFO - Epoch 19 Summary | Train Loss: 1.2682 | Train Acc: 0.5371 | Val Loss: 1.2713 | Val Acc: 0.5308
+2025-06-29 23:53:02,020 - INFO - 
+Epoch 20/50
+2025-06-29 23:53:15,561 - INFO - Epoch 20 Summary | Train Loss: 1.2525 | Train Acc: 0.5431 | Val Loss: 1.2619 | Val Acc: 0.5333
+2025-06-29 23:53:15,561 - INFO - 
+Epoch 21/50
+2025-06-29 23:53:29,141 - INFO - Epoch 21 Summary | Train Loss: 1.2400 | Train Acc: 0.5464 | Val Loss: 1.2539 | Val Acc: 0.5431
+2025-06-29 23:53:29,141 - INFO - 
+Epoch 22/50
+2025-06-29 23:53:42,705 - INFO - Epoch 22 Summary | Train Loss: 1.2235 | Train Acc: 0.5544 | Val Loss: 1.2644 | Val Acc: 0.5356
+2025-06-29 23:53:42,706 - INFO - 
+Epoch 23/50
+2025-06-29 23:53:56,036 - INFO - Epoch 23 Summary | Train Loss: 1.2132 | Train Acc: 0.5605 | Val Loss: 1.2260 | Val Acc: 0.5417
+2025-06-29 23:53:56,036 - INFO - 
+Epoch 24/50
+2025-06-29 23:54:09,602 - INFO - Epoch 24 Summary | Train Loss: 1.1970 | Train Acc: 0.5644 | Val Loss: 1.2832 | Val Acc: 0.5289
+2025-06-29 23:54:09,602 - INFO - 
+Epoch 25/50
+2025-06-29 23:54:23,054 - INFO - Epoch 25 Summary | Train Loss: 1.1830 | Train Acc: 0.5700 | Val Loss: 1.2347 | Val Acc: 0.5487
+2025-06-29 23:54:23,054 - INFO - 
+Epoch 26/50
+2025-06-29 23:54:36,500 - INFO - Epoch 26 Summary | Train Loss: 1.1678 | Train Acc: 0.5759 | Val Loss: 1.2725 | Val Acc: 0.5426
+2025-06-29 23:54:36,500 - INFO - 
+Epoch 27/50
+2025-06-29 23:54:50,035 - INFO - Epoch 27 Summary | Train Loss: 1.1546 | Train Acc: 0.5819 | Val Loss: 1.2670 | Val Acc: 0.5464
+2025-06-29 23:54:50,035 - INFO - 
+Epoch 28/50
+2025-06-29 23:55:03,275 - INFO - Epoch 28 Summary | Train Loss: 1.1474 | Train Acc: 0.5837 | Val Loss: 1.2138 | Val Acc: 0.5527
+2025-06-29 23:55:03,276 - INFO - 
+Epoch 29/50
+2025-06-29 23:55:16,740 - INFO - Epoch 29 Summary | Train Loss: 1.1368 | Train Acc: 0.5861 | Val Loss: 1.2071 | Val Acc: 0.5541
+2025-06-29 23:55:16,740 - INFO - 
+Epoch 30/50
+2025-06-29 23:55:30,272 - INFO - Epoch 30 Summary | Train Loss: 1.1240 | Train Acc: 0.5915 | Val Loss: 1.2148 | Val Acc: 0.5563
+2025-06-29 23:55:30,273 - INFO - 
+Epoch 31/50
+2025-06-29 23:55:43,775 - INFO - Epoch 31 Summary | Train Loss: 1.1121 | Train Acc: 0.5968 | Val Loss: 1.2605 | Val Acc: 0.5338
+2025-06-29 23:55:43,775 - INFO - 
+Epoch 32/50
+2025-06-29 23:55:57,254 - INFO - Epoch 32 Summary | Train Loss: 1.1061 | Train Acc: 0.5993 | Val Loss: 1.1939 | Val Acc: 0.5576
+2025-06-29 23:55:57,254 - INFO - 
+Epoch 33/50
+2025-06-29 23:56:10,628 - INFO - Epoch 33 Summary | Train Loss: 1.0924 | Train Acc: 0.6054 | Val Loss: 1.2981 | Val Acc: 0.5278
+2025-06-29 23:56:10,628 - INFO - 
+Epoch 34/50
+2025-06-29 23:56:24,122 - INFO - Epoch 34 Summary | Train Loss: 1.0874 | Train Acc: 0.6102 | Val Loss: 1.2451 | Val Acc: 0.5506
+2025-06-29 23:56:24,122 - INFO - 
+Epoch 35/50
+2025-06-29 23:56:37,639 - INFO - Epoch 35 Summary | Train Loss: 1.0752 | Train Acc: 0.6111 | Val Loss: 1.1864 | Val Acc: 0.5681
+2025-06-29 23:56:37,640 - INFO - 
+Epoch 36/50
+2025-06-29 23:56:50,889 - INFO - Epoch 36 Summary | Train Loss: 1.0661 | Train Acc: 0.6166 | Val Loss: 1.2681 | Val Acc: 0.5404
+2025-06-29 23:56:50,889 - INFO - 
+Epoch 37/50
+2025-06-29 23:57:04,106 - INFO - Epoch 37 Summary | Train Loss: 1.0564 | Train Acc: 0.6180 | Val Loss: 1.2192 | Val Acc: 0.5579
+2025-06-29 23:57:04,106 - INFO - 
+Epoch 38/50
+2025-06-29 23:57:17,508 - INFO - Epoch 38 Summary | Train Loss: 1.0509 | Train Acc: 0.6197 | Val Loss: 1.2843 | Val Acc: 0.5358
+2025-06-29 23:57:17,508 - INFO - 
+Epoch 39/50
+2025-06-29 23:57:30,882 - INFO - Epoch 39 Summary | Train Loss: 1.0435 | Train Acc: 0.6247 | Val Loss: 1.2085 | Val Acc: 0.5563
+2025-06-29 23:57:30,882 - INFO - 
+Epoch 40/50
+2025-06-29 23:57:44,397 - INFO - Epoch 40 Summary | Train Loss: 1.0353 | Train Acc: 0.6269 | Val Loss: 1.1787 | Val Acc: 0.5703
+2025-06-29 23:57:44,397 - INFO - 
+Epoch 41/50
+2025-06-29 23:57:57,873 - INFO - Epoch 41 Summary | Train Loss: 1.0246 | Train Acc: 0.6300 | Val Loss: 1.2677 | Val Acc: 0.5395
+2025-06-29 23:57:57,873 - INFO - 
+Epoch 42/50
+2025-06-29 23:58:11,215 - INFO - Epoch 42 Summary | Train Loss: 1.0203 | Train Acc: 0.6327 | Val Loss: 1.2519 | Val Acc: 0.5525
+2025-06-29 23:58:11,215 - INFO - 
+Epoch 43/50
+2025-06-29 23:58:24,651 - INFO - Epoch 43 Summary | Train Loss: 1.0148 | Train Acc: 0.6343 | Val Loss: 1.2011 | Val Acc: 0.5586
+2025-06-29 23:58:24,651 - INFO - 
+Epoch 44/50
+2025-06-29 23:58:38,143 - INFO - Epoch 44 Summary | Train Loss: 1.0006 | Train Acc: 0.6393 | Val Loss: 1.1970 | Val Acc: 0.5577
+2025-06-29 23:58:38,144 - INFO - 
+Epoch 45/50
+2025-06-29 23:58:51,576 - INFO - Epoch 45 Summary | Train Loss: 0.9969 | Train Acc: 0.6410 | Val Loss: 1.2173 | Val Acc: 0.5599
+2025-06-29 23:58:51,576 - INFO - 
+Epoch 46/50
+2025-06-29 23:59:04,953 - INFO - Epoch 46 Summary | Train Loss: 0.9899 | Train Acc: 0.6455 | Val Loss: 1.2007 | Val Acc: 0.5611
+2025-06-29 23:59:04,953 - INFO - 
+Epoch 47/50
+2025-06-29 23:59:18,440 - INFO - Epoch 47 Summary | Train Loss: 0.9846 | Train Acc: 0.6467 | Val Loss: 1.2525 | Val Acc: 0.5449
+2025-06-29 23:59:18,440 - INFO - 
+Epoch 48/50
+2025-06-29 23:59:31,995 - INFO - Epoch 48 Summary | Train Loss: 0.9747 | Train Acc: 0.6510 | Val Loss: 1.2070 | Val Acc: 0.5631
+2025-06-29 23:59:31,995 - INFO - 
+Epoch 49/50
+2025-06-29 23:59:45,514 - INFO - Epoch 49 Summary | Train Loss: 0.9725 | Train Acc: 0.6504 | Val Loss: 1.1527 | Val Acc: 0.5760
+2025-06-29 23:59:45,514 - INFO - 
+Epoch 50/50
+2025-06-29 23:59:58,953 - INFO - Epoch 50 Summary | Train Loss: 0.9643 | Train Acc: 0.6546 | Val Loss: 1.1789 | Val Acc: 0.5758
+2025-06-30 00:00:00,923 - INFO - SUCCESS: Final Metrics for Fold 1: {'accuracy': 0.5709999799728394, 'top_5_accuracy': 0.9514999985694885, 'precision_macro': 0.6073322892189026, 'recall_macro': 0.5709999799728394, 'f1_score_micro': 0.5709999799728394, 'f1_score_macro': 0.562423825263977, 'f1_score_weighted': 0.562423825263977, 'auroc': 0.922818660736084}
+2025-06-30 00:00:00,942 - INFO - SUCCESS: Model state_dict saved to saved_models/Real_ResNet_DN_fold1.pth
+2025-06-30 00:00:00,942 - INFO - SUCCESS: Fold 1 for experiment Real_ResNet_DN completed.
+2025-06-30 00:00:00,943 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:00:00,943 - INFO - SUCCESS: Experiment Real_ResNet_DN fully completed and results saved.
+2025-06-30 00:00:00,943 - INFO - 
+================================================================================
+2025-06-30 00:00:00,943 - INFO - STARTING NEW EXPERIMENT: Real_ResNet_IB
+2025-06-30 00:00:00,943 - INFO -   - Model Type: Real
+2025-06-30 00:00:00,944 - INFO -   - Architecture: IB
+2025-06-30 00:00:00,944 - INFO -   - Activation: relu
+2025-06-30 00:00:00,944 - INFO -   - Learn Imaginary: N/A
+2025-06-30 00:00:00,944 - INFO -   - Epochs: 50
+2025-06-30 00:00:00,944 - INFO -   - Batch Size: 128
+2025-06-30 00:00:00,944 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:00:00,944 - INFO -   - Folds: 1
+2025-06-30 00:00:00,944 - INFO - ================================================================================
+2025-06-30 00:00:00,951 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:00:00,952 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:00:00,952 - INFO - 
+Epoch 1/50
+2025-06-30 00:00:12,608 - INFO - Epoch 1 Summary | Train Loss: 2.0077 | Train Acc: 0.2058 | Val Loss: 1.9055 | Val Acc: 0.2510
+2025-06-30 00:00:12,608 - INFO - 
+Epoch 2/50
+2025-06-30 00:00:24,145 - INFO - Epoch 2 Summary | Train Loss: 1.8454 | Train Acc: 0.2747 | Val Loss: 1.7680 | Val Acc: 0.3014
+2025-06-30 00:00:24,146 - INFO - 
+Epoch 3/50
+2025-06-30 00:00:35,786 - INFO - Epoch 3 Summary | Train Loss: 1.7673 | Train Acc: 0.3139 | Val Loss: 1.6958 | Val Acc: 0.3434
+2025-06-30 00:00:35,786 - INFO - 
+Epoch 4/50
+2025-06-30 00:00:47,537 - INFO - Epoch 4 Summary | Train Loss: 1.6983 | Train Acc: 0.3467 | Val Loss: 1.6330 | Val Acc: 0.3699
+2025-06-30 00:00:47,537 - INFO - 
+Epoch 5/50
+2025-06-30 00:00:59,289 - INFO - Epoch 5 Summary | Train Loss: 1.6496 | Train Acc: 0.3708 | Val Loss: 1.6015 | Val Acc: 0.3847
+2025-06-30 00:00:59,289 - INFO - 
+Epoch 6/50
+2025-06-30 00:01:10,926 - INFO - Epoch 6 Summary | Train Loss: 1.6094 | Train Acc: 0.3839 | Val Loss: 1.5718 | Val Acc: 0.4003
+2025-06-30 00:01:10,926 - INFO - 
+Epoch 7/50
+2025-06-30 00:01:22,738 - INFO - Epoch 7 Summary | Train Loss: 1.5823 | Train Acc: 0.3973 | Val Loss: 1.5509 | Val Acc: 0.4130
+2025-06-30 00:01:22,738 - INFO - 
+Epoch 8/50
+2025-06-30 00:01:34,594 - INFO - Epoch 8 Summary | Train Loss: 1.5574 | Train Acc: 0.4103 | Val Loss: 1.5444 | Val Acc: 0.4129
+2025-06-30 00:01:34,595 - INFO - 
+Epoch 9/50
+2025-06-30 00:01:46,330 - INFO - Epoch 9 Summary | Train Loss: 1.5291 | Train Acc: 0.4240 | Val Loss: 1.5022 | Val Acc: 0.4312
+2025-06-30 00:01:46,330 - INFO - 
+Epoch 10/50
+2025-06-30 00:01:57,943 - INFO - Epoch 10 Summary | Train Loss: 1.5043 | Train Acc: 0.4334 | Val Loss: 1.4554 | Val Acc: 0.4466
+2025-06-30 00:01:57,943 - INFO - 
+Epoch 11/50
+2025-06-30 00:02:09,699 - INFO - Epoch 11 Summary | Train Loss: 1.4800 | Train Acc: 0.4442 | Val Loss: 1.4424 | Val Acc: 0.4578
+2025-06-30 00:02:09,700 - INFO - 
+Epoch 12/50
+2025-06-30 00:02:21,400 - INFO - Epoch 12 Summary | Train Loss: 1.4541 | Train Acc: 0.4580 | Val Loss: 1.4856 | Val Acc: 0.4382
+2025-06-30 00:02:21,400 - INFO - 
+Epoch 13/50
+2025-06-30 00:02:33,132 - INFO - Epoch 13 Summary | Train Loss: 1.4341 | Train Acc: 0.4636 | Val Loss: 1.4029 | Val Acc: 0.4741
+2025-06-30 00:02:33,132 - INFO - 
+Epoch 14/50
+2025-06-30 00:02:44,694 - INFO - Epoch 14 Summary | Train Loss: 1.4148 | Train Acc: 0.4723 | Val Loss: 1.4299 | Val Acc: 0.4660
+2025-06-30 00:02:44,694 - INFO - 
+Epoch 15/50
+2025-06-30 00:02:56,422 - INFO - Epoch 15 Summary | Train Loss: 1.3952 | Train Acc: 0.4805 | Val Loss: 1.4036 | Val Acc: 0.4711
+2025-06-30 00:02:56,423 - INFO - 
+Epoch 16/50
+2025-06-30 00:03:08,194 - INFO - Epoch 16 Summary | Train Loss: 1.3693 | Train Acc: 0.4953 | Val Loss: 1.3800 | Val Acc: 0.4822
+2025-06-30 00:03:08,194 - INFO - 
+Epoch 17/50
+2025-06-30 00:03:19,908 - INFO - Epoch 17 Summary | Train Loss: 1.3516 | Train Acc: 0.4989 | Val Loss: 1.3698 | Val Acc: 0.4934
+2025-06-30 00:03:19,908 - INFO - 
+Epoch 18/50
+2025-06-30 00:03:31,417 - INFO - Epoch 18 Summary | Train Loss: 1.3350 | Train Acc: 0.5060 | Val Loss: 1.3971 | Val Acc: 0.4815
+2025-06-30 00:03:31,417 - INFO - 
+Epoch 19/50
+2025-06-30 00:03:43,135 - INFO - Epoch 19 Summary | Train Loss: 1.3132 | Train Acc: 0.5183 | Val Loss: 1.4156 | Val Acc: 0.4778
+2025-06-30 00:03:43,135 - INFO - 
+Epoch 20/50
+2025-06-30 00:03:54,817 - INFO - Epoch 20 Summary | Train Loss: 1.2933 | Train Acc: 0.5220 | Val Loss: 1.3623 | Val Acc: 0.4986
+2025-06-30 00:03:54,817 - INFO - 
+Epoch 21/50
+2025-06-30 00:04:06,561 - INFO - Epoch 21 Summary | Train Loss: 1.2730 | Train Acc: 0.5323 | Val Loss: 1.4053 | Val Acc: 0.4853
+2025-06-30 00:04:06,561 - INFO - 
+Epoch 22/50
+2025-06-30 00:04:18,163 - INFO - Epoch 22 Summary | Train Loss: 1.2603 | Train Acc: 0.5390 | Val Loss: 1.4062 | Val Acc: 0.4864
+2025-06-30 00:04:18,163 - INFO - 
+Epoch 23/50
+2025-06-30 00:04:29,820 - INFO - Epoch 23 Summary | Train Loss: 1.2470 | Train Acc: 0.5421 | Val Loss: 1.4416 | Val Acc: 0.4659
+2025-06-30 00:04:29,820 - INFO - 
+Epoch 24/50
+2025-06-30 00:04:41,601 - INFO - Epoch 24 Summary | Train Loss: 1.2297 | Train Acc: 0.5486 | Val Loss: 1.5087 | Val Acc: 0.4699
+2025-06-30 00:04:41,601 - INFO - 
+Epoch 25/50
+2025-06-30 00:04:53,299 - INFO - Epoch 25 Summary | Train Loss: 1.2176 | Train Acc: 0.5538 | Val Loss: 1.4521 | Val Acc: 0.4722
+2025-06-30 00:04:53,299 - INFO - 
+Epoch 26/50
+2025-06-30 00:05:04,912 - INFO - Epoch 26 Summary | Train Loss: 1.1980 | Train Acc: 0.5615 | Val Loss: 1.4158 | Val Acc: 0.4730
+2025-06-30 00:05:04,912 - INFO - 
+Epoch 27/50
+2025-06-30 00:05:16,605 - INFO - Epoch 27 Summary | Train Loss: 1.1845 | Train Acc: 0.5682 | Val Loss: 1.4377 | Val Acc: 0.4692
+2025-06-30 00:05:16,605 - INFO - 
+Epoch 28/50
+2025-06-30 00:05:28,330 - INFO - Epoch 28 Summary | Train Loss: 1.1785 | Train Acc: 0.5743 | Val Loss: 1.4583 | Val Acc: 0.4638
+2025-06-30 00:05:28,330 - INFO - 
+Epoch 29/50
+2025-06-30 00:05:39,991 - INFO - Epoch 29 Summary | Train Loss: 1.1609 | Train Acc: 0.5771 | Val Loss: 1.4477 | Val Acc: 0.4756
+2025-06-30 00:05:39,992 - INFO - 
+Epoch 30/50
+2025-06-30 00:05:51,492 - INFO - Epoch 30 Summary | Train Loss: 1.1450 | Train Acc: 0.5833 | Val Loss: 1.4635 | Val Acc: 0.4533
+2025-06-30 00:05:51,492 - INFO - 
+Epoch 31/50
+2025-06-30 00:06:03,231 - INFO - Epoch 31 Summary | Train Loss: 1.1432 | Train Acc: 0.5837 | Val Loss: 1.4069 | Val Acc: 0.4864
+2025-06-30 00:06:03,231 - INFO - 
+Epoch 32/50
+2025-06-30 00:06:14,958 - INFO - Epoch 32 Summary | Train Loss: 1.1321 | Train Acc: 0.5901 | Val Loss: 1.5219 | Val Acc: 0.4610
+2025-06-30 00:06:14,958 - INFO - 
+Epoch 33/50
+2025-06-30 00:06:26,593 - INFO - Epoch 33 Summary | Train Loss: 1.1277 | Train Acc: 0.5894 | Val Loss: 1.4370 | Val Acc: 0.4744
+2025-06-30 00:06:26,593 - INFO - 
+Epoch 34/50
+2025-06-30 00:06:38,095 - INFO - Epoch 34 Summary | Train Loss: 1.1210 | Train Acc: 0.5945 | Val Loss: 1.5540 | Val Acc: 0.4564
+2025-06-30 00:06:38,095 - INFO - 
+Epoch 35/50
+2025-06-30 00:06:49,866 - INFO - Epoch 35 Summary | Train Loss: 1.1086 | Train Acc: 0.5978 | Val Loss: 1.4825 | Val Acc: 0.4615
+2025-06-30 00:06:49,866 - INFO - 
+Epoch 36/50
+2025-06-30 00:07:01,447 - INFO - Epoch 36 Summary | Train Loss: 1.0911 | Train Acc: 0.6047 | Val Loss: 1.4798 | Val Acc: 0.4639
+2025-06-30 00:07:01,447 - INFO - 
+Epoch 37/50
+2025-06-30 00:07:13,078 - INFO - Epoch 37 Summary | Train Loss: 1.0898 | Train Acc: 0.6031 | Val Loss: 1.4626 | Val Acc: 0.4772
+2025-06-30 00:07:13,078 - INFO - 
+Epoch 38/50
+2025-06-30 00:07:24,727 - INFO - Epoch 38 Summary | Train Loss: 1.0826 | Train Acc: 0.6101 | Val Loss: 1.5274 | Val Acc: 0.4498
+2025-06-30 00:07:24,727 - INFO - 
+Epoch 39/50
+2025-06-30 00:07:36,452 - INFO - Epoch 39 Summary | Train Loss: 1.0727 | Train Acc: 0.6095 | Val Loss: 1.4980 | Val Acc: 0.4568
+2025-06-30 00:07:36,452 - INFO - 
+Epoch 40/50
+2025-06-30 00:07:48,129 - INFO - Epoch 40 Summary | Train Loss: 1.0732 | Train Acc: 0.6109 | Val Loss: 1.3917 | Val Acc: 0.4922
+2025-06-30 00:07:48,130 - INFO - 
+Epoch 41/50
+2025-06-30 00:07:59,792 - INFO - Epoch 41 Summary | Train Loss: 1.0617 | Train Acc: 0.6159 | Val Loss: 1.4268 | Val Acc: 0.4661
+2025-06-30 00:07:59,792 - INFO - 
+Epoch 42/50
+2025-06-30 00:08:11,334 - INFO - Epoch 42 Summary | Train Loss: 1.0506 | Train Acc: 0.6200 | Val Loss: 1.4474 | Val Acc: 0.4704
+2025-06-30 00:08:11,334 - INFO - 
+Epoch 43/50
+2025-06-30 00:08:23,033 - INFO - Epoch 43 Summary | Train Loss: 1.0504 | Train Acc: 0.6176 | Val Loss: 1.4811 | Val Acc: 0.4586
+2025-06-30 00:08:23,034 - INFO - 
+Epoch 44/50
+2025-06-30 00:08:34,754 - INFO - Epoch 44 Summary | Train Loss: 1.0421 | Train Acc: 0.6236 | Val Loss: 1.4814 | Val Acc: 0.4554
+2025-06-30 00:08:34,754 - INFO - 
+Epoch 45/50
+2025-06-30 00:08:46,528 - INFO - Epoch 45 Summary | Train Loss: 1.0380 | Train Acc: 0.6246 | Val Loss: 1.5915 | Val Acc: 0.4405
+2025-06-30 00:08:46,528 - INFO - 
+Epoch 46/50
+2025-06-30 00:08:58,116 - INFO - Epoch 46 Summary | Train Loss: 1.0245 | Train Acc: 0.6320 | Val Loss: 1.4310 | Val Acc: 0.4677
+2025-06-30 00:08:58,116 - INFO - 
+Epoch 47/50
+2025-06-30 00:09:09,845 - INFO - Epoch 47 Summary | Train Loss: 1.0186 | Train Acc: 0.6329 | Val Loss: 1.5445 | Val Acc: 0.4420
+2025-06-30 00:09:09,845 - INFO - 
+Epoch 48/50
+2025-06-30 00:09:21,625 - INFO - Epoch 48 Summary | Train Loss: 1.0175 | Train Acc: 0.6342 | Val Loss: 1.4818 | Val Acc: 0.4617
+2025-06-30 00:09:21,625 - INFO - 
+Epoch 49/50
+2025-06-30 00:09:33,225 - INFO - Epoch 49 Summary | Train Loss: 1.0147 | Train Acc: 0.6342 | Val Loss: 1.4772 | Val Acc: 0.4561
+2025-06-30 00:09:33,225 - INFO - 
+Epoch 50/50
+2025-06-30 00:09:44,764 - INFO - Epoch 50 Summary | Train Loss: 1.0107 | Train Acc: 0.6380 | Val Loss: 1.4068 | Val Acc: 0.4750
+2025-06-30 00:09:46,500 - INFO - SUCCESS: Final Metrics for Fold 1: {'accuracy': 0.4724999964237213, 'top_5_accuracy': 0.9198000431060791, 'precision_macro': 0.5671789050102234, 'recall_macro': 0.4724999964237213, 'f1_score_micro': 0.4724999964237213, 'f1_score_macro': 0.44647014141082764, 'f1_score_weighted': 0.44647014141082764, 'auroc': 0.900030255317688}
+2025-06-30 00:09:46,519 - INFO - SUCCESS: Model state_dict saved to saved_models/Real_ResNet_IB_fold1.pth
+2025-06-30 00:09:46,519 - INFO - SUCCESS: Fold 1 for experiment Real_ResNet_IB completed.
+2025-06-30 00:09:46,522 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:46,522 - INFO - SUCCESS: Experiment Real_ResNet_IB fully completed and results saved.
+2025-06-30 00:09:46,522 - INFO - 
+================================================================================
+2025-06-30 00:09:46,522 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_crelu_LearnImag
+2025-06-30 00:09:46,522 - INFO -   - Model Type: Complex
+2025-06-30 00:09:46,523 - INFO -   - Architecture: WS
+2025-06-30 00:09:46,523 - INFO -   - Activation: crelu
+2025-06-30 00:09:46,523 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:46,523 - INFO -   - Epochs: 50
+2025-06-30 00:09:46,523 - INFO -   - Batch Size: 128
+2025-06-30 00:09:46,523 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:46,523 - INFO -   - Folds: 1
+2025-06-30 00:09:46,523 - INFO - ================================================================================
+2025-06-30 00:09:46,529 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:46,530 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:46,530 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:47,362 - ERROR - FAILURE: Experiment Complex_ResNet_WS_crelu_LearnImag failed after 0.84 seconds.
+2025-06-30 00:09:47,403 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (16) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:47,404 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:47,406 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:47,406 - INFO - 
+================================================================================
+2025-06-30 00:09:47,406 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_crelu_ZeroImag
+2025-06-30 00:09:47,406 - INFO -   - Model Type: Complex
+2025-06-30 00:09:47,406 - INFO -   - Architecture: WS
+2025-06-30 00:09:47,406 - INFO -   - Activation: crelu
+2025-06-30 00:09:47,406 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:47,406 - INFO -   - Epochs: 50
+2025-06-30 00:09:47,406 - INFO -   - Batch Size: 128
+2025-06-30 00:09:47,406 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:47,406 - INFO -   - Folds: 1
+2025-06-30 00:09:47,406 - INFO - ================================================================================
+2025-06-30 00:09:47,412 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:47,413 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:47,413 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:47,535 - ERROR - FAILURE: Experiment Complex_ResNet_WS_crelu_ZeroImag failed after 0.13 seconds.
+2025-06-30 00:09:47,535 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:47,536 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:47,537 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:47,537 - INFO - 
+================================================================================
+2025-06-30 00:09:47,537 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_zrelu_LearnImag
+2025-06-30 00:09:47,537 - INFO -   - Model Type: Complex
+2025-06-30 00:09:47,537 - INFO -   - Architecture: WS
+2025-06-30 00:09:47,537 - INFO -   - Activation: zrelu
+2025-06-30 00:09:47,537 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:47,537 - INFO -   - Epochs: 50
+2025-06-30 00:09:47,537 - INFO -   - Batch Size: 128
+2025-06-30 00:09:47,537 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:47,537 - INFO -   - Folds: 1
+2025-06-30 00:09:47,537 - INFO - ================================================================================
+2025-06-30 00:09:47,544 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:47,545 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:47,545 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:47,658 - ERROR - FAILURE: Experiment Complex_ResNet_WS_zrelu_LearnImag failed after 0.12 seconds.
+2025-06-30 00:09:47,659 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (16) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:47,660 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:47,661 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:47,661 - INFO - 
+================================================================================
+2025-06-30 00:09:47,661 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_zrelu_ZeroImag
+2025-06-30 00:09:47,661 - INFO -   - Model Type: Complex
+2025-06-30 00:09:47,661 - INFO -   - Architecture: WS
+2025-06-30 00:09:47,661 - INFO -   - Activation: zrelu
+2025-06-30 00:09:47,661 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:47,661 - INFO -   - Epochs: 50
+2025-06-30 00:09:47,661 - INFO -   - Batch Size: 128
+2025-06-30 00:09:47,661 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:47,661 - INFO -   - Folds: 1
+2025-06-30 00:09:47,661 - INFO - ================================================================================
+2025-06-30 00:09:47,667 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:47,668 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:47,668 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:47,765 - ERROR - FAILURE: Experiment Complex_ResNet_WS_zrelu_ZeroImag failed after 0.10 seconds.
+2025-06-30 00:09:47,766 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:47,767 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:47,768 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:47,768 - INFO - 
+================================================================================
+2025-06-30 00:09:47,768 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_modrelu_LearnImag
+2025-06-30 00:09:47,768 - INFO -   - Model Type: Complex
+2025-06-30 00:09:47,768 - INFO -   - Architecture: WS
+2025-06-30 00:09:47,768 - INFO -   - Activation: modrelu
+2025-06-30 00:09:47,768 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:47,768 - INFO -   - Epochs: 50
+2025-06-30 00:09:47,768 - INFO -   - Batch Size: 128
+2025-06-30 00:09:47,768 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:47,768 - INFO -   - Folds: 1
+2025-06-30 00:09:47,768 - INFO - ================================================================================
+2025-06-30 00:09:47,909 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:47,910 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:47,910 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,023 - ERROR - FAILURE: Experiment Complex_ResNet_WS_modrelu_LearnImag failed after 0.26 seconds.
+2025-06-30 00:09:48,024 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (16) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:48,025 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,026 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,026 - INFO - 
+================================================================================
+2025-06-30 00:09:48,026 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_modrelu_ZeroImag
+2025-06-30 00:09:48,026 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,026 - INFO -   - Architecture: WS
+2025-06-30 00:09:48,026 - INFO -   - Activation: modrelu
+2025-06-30 00:09:48,026 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:48,026 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,026 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,026 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,026 - INFO -   - Folds: 1
+2025-06-30 00:09:48,026 - INFO - ================================================================================
+2025-06-30 00:09:48,033 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:48,034 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:48,034 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,133 - ERROR - FAILURE: Experiment Complex_ResNet_WS_modrelu_ZeroImag failed after 0.11 seconds.
+2025-06-30 00:09:48,134 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:48,135 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,136 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,136 - INFO - 
+================================================================================
+2025-06-30 00:09:48,136 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_complex_cardioid_LearnImag
+2025-06-30 00:09:48,136 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,136 - INFO -   - Architecture: WS
+2025-06-30 00:09:48,136 - INFO -   - Activation: complex_cardioid
+2025-06-30 00:09:48,136 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:48,136 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,136 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,136 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,136 - INFO -   - Folds: 1
+2025-06-30 00:09:48,136 - INFO - ================================================================================
+2025-06-30 00:09:48,143 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:48,144 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:48,144 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,257 - ERROR - FAILURE: Experiment Complex_ResNet_WS_complex_cardioid_LearnImag failed after 0.12 seconds.
+2025-06-30 00:09:48,258 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (16) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:48,259 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,260 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,260 - INFO - 
+================================================================================
+2025-06-30 00:09:48,260 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_complex_cardioid_ZeroImag
+2025-06-30 00:09:48,260 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,260 - INFO -   - Architecture: WS
+2025-06-30 00:09:48,260 - INFO -   - Activation: complex_cardioid
+2025-06-30 00:09:48,260 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:48,260 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,260 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,260 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,260 - INFO -   - Folds: 1
+2025-06-30 00:09:48,260 - INFO - ================================================================================
+2025-06-30 00:09:48,266 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:48,267 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:48,267 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,369 - ERROR - FAILURE: Experiment Complex_ResNet_WS_complex_cardioid_ZeroImag failed after 0.11 seconds.
+2025-06-30 00:09:48,370 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:48,371 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,372 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,372 - INFO - 
+================================================================================
+2025-06-30 00:09:48,372 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_DN_crelu_LearnImag
+2025-06-30 00:09:48,372 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,372 - INFO -   - Architecture: DN
+2025-06-30 00:09:48,372 - INFO -   - Activation: crelu
+2025-06-30 00:09:48,372 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:48,372 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,372 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,372 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,372 - INFO -   - Folds: 1
+2025-06-30 00:09:48,372 - INFO - ================================================================================
+2025-06-30 00:09:48,381 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:48,383 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:48,383 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,497 - ERROR - FAILURE: Experiment Complex_ResNet_DN_crelu_LearnImag failed after 0.13 seconds.
+2025-06-30 00:09:48,498 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (12) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:48,499 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,499 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,499 - INFO - 
+================================================================================
+2025-06-30 00:09:48,499 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_DN_crelu_ZeroImag
+2025-06-30 00:09:48,499 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,500 - INFO -   - Architecture: DN
+2025-06-30 00:09:48,500 - INFO -   - Activation: crelu
+2025-06-30 00:09:48,500 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:48,500 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,500 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,500 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,500 - INFO -   - Folds: 1
+2025-06-30 00:09:48,500 - INFO - ================================================================================
+2025-06-30 00:09:48,510 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:48,511 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:48,511 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,622 - ERROR - FAILURE: Experiment Complex_ResNet_DN_crelu_ZeroImag failed after 0.12 seconds.
+2025-06-30 00:09:48,622 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:48,623 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,624 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,624 - INFO - 
+================================================================================
+2025-06-30 00:09:48,624 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_DN_zrelu_LearnImag
+2025-06-30 00:09:48,624 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,624 - INFO -   - Architecture: DN
+2025-06-30 00:09:48,624 - INFO -   - Activation: zrelu
+2025-06-30 00:09:48,624 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:48,624 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,624 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,624 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,624 - INFO -   - Folds: 1
+2025-06-30 00:09:48,624 - INFO - ================================================================================
+2025-06-30 00:09:48,634 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:48,635 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:48,636 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,744 - ERROR - FAILURE: Experiment Complex_ResNet_DN_zrelu_LearnImag failed after 0.12 seconds.
+2025-06-30 00:09:48,745 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (12) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:48,746 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,747 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,747 - INFO - 
+================================================================================
+2025-06-30 00:09:48,747 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_DN_zrelu_ZeroImag
+2025-06-30 00:09:48,747 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,747 - INFO -   - Architecture: DN
+2025-06-30 00:09:48,747 - INFO -   - Activation: zrelu
+2025-06-30 00:09:48,747 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:48,747 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,747 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,747 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,747 - INFO -   - Folds: 1
+2025-06-30 00:09:48,747 - INFO - ================================================================================
+2025-06-30 00:09:48,757 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:48,758 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:48,758 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,869 - ERROR - FAILURE: Experiment Complex_ResNet_DN_zrelu_ZeroImag failed after 0.12 seconds.
+2025-06-30 00:09:48,870 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:48,870 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,871 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,871 - INFO - 
+================================================================================
+2025-06-30 00:09:48,871 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_DN_modrelu_LearnImag
+2025-06-30 00:09:48,871 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,871 - INFO -   - Architecture: DN
+2025-06-30 00:09:48,871 - INFO -   - Activation: modrelu
+2025-06-30 00:09:48,871 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:48,871 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,871 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,871 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,871 - INFO -   - Folds: 1
+2025-06-30 00:09:48,871 - INFO - ================================================================================
+2025-06-30 00:09:48,882 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:48,884 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:48,884 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:48,996 - ERROR - FAILURE: Experiment Complex_ResNet_DN_modrelu_LearnImag failed after 0.13 seconds.
+2025-06-30 00:09:48,997 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (12) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:48,998 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:48,999 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:48,999 - INFO - 
+================================================================================
+2025-06-30 00:09:48,999 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_DN_modrelu_ZeroImag
+2025-06-30 00:09:48,999 - INFO -   - Model Type: Complex
+2025-06-30 00:09:48,999 - INFO -   - Architecture: DN
+2025-06-30 00:09:48,999 - INFO -   - Activation: modrelu
+2025-06-30 00:09:48,999 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:48,999 - INFO -   - Epochs: 50
+2025-06-30 00:09:48,999 - INFO -   - Batch Size: 128
+2025-06-30 00:09:48,999 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:48,999 - INFO -   - Folds: 1
+2025-06-30 00:09:48,999 - INFO - ================================================================================
+2025-06-30 00:09:49,009 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:49,012 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:49,012 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:49,124 - ERROR - FAILURE: Experiment Complex_ResNet_DN_modrelu_ZeroImag failed after 0.13 seconds.
+2025-06-30 00:09:49,125 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:49,126 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:49,127 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:49,127 - INFO - 
+================================================================================
+2025-06-30 00:09:49,127 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_DN_complex_cardioid_LearnImag
+2025-06-30 00:09:49,127 - INFO -   - Model Type: Complex
+2025-06-30 00:09:49,127 - INFO -   - Architecture: DN
+2025-06-30 00:09:49,127 - INFO -   - Activation: complex_cardioid
+2025-06-30 00:09:49,127 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:49,127 - INFO -   - Epochs: 50
+2025-06-30 00:09:49,127 - INFO -   - Batch Size: 128
+2025-06-30 00:09:49,127 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:49,127 - INFO -   - Folds: 1
+2025-06-30 00:09:49,127 - INFO - ================================================================================
+2025-06-30 00:09:49,137 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:49,138 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:49,138 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:49,253 - ERROR - FAILURE: Experiment Complex_ResNet_DN_complex_cardioid_LearnImag failed after 0.13 seconds.
+2025-06-30 00:09:49,253 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (12) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:49,254 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:49,255 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:49,255 - INFO - 
+================================================================================
+2025-06-30 00:09:49,255 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_DN_complex_cardioid_ZeroImag
+2025-06-30 00:09:49,255 - INFO -   - Model Type: Complex
+2025-06-30 00:09:49,255 - INFO -   - Architecture: DN
+2025-06-30 00:09:49,255 - INFO -   - Activation: complex_cardioid
+2025-06-30 00:09:49,255 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:49,255 - INFO -   - Epochs: 50
+2025-06-30 00:09:49,255 - INFO -   - Batch Size: 128
+2025-06-30 00:09:49,255 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:49,255 - INFO -   - Folds: 1
+2025-06-30 00:09:49,255 - INFO - ================================================================================
+2025-06-30 00:09:49,265 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:49,266 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:49,266 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:49,382 - ERROR - FAILURE: Experiment Complex_ResNet_DN_complex_cardioid_ZeroImag failed after 0.13 seconds.
+2025-06-30 00:09:49,382 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:49,383 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:49,384 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:49,384 - INFO - 
+================================================================================
+2025-06-30 00:09:49,384 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_IB_crelu_LearnImag
+2025-06-30 00:09:49,384 - INFO -   - Model Type: Complex
+2025-06-30 00:09:49,384 - INFO -   - Architecture: IB
+2025-06-30 00:09:49,384 - INFO -   - Activation: crelu
+2025-06-30 00:09:49,384 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:49,384 - INFO -   - Epochs: 50
+2025-06-30 00:09:49,384 - INFO -   - Batch Size: 128
+2025-06-30 00:09:49,384 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:49,384 - INFO -   - Folds: 1
+2025-06-30 00:09:49,384 - INFO - ================================================================================
+2025-06-30 00:09:49,393 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:49,394 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:49,394 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:49,504 - ERROR - FAILURE: Experiment Complex_ResNet_IB_crelu_LearnImag failed after 0.12 seconds.
+2025-06-30 00:09:49,505 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (14) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:49,506 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:49,507 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:49,507 - INFO - 
+================================================================================
+2025-06-30 00:09:49,507 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_IB_crelu_ZeroImag
+2025-06-30 00:09:49,507 - INFO -   - Model Type: Complex
+2025-06-30 00:09:49,507 - INFO -   - Architecture: IB
+2025-06-30 00:09:49,507 - INFO -   - Activation: crelu
+2025-06-30 00:09:49,507 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:49,507 - INFO -   - Epochs: 50
+2025-06-30 00:09:49,507 - INFO -   - Batch Size: 128
+2025-06-30 00:09:49,507 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:49,507 - INFO -   - Folds: 1
+2025-06-30 00:09:49,507 - INFO - ================================================================================
+2025-06-30 00:09:49,515 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:49,516 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:49,516 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:49,630 - ERROR - FAILURE: Experiment Complex_ResNet_IB_crelu_ZeroImag failed after 0.12 seconds.
+2025-06-30 00:09:49,631 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:49,632 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:49,633 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:49,633 - INFO - 
+================================================================================
+2025-06-30 00:09:49,633 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_IB_zrelu_LearnImag
+2025-06-30 00:09:49,633 - INFO -   - Model Type: Complex
+2025-06-30 00:09:49,633 - INFO -   - Architecture: IB
+2025-06-30 00:09:49,633 - INFO -   - Activation: zrelu
+2025-06-30 00:09:49,633 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:49,633 - INFO -   - Epochs: 50
+2025-06-30 00:09:49,633 - INFO -   - Batch Size: 128
+2025-06-30 00:09:49,633 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:49,633 - INFO -   - Folds: 1
+2025-06-30 00:09:49,633 - INFO - ================================================================================
+2025-06-30 00:09:49,641 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:49,643 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:49,643 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:49,752 - ERROR - FAILURE: Experiment Complex_ResNet_IB_zrelu_LearnImag failed after 0.12 seconds.
+2025-06-30 00:09:49,753 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (14) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:49,754 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:49,755 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:49,755 - INFO - 
+================================================================================
+2025-06-30 00:09:49,755 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_IB_zrelu_ZeroImag
+2025-06-30 00:09:49,755 - INFO -   - Model Type: Complex
+2025-06-30 00:09:49,755 - INFO -   - Architecture: IB
+2025-06-30 00:09:49,755 - INFO -   - Activation: zrelu
+2025-06-30 00:09:49,755 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:49,755 - INFO -   - Epochs: 50
+2025-06-30 00:09:49,755 - INFO -   - Batch Size: 128
+2025-06-30 00:09:49,755 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:49,755 - INFO -   - Folds: 1
+2025-06-30 00:09:49,755 - INFO - ================================================================================
+2025-06-30 00:09:49,763 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:49,764 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:49,764 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:49,879 - ERROR - FAILURE: Experiment Complex_ResNet_IB_zrelu_ZeroImag failed after 0.12 seconds.
+2025-06-30 00:09:49,880 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:49,881 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:49,882 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:49,882 - INFO - 
+================================================================================
+2025-06-30 00:09:49,882 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_IB_modrelu_LearnImag
+2025-06-30 00:09:49,882 - INFO -   - Model Type: Complex
+2025-06-30 00:09:49,882 - INFO -   - Architecture: IB
+2025-06-30 00:09:49,882 - INFO -   - Activation: modrelu
+2025-06-30 00:09:49,882 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:49,882 - INFO -   - Epochs: 50
+2025-06-30 00:09:49,882 - INFO -   - Batch Size: 128
+2025-06-30 00:09:49,882 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:49,882 - INFO -   - Folds: 1
+2025-06-30 00:09:49,882 - INFO - ================================================================================
+2025-06-30 00:09:49,891 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:49,892 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:49,892 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:50,007 - ERROR - FAILURE: Experiment Complex_ResNet_IB_modrelu_LearnImag failed after 0.12 seconds.
+2025-06-30 00:09:50,008 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (14) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:50,009 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:50,009 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:50,009 - INFO - 
+================================================================================
+2025-06-30 00:09:50,009 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_IB_modrelu_ZeroImag
+2025-06-30 00:09:50,010 - INFO -   - Model Type: Complex
+2025-06-30 00:09:50,010 - INFO -   - Architecture: IB
+2025-06-30 00:09:50,010 - INFO -   - Activation: modrelu
+2025-06-30 00:09:50,010 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:50,010 - INFO -   - Epochs: 50
+2025-06-30 00:09:50,010 - INFO -   - Batch Size: 128
+2025-06-30 00:09:50,010 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:50,010 - INFO -   - Folds: 1
+2025-06-30 00:09:50,010 - INFO - ================================================================================
+2025-06-30 00:09:50,018 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:50,019 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:50,020 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:50,132 - ERROR - FAILURE: Experiment Complex_ResNet_IB_modrelu_ZeroImag failed after 0.12 seconds.
+2025-06-30 00:09:50,133 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:50,134 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:50,135 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:50,135 - INFO - 
+================================================================================
+2025-06-30 00:09:50,135 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_IB_complex_cardioid_LearnImag
+2025-06-30 00:09:50,135 - INFO -   - Model Type: Complex
+2025-06-30 00:09:50,135 - INFO -   - Architecture: IB
+2025-06-30 00:09:50,135 - INFO -   - Activation: complex_cardioid
+2025-06-30 00:09:50,135 - INFO -   - Learn Imaginary: True
+2025-06-30 00:09:50,135 - INFO -   - Epochs: 50
+2025-06-30 00:09:50,135 - INFO -   - Batch Size: 128
+2025-06-30 00:09:50,135 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:50,135 - INFO -   - Folds: 1
+2025-06-30 00:09:50,135 - INFO - ================================================================================
+2025-06-30 00:09:50,143 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:50,144 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:50,144 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:50,256 - ERROR - FAILURE: Experiment Complex_ResNet_IB_complex_cardioid_LearnImag failed after 0.12 seconds.
+2025-06-30 00:09:50,257 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 277, in forward
+    x = self.initial_complex_op(x)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/complexPyTorch/complexLayers.py", line 220, in forward
+    self.running_mean = exponential_average_factor * mean\
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        + (1 - exponential_average_factor) * self.running_mean
+        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (14) must match the size of tensor b (2) at non-singleton dimension 1
+
+
+2025-06-30 00:09:50,258 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:50,259 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:50,259 - INFO - 
+================================================================================
+2025-06-30 00:09:50,259 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_IB_complex_cardioid_ZeroImag
+2025-06-30 00:09:50,259 - INFO -   - Model Type: Complex
+2025-06-30 00:09:50,259 - INFO -   - Architecture: IB
+2025-06-30 00:09:50,259 - INFO -   - Activation: complex_cardioid
+2025-06-30 00:09:50,259 - INFO -   - Learn Imaginary: False
+2025-06-30 00:09:50,259 - INFO -   - Epochs: 50
+2025-06-30 00:09:50,259 - INFO -   - Batch Size: 128
+2025-06-30 00:09:50,259 - INFO -   - Learning Rate: 0.01
+2025-06-30 00:09:50,259 - INFO -   - Folds: 1
+2025-06-30 00:09:50,259 - INFO - ================================================================================
+2025-06-30 00:09:50,268 - INFO - Using 4 GPUs via DataParallel.
+2025-06-30 00:09:50,269 - INFO - Model and optimizer configured successfully.
+2025-06-30 00:09:50,269 - INFO - 
+Epoch 1/50
+2025-06-30 00:09:50,383 - ERROR - FAILURE: Experiment Complex_ResNet_IB_complex_cardioid_ZeroImag failed after 0.12 seconds.
+2025-06-30 00:09:50,383 - ERROR - Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 319, in main
+    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/train_resnets.py", line 210, in run_experiment_fold
+    outputs = model(inputs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 193, in forward
+    outputs = self.parallel_apply(replicas, inputs, module_kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/data_parallel.py", line 212, in parallel_apply
+    return parallel_apply(
+        replicas, inputs, kwargs, self.device_ids[: len(replicas)]
+    )
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 126, in parallel_apply
+    output.reraise()
+    ~~~~~~~~~~~~~~^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/_utils.py", line 733, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in replica 0 on device 0.
+Original Traceback (most recent call last):
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/parallel/parallel_apply.py", line 96, in _worker
+    output = module(*input, **kwargs)
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/bsuhome/liamlaidlaw/.conda/envs/torch_cvnn/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/bsuhome/liamlaidlaw/BSU_REU/cvnn/torch_net/residual.py", line 276, in forward
+    x = torch.complex(x_real, x_imag)
+RuntimeError: Expected both inputs to be Half, Float or Double tensors but got Float and ComplexFloat
+
+
+2025-06-30 00:09:50,384 - INFO - SUCCESS: Results saved to training_results.csv
+2025-06-30 00:09:50,385 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
+2025-06-30 00:09:50,385 - INFO - 
+================================================================================
+2025-06-30 00:09:50,385 - INFO - --- ALL EXPERIMENTS FINISHED ---
+2025-06-30 00:09:50,385 - INFO - ================================================================================
+2025-06-30 00:09:50,385 - WARNING - EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.
