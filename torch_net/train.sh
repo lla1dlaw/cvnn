@@ -58,6 +58,8 @@ source activate torch_cvnn
 echo "Activated Conda environment: $CONDA_DEFAULT_ENV"
 
 # 4. Diagnostic checks:
+#    If nvidia-smi works but PyTorch shows CUDA as False, the problem is
+#    that PyTorch was installed as a CPU-only build inside your conda env.
 echo "--- Running Diagnostics ---"
 echo "--- Checking GPU Driver with nvidia-smi ---"
 nvidia-smi
