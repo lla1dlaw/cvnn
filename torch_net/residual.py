@@ -7,6 +7,7 @@ View original paper here: https://openreview.net/forum?id=H1T2hmZAb
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from complexPyTorch.complexLayers import  ComplexConv2d, ComplexLinear
 from activations import ModReLU, ZReLU, CReLU, ComplexCardioid # Assuming activations.py is in the same directory
 from custom_complex_layers import ComplexBatchNorm2d
@@ -35,36 +36,6 @@ class ZeroImag(nn.Module):
         """
         return torch.zeros_like(x)
 
-class LearnImag(nn.Module):
-    """A real-valued module that learns an imaginary component from a real input.
-
-    As per the paper "Deep Complex Networks" (Sec 3.7), an initial imaginary
-    component can be learned from the real-valued input data. This module
-    uses a simple Conv-BN-ReLU sequence to generate this component.
-    """
-    def __init__(self, in_channels):
-        """Initializes the LearnImag module.
-
-        Args:
-            in_channels (int): The number of channels in the input tensor.
-        """
-        super(LearnImag, self).__init__()
-        self.imag_learner = nn.Sequential(
-            nn.Conv2d(in_channels, in_channels, kernel_size=3, padding=1, bias=False),
-            nn.BatchNorm2d(in_channels),
-            nn.ReLU(inplace=True)
-        )
-
-    def forward(self, x):
-        """Generates a learned imaginary component.
-
-        Args:
-            x (torch.Tensor): The real-valued input tensor.
-
-        Returns:
-            torch.Tensor: A real-valued tensor representing the learned imaginary part.
-        """
-        return self.imag_learner(x)
 
 
 # MODULE: RESIDUAL BLOCKS
@@ -211,7 +182,7 @@ class ComplexResNet(nn.Module):
             raise ValueError(f"Unknown activation function: {activation_function}")
 
         # --- Layer Definitions ---
-        self.imag_handler = LearnImag(input_channels) if learn_imaginary_component else ZeroImag()
+        self.imag_handler = RealResidualBlock(input_channels) if learn_imaginary_component else ZeroImag()
         self.initial_complex_op = nn.Sequential(
             ComplexConv2d(input_channels, self.initial_filters, kernel_size=3, stride=1, padding=1, bias=False),
             ComplexBatchNorm2d(self.initial_filters),
@@ -260,19 +231,11 @@ class ComplexResNet(nn.Module):
             nn.Sequential: The projection layer.
         """
         return nn.Sequential(
-            ComplexConv2d(in_channels, out_channels, kernel_size=1, stride=2, bias=False),
+            ComplexConv2d(in_channels, out_channels, kernel_size=1, stride=1, bias=False),
             ComplexBatchNorm2d(out_channels)
         )
 
     def forward(self, x_real):
-        """Performs the forward pass for the ComplexResNet.
-
-        Args:
-            x_real (torch.Tensor): A batch of real-valued input images.
-
-        Returns:
-            torch.Tensor: Real-valued logits for classification.
-        """
         x_imag = self.imag_handler(x_real)
         x = torch.complex(x_real, x_imag)
         x = self.initial_complex_op(x)
@@ -280,12 +243,22 @@ class ComplexResNet(nn.Module):
         for i, stage in enumerate(self.stages):
             x = stage(x)
             if i < len(self.stages) - 1:
-                in_ch = x.shape[1]
-                out_ch = in_ch * 2
-                projection = self._make_projection(in_ch, out_ch).to(x.device)
-                x = projection(x)
+                # concatenate with a 1x1 conv output, then subsample
+                projection_conv = ComplexConv2d(
+                    in_channels=x.shape[1], 
+                    out_channels=x.shape[1], # Same number of filters
+                    kernel_size=1, 
+                    stride=1
+                ).to(x.device)
+                
+                projected_x = projection_conv(x)
+                x = torch.cat([x, projected_x], dim=1)
+                
+                # Subsample to halve spatial dimensions
+                # Doubles the number of channels for the next stage
+                x = F.avg_pool2d(x, kernel_size=2, stride=2) 
         
-        x = self.avgpool(x.abs())
+        x = self.avgpool(x)
         x = torch.flatten(x, 1)
         x_complex_logits = self.fc(x)
 
