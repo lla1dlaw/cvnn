@@ -215,7 +215,7 @@ def main(args):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logging.info(f"Starting training process on device: {device}")
     
-    arch_types, complex_activations, learn_imag_opts = ['WS', 'DN', 'IB'], ['crelu', 'zrelu', 'modrelu', 'complex_cardioid'], [True, False]
+    arch_types, complex_activations, learn_imag_opts = ['WS', 'DN', 'IB'], ['crelu',  'complex_cardioid'], [True, False]
     experiment_configs = []
     for arch in arch_types:
         experiment_configs.append({'name': f"Real_ResNet_{arch}", 'model_type': 'Real', 'arch': arch, 'activation': 'relu', 'learn_imag': 'N/A'})
