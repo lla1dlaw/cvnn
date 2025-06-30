@@ -17,8 +17,8 @@
 #SBATCH --job-name=resnet_comparison_max
 
 # Output and error files. %j will be replaced by the job ID.
-#SBATCH --output=resnet_comparison_max_%j.out
-#SBATCH --error=resnet_comparison_max_%j.err
+#SBATCH --output=resnet_comparison.out
+#SBATCH --error=resnet_comparison.err
 
 # Resource requests - Maximized for the V100 GPU nodes
 #SBATCH --partition=gpu             # Request the partition with V100 GPUs
