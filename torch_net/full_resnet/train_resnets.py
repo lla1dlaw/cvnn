@@ -174,7 +174,8 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
     
     model.to(device)
     if processing_mode == 'DDP':
-        model = DDP(model, device_ids=[device])
+        # **FIX**: Set find_unused_parameters=True to prevent hangs with complex graph structures.
+        model = DDP(model, device_ids=[device], find_unused_parameters=True)
     
     optimizer = optim.SGD(model.parameters(), lr=args.learning_rate, momentum=0.9, nesterov=True)
     criterion = nn.CrossEntropyLoss()
