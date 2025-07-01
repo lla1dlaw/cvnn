@@ -39,6 +39,8 @@
 
 # --- JOB EXECUTION ---
 
+./cleanup.sh
+
 # Print job information
 echo "======================================================"
 echo "Starting job $SLURM_JOB_ID on host $HOSTNAME"
