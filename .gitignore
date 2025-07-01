@@ -4,3 +4,4 @@
 /tf_net/.env
 /tf_net/*log_slurm*
 /tf_net/__pycache__
+./torch_net/saved_models/
