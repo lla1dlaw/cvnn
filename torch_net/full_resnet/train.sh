@@ -1,4 +1,5 @@
 #!/bin/bash
+./cleanup.sh
 
 #==============================================================================
 # SLURM Submission Script for DDP ResNet Training (Borah HPC Optimized)
@@ -20,9 +21,8 @@
 # Job name
 #SBATCH --job-name=ddp_resnet_comparison
 
-# Output and error files. Using %j for job ID to avoid overwrites.
-#SBATCH --output=ddp_resnet_%j.out
-#SBATCH --error=ddp_resnet_%j.err
+#SBATCH --output=ddp_resnet.out
+#SBATCH --error=ddp_resnet.err
 
 # Resource requests - Maximized for a V100 GPU node
 #SBATCH --partition=gpu             # Request the partition with V100 GPUs
@@ -38,8 +38,6 @@
 #SBATCH --mail-user=liamlaidlaw@boisestate.edu
 
 # --- JOB EXECUTION ---
-
-./cleanup.sh
 
 # Print job information
 echo "======================================================"
