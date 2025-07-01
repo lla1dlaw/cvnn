@@ -39,10 +39,10 @@ class ImaginaryComponentLearner(nn.Module):
         BN = nn.SyncBatchNorm if use_sync_bn else nn.BatchNorm2d
         self.layers = nn.Sequential(
             BN(channels),
-            nn.ReLU(inplace=False), # **FIX: Disabled inplace operation**
+            nn.ReLU(inplace=False),
             nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False),
             BN(channels),
-            nn.ReLU(inplace=False), # **FIX: Disabled inplace operation**
+            nn.ReLU(inplace=False),
             nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
         )
 
@@ -54,14 +54,14 @@ class ImaginaryComponentLearner(nn.Module):
 
 class ComplexResidualBlock(nn.Module):
     """A residual block for complex-valued data that can use SyncBatchNorm."""
-    def __init__(self, channels, activation_fn, use_sync_bn=False):
+    def __init__(self, channels, activation_fn_class, use_sync_bn=False):
         super(ComplexResidualBlock, self).__init__()
         ComplexBN = ComplexSyncBatchNorm2d if use_sync_bn else ComplexBatchNorm2d
         self.bn1 = ComplexBN(channels)
-        self.relu1 = activation_fn()
+        self.relu1 = activation_fn_class()
         self.conv1 = ComplexConv2d(channels, channels, kernel_size=3, padding=1, bias=False)
         self.bn2 = ComplexBN(channels)
-        self.relu2 = activation_fn()
+        self.relu2 = activation_fn_class()
         self.conv2 = ComplexConv2d(channels, channels, kernel_size=3, padding=1, bias=False)
 
     def forward(self, x):
@@ -81,10 +81,10 @@ class RealResidualBlock(nn.Module):
         super(RealResidualBlock, self).__init__()
         BN = nn.SyncBatchNorm if use_sync_bn else nn.BatchNorm2d
         self.bn1 = BN(channels)
-        self.relu1 = nn.ReLU(inplace=False) # **FIX: Disabled inplace operation**
+        self.relu1 = nn.ReLU(inplace=False)
         self.conv1 = nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
         self.bn2 = BN(channels)
-        self.relu2 = nn.ReLU(inplace=False) # **FIX: Disabled inplace operation**
+        self.relu2 = nn.ReLU(inplace=False)
         self.conv2 = nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
 
     def forward(self, x):
@@ -117,8 +117,9 @@ class ComplexResNet(nn.Module):
         self.blocks_per_stage = config['blocks_per_stage']
         
         activation_map = {'crelu': CReLU, 'zrelu': ZReLU, 'modrelu': ModReLU, 'complex_cardioid': ComplexCardioid}
-        self.activation_fn = activation_map.get(activation_function.lower())() # Instantiate the class
-        if self.activation_fn is None:
+        # **FIX**: Store the activation function CLASS, not an instance.
+        self.activation_fn_class = activation_map.get(activation_function.lower())
+        if self.activation_fn_class is None:
             raise ValueError(f"Unknown activation function: {activation_function}")
         
         ComplexBN = ComplexSyncBatchNorm2d if use_sync_bn else ComplexBatchNorm2d
@@ -131,7 +132,8 @@ class ComplexResNet(nn.Module):
         self.initial_complex_op = nn.Sequential(
             ComplexConv2d(input_channels, self.initial_filters, kernel_size=3, stride=1, padding=1, bias=False),
             ComplexBN(self.initial_filters),
-            self.activation_fn
+            # **FIX**: Instantiate the activation function here.
+            self.activation_fn_class()
         )
         
         self.stages = nn.ModuleList()
@@ -152,7 +154,8 @@ class ComplexResNet(nn.Module):
     def _make_stage(self, block_class, channels, num_blocks, use_sync_bn):
         blocks = []
         for _ in range(num_blocks):
-            blocks.append(block_class(channels, self.activation_fn, use_sync_bn=use_sync_bn))
+            # **FIX**: Pass the activation CLASS to the block constructor.
+            blocks.append(block_class(channels, self.activation_fn_class, use_sync_bn=use_sync_bn))
         return nn.Sequential(*blocks)
 
     def forward(self, x_real):
@@ -197,7 +200,7 @@ class RealResNet(nn.Module):
         self.initial_op = nn.Sequential(
             nn.Conv2d(input_channels, self.initial_filters, kernel_size=3, stride=1, padding=1, bias=False),
             BN(self.initial_filters),
-            nn.ReLU(inplace=False) # **FIX: Disabled inplace operation**
+            nn.ReLU(inplace=False)
         )
         
         self.stages = nn.ModuleList()
