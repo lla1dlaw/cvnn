@@ -39,10 +39,10 @@ class ImaginaryComponentLearner(nn.Module):
         BN = nn.SyncBatchNorm if use_sync_bn else nn.BatchNorm2d
         self.layers = nn.Sequential(
             BN(channels),
-            nn.ReLU(inplace=True),
+            nn.ReLU(inplace=False), # **FIX: Disabled inplace operation**
             nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False),
             BN(channels),
-            nn.ReLU(inplace=True),
+            nn.ReLU(inplace=False), # **FIX: Disabled inplace operation**
             nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
         )
 
@@ -81,10 +81,10 @@ class RealResidualBlock(nn.Module):
         super(RealResidualBlock, self).__init__()
         BN = nn.SyncBatchNorm if use_sync_bn else nn.BatchNorm2d
         self.bn1 = BN(channels)
-        self.relu1 = nn.ReLU(inplace=True)
+        self.relu1 = nn.ReLU(inplace=False) # **FIX: Disabled inplace operation**
         self.conv1 = nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
         self.bn2 = BN(channels)
-        self.relu2 = nn.ReLU(inplace=True)
+        self.relu2 = nn.ReLU(inplace=False) # **FIX: Disabled inplace operation**
         self.conv2 = nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
 
     def forward(self, x):
@@ -117,7 +117,7 @@ class ComplexResNet(nn.Module):
         self.blocks_per_stage = config['blocks_per_stage']
         
         activation_map = {'crelu': CReLU, 'zrelu': ZReLU, 'modrelu': ModReLU, 'complex_cardioid': ComplexCardioid}
-        self.activation_fn = activation_map.get(activation_function.lower())
+        self.activation_fn = activation_map.get(activation_function.lower())() # Instantiate the class
         if self.activation_fn is None:
             raise ValueError(f"Unknown activation function: {activation_function}")
         
@@ -131,7 +131,7 @@ class ComplexResNet(nn.Module):
         self.initial_complex_op = nn.Sequential(
             ComplexConv2d(input_channels, self.initial_filters, kernel_size=3, stride=1, padding=1, bias=False),
             ComplexBN(self.initial_filters),
-            self.activation_fn()
+            self.activation_fn
         )
         
         self.stages = nn.ModuleList()
@@ -197,7 +197,7 @@ class RealResNet(nn.Module):
         self.initial_op = nn.Sequential(
             nn.Conv2d(input_channels, self.initial_filters, kernel_size=3, stride=1, padding=1, bias=False),
             BN(self.initial_filters),
-            nn.ReLU(inplace=True)
+            nn.ReLU(inplace=False) # **FIX: Disabled inplace operation**
         )
         
         self.stages = nn.ModuleList()
