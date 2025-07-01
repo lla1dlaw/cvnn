@@ -80,7 +80,7 @@ echo "---------------------------"
 #    - --nproc_per_node should match the number of GPUs requested (--gres=gpu:N)
 echo "Starting DDP training script with torchrun..."
 torchrun --nproc_per_node=$NGPUS train_resnets.py \
-  --epochs 50 \
+  --epochs 200 \
   --batch-size ${BATCH_SIZE} \
   --folds 1
 
