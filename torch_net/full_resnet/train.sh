@@ -1,5 +1,4 @@
 #!/bin/bash
-./cleanup.sh
 
 #==============================================================================
 # SLURM Submission Script for DDP ResNet Training (Borah HPC Optimized)
