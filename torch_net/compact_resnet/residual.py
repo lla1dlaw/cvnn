@@ -3,13 +3,17 @@ Author: Liam Laidlaw
 Purpose: Classes for defining real and complex valued residual blocks.
 Based on the architecture presented in "Deep Complex Networks", Trabelsi et al., 2018. 
 View original paper here: https://openreview.net/forum?id=H1T2hmZAb
+
+This version is portable and can dynamically build different ResNet architectures
+('WS', 'DN', 'IB') and use different activation functions. It can also use
+SyncBatchNorm for DDP or standard BatchNorm for single-process training.
 """
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from complexPyTorch.complexLayers import  ComplexConv2d, ComplexLinear
-from activations import CReLU
+from activations import CReLU, ZReLU, ModReLU, ComplexCardioid
 # Import both standard and synchronized complex batch norm layers
 from custom_complex_layers import ComplexBatchNorm2d, ComplexSyncBatchNorm2d
 
@@ -25,6 +29,26 @@ class ZeroImag(nn.Module):
         """Generates a tensor of zeros with the same shape as the input."""
         return torch.zeros_like(x)
 
+class ImaginaryComponentLearner(nn.Module):
+    """
+    A module to learn the imaginary component from a real-valued input, as
+    described in the "Deep Complex Networks" paper (Sec 3.7).
+    """
+    def __init__(self, channels, use_sync_bn=False):
+        super(ImaginaryComponentLearner, self).__init__()
+        BN = nn.SyncBatchNorm if use_sync_bn else nn.BatchNorm2d
+        self.layers = nn.Sequential(
+            BN(channels),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False),
+            BN(channels),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
+        )
+
+    def forward(self, x):
+        return self.layers(x)
+
 # MODULE: RESIDUAL BLOCKS
 # ========================
 
@@ -33,11 +57,9 @@ class ComplexResidualBlock(nn.Module):
     def __init__(self, channels, activation_fn, use_sync_bn=False):
         super(ComplexResidualBlock, self).__init__()
         ComplexBN = ComplexSyncBatchNorm2d if use_sync_bn else ComplexBatchNorm2d
-        
         self.bn1 = ComplexBN(channels)
         self.relu1 = activation_fn()
         self.conv1 = ComplexConv2d(channels, channels, kernel_size=3, padding=1, bias=False)
-        
         self.bn2 = ComplexBN(channels)
         self.relu2 = activation_fn()
         self.conv2 = ComplexConv2d(channels, channels, kernel_size=3, padding=1, bias=False)
@@ -58,11 +80,9 @@ class RealResidualBlock(nn.Module):
     def __init__(self, channels, use_sync_bn=False):
         super(RealResidualBlock, self).__init__()
         BN = nn.SyncBatchNorm if use_sync_bn else nn.BatchNorm2d
-        
         self.bn1 = BN(channels)
         self.relu1 = nn.ReLU(inplace=True)
         self.conv1 = nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
-        
         self.bn2 = BN(channels)
         self.relu2 = nn.ReLU(inplace=True)
         self.conv2 = nn.Conv2d(channels, channels, kernel_size=3, padding=1, bias=False)
@@ -83,19 +103,28 @@ class RealResidualBlock(nn.Module):
 # ==============================
 
 class ComplexResNet(nn.Module):
-    """A DDP-compliant complex-valued ResNet model."""
-    def __init__(self, block_class, activation_function, architecture_type, learn_imaginary_component, use_sync_bn=False, input_channels=3, num_classes=10):
+    """A DDP-compliant complex-valued ResNet model that can be configured with different architectures."""
+    def __init__(self, block_class, architecture_type, activation_function, learn_imaginary_component, use_sync_bn=False, input_channels=3, num_classes=10):
         super(ComplexResNet, self).__init__()
-        configs = {'WS': {'filters': 16, 'blocks_per_stage': [2, 2, 2]}, 'DN': {'filters': 12, 'blocks_per_stage': [4, 4, 4]}, 'IB': {'filters': 14, 'blocks_per_stage': [3, 3, 3]}}
+        
+        configs = {
+            'WS': {'filters': 16, 'blocks_per_stage': [2, 2, 2]},
+            'DN': {'filters': 12, 'blocks_per_stage': [4, 4, 4]},
+            'IB': {'filters': 14, 'blocks_per_stage': [3, 3, 3]}
+        }
         config = configs[architecture_type]
         self.initial_filters = config['filters']
         self.blocks_per_stage = config['blocks_per_stage']
-        self.activation_fn = CReLU
+        
+        activation_map = {'crelu': CReLU, 'zrelu': ZReLU, 'modrelu': ModReLU, 'complex_cardioid': ComplexCardioid}
+        self.activation_fn = activation_map.get(activation_function.lower())
+        if self.activation_fn is None:
+            raise ValueError(f"Unknown activation function: {activation_function}")
         
         ComplexBN = ComplexSyncBatchNorm2d if use_sync_bn else ComplexBatchNorm2d
 
         if learn_imaginary_component:
-            self.imag_handler = RealResidualBlock(input_channels, use_sync_bn=use_sync_bn) 
+            self.imag_handler = ImaginaryComponentLearner(input_channels, use_sync_bn=use_sync_bn) 
         else:
             self.imag_handler = ZeroImag()
 
@@ -106,12 +135,17 @@ class ComplexResNet(nn.Module):
         )
         
         self.stages = nn.ModuleList()
+        self.downsample_layers = nn.ModuleList()
         current_channels = self.initial_filters
-        for num_blocks in self.blocks_per_stage:
+        for i, num_blocks in enumerate(self.blocks_per_stage):
             self.stages.append(self._make_stage(block_class, current_channels, num_blocks, use_sync_bn))
+            if i < len(self.blocks_per_stage) - 1:
+                self.downsample_layers.append(
+                    ComplexConv2d(current_channels, current_channels, kernel_size=1, stride=1, bias=False)
+                )
             current_channels *= 2
 
-        final_channels = self.initial_filters * (2**(len(self.blocks_per_stage)))
+        final_channels = self.initial_filters * (2**(len(self.blocks_per_stage) - 1))
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = ComplexLinear(final_channels, num_classes)
 
@@ -122,7 +156,6 @@ class ComplexResNet(nn.Module):
         return nn.Sequential(*blocks)
 
     def forward(self, x_real):
-        # ... forward pass logic remains the same ...
         x_imag = self.imag_handler(x_real)
         x = torch.complex(x_real, x_imag)
         x = self.initial_complex_op(x)
@@ -130,7 +163,7 @@ class ComplexResNet(nn.Module):
         for i, stage in enumerate(self.stages):
             x = stage(x)
             if i < len(self.stages) - 1:
-                projection_conv = ComplexConv2d(in_channels=x.shape[1], out_channels=x.shape[1], kernel_size=1, stride=1, bias=False).to(x.device)
+                projection_conv = self.downsample_layers[i]
                 projected_x = projection_conv(x)
                 x = torch.cat([x, projected_x], dim=1)
                 pooled_real = F.avg_pool2d(x.real, kernel_size=2, stride=2)
@@ -146,11 +179,19 @@ class ComplexResNet(nn.Module):
 
 
 class RealResNet(nn.Module):
-    """A DDP-compliant real-valued ResNet model."""
+    """A DDP-compliant real-valued ResNet model that can be configured with different architectures."""
     def __init__(self, block_class, architecture_type, use_sync_bn=False, input_channels=3, num_classes=10):
         super(RealResNet, self).__init__()
-        configs = {'WS': {'filters': 16, 'blocks_per_stage': [2, 2, 2]}, 'DN': {'filters': 12, 'blocks_per_stage': [4, 4, 4]}, 'IB': {'filters': 14, 'blocks_per_stage': [3, 3, 3]}}
+        
+
+        configs = {
+            'WS': {'filters': 16, 'blocks_per_stage': [2, 2, 2]},
+            'DN': {'filters': 12, 'blocks_per_stage': [4, 4, 4]},
+            'IB': {'filters': 14, 'blocks_per_stage': [3, 3, 3]}
+        }
+
         config = configs[architecture_type]
+        self.initial_filters = config['filters']
         self.initial_filters = config['filters'] * 2
         self.blocks_per_stage = config['blocks_per_stage']
         
@@ -163,12 +204,17 @@ class RealResNet(nn.Module):
         )
         
         self.stages = nn.ModuleList()
+        self.downsample_layers = nn.ModuleList()
         current_channels = self.initial_filters
-        for num_blocks in self.blocks_per_stage:
+        for i, num_blocks in enumerate(self.blocks_per_stage):
             self.stages.append(self._make_stage(block_class, current_channels, num_blocks, use_sync_bn))
+            if i < len(self.blocks_per_stage) - 1:
+                self.downsample_layers.append(
+                    nn.Conv2d(current_channels, current_channels, kernel_size=1, stride=1, bias=False)
+                )
             current_channels *= 2
         
-        final_channels = self.initial_filters * (2**(len(self.blocks_per_stage)))
+        final_channels = self.initial_filters * (2**(len(self.blocks_per_stage) - 1))
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Linear(final_channels, num_classes)
 
@@ -179,12 +225,11 @@ class RealResNet(nn.Module):
         return nn.Sequential(*blocks)
 
     def forward(self, x):
-        # ... forward pass logic remains the same ...
         x = self.initial_op(x)
         for i, stage in enumerate(self.stages):
             x = stage(x)
             if i < len(self.stages) - 1:
-                projection_conv = nn.Conv2d(in_channels=x.shape[1], out_channels=x.shape[1], kernel_size=1, stride=1, bias=False).to(x.device)
+                projection_conv = self.downsample_layers[i]
                 projected_x = projection_conv(x)
                 x = torch.cat([x, projected_x], dim=1)
                 x = F.avg_pool2d(x, kernel_size=2, stride=2)

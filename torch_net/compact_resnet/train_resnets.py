@@ -7,7 +7,7 @@ This script is portable and automatically adapts to the execution environment:
 - CPU training as a fallback.
 
 It correctly selects the appropriate Batch Normalization layer (Sync or standard)
-for the environment.
+for the environment and iterates through all specified model configurations.
 
 Usage:
     # To run with DDP on a multi-GPU machine (e.g., 2 GPUs):
@@ -84,17 +84,13 @@ def log_info(message):
         adapter.info(message)
 
 def send_email_notification(subject, body):
-    """Sends an email notification using credentials from a .env file."""
     if not is_main_process(): return
-    
     load_dotenv()
     email_user = os.getenv("EMAIL_USER")
     email_pass = os.getenv("EMAIL_PASS")
-
     if not email_user or not email_pass:
         log_info("WARNING: EMAIL_USER or EMAIL_PASS not found in .env file. Skipping email notification.")
         return
-
     msg = MIMEText(body)
     msg['Subject'] = f"[ResNet Training] {subject}"
     msg['From'] = email_user
@@ -110,11 +106,9 @@ def send_email_notification(subject, body):
 def save_model(model, config, directory="saved_models", fold=None):
     if not is_main_process(): return
     if not os.path.exists(directory): os.makedirs(directory)
-    
     fold_str = f"_fold{fold}" if fold is not None else ""
     filename = f"{config['name']}{fold_str}.pth"
     filepath = os.path.join(directory, filename)
-    
     state_dict = model.module.state_dict() if isinstance(model, DDP) else model.state_dict()
     torch.save(state_dict, filepath)
     log_info(f"SUCCESS: Model state_dict saved to {filepath}")
@@ -122,7 +116,6 @@ def save_model(model, config, directory="saved_models", fold=None):
 
 def save_results_to_csv(results, filename="training_results.csv"):
     if not is_main_process(): return
-    
     file_exists = os.path.isfile(filename)
     with open(filename, 'a', newline='') as csvfile:
         fieldnames = list(results.keys())
@@ -132,11 +125,9 @@ def save_results_to_csv(results, filename="training_results.csv"):
         writer.writerow(results)
     log_info(f"SUCCESS: Results saved to {filename}")
 
-
 # --- DATA AND METRICS SETUP ---
 
 def get_datasets():
-    """Returns the CIFAR-10 train and test datasets with appropriate transforms."""
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -147,14 +138,18 @@ def get_datasets():
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
-    trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
-    testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
+    if is_main_process():
+        trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
+        testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
+    if dist.is_initialized():
+        dist.barrier()
+    trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=False, transform=transform_train)
+    testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=False, transform=transform_test)
     if is_main_process():
         log_info("CIFAR-10 datasets loaded successfully.")
     return trainset, testset
 
 def get_metrics(device, num_classes=10):
-    """Initializes and returns a dictionary of TorchMetrics metrics."""
     metrics = {
         "accuracy": MulticlassAccuracy(num_classes=num_classes, average='micro').to(device),
         "top_5_accuracy": MulticlassAccuracy(num_classes=num_classes, top_k=5).to(device),
@@ -170,17 +165,16 @@ def get_metrics(device, num_classes=10):
 # --- CORE TRAINING LOGIC ---
 
 def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device, processing_mode):
-    """Runs a single training and validation experiment for one fold."""
     use_sync_bn = (processing_mode == 'DDP')
     
     if config['model_type'] == 'Real':
         model = RealResNet(block_class=RealResidualBlock, architecture_type=config['arch'], use_sync_bn=use_sync_bn, num_classes=10)
     else:
-        model = ComplexResNet(block_class=ComplexResidualBlock, activation_function=config['activation'], architecture_type=config['arch'], learn_imaginary_component=config['learn_imag'], use_sync_bn=use_sync_bn, num_classes=10)
+        model = ComplexResNet(block_class=ComplexResidualBlock, architecture_type=config['arch'], activation_function=config['activation'], learn_imaginary_component=config['learn_imag'], use_sync_bn=use_sync_bn, num_classes=10)
     
     model.to(device)
     if processing_mode == 'DDP':
-        model = DDP(model, device_ids=[device], find_unused_parameters=False)
+        model = DDP(model, device_ids=[device])
     
     optimizer = optim.SGD(model.parameters(), lr=args.learning_rate, momentum=0.9, nesterov=True)
     criterion = nn.CrossEntropyLoss()
@@ -201,22 +195,16 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
         train_loop = tqdm(train_loader, desc=f"Training  ", leave=False, disable=not is_main_process())
         for inputs, targets in train_loop:
             inputs, targets = inputs.to(device), targets.to(device)
-            
             optimizer.zero_grad()
             outputs = model(inputs)
             loss = criterion(outputs, targets)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optimizer.step()
-
             train_loss += loss.item()
             train_accuracy_metric.update(outputs, targets)
-            
             if is_main_process():
-                train_loop.set_postfix(
-                    loss=f"{train_loss / (train_loop.n + 1):.4f}", 
-                    acc=f"{train_accuracy_metric.compute().item():.4f}"
-                )
+                train_loop.set_postfix(loss=f"{train_loss / (train_loop.n + 1):.4f}", acc=f"{train_accuracy_metric.compute().item():.4f}")
         
         history['train_loss'].append(train_loss / len(train_loader))
         history['train_acc'].append(train_accuracy_metric.compute().item())
@@ -232,12 +220,8 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
                 loss = criterion(outputs, targets)
                 val_loss += loss.item()
                 val_accuracy_metric.update(outputs, targets)
-        
                 if is_main_process():
-                    val_loop.set_postfix(
-                        loss=f"{val_loss / (val_loop.n + 1):.4f}", 
-                        acc=f"{val_accuracy_metric.compute().item():.4f}"
-                    )
+                    val_loop.set_postfix(loss=f"{val_loss / (val_loop.n + 1):.4f}", acc=f"{val_accuracy_metric.compute().item():.4f}")
 
         history['val_loss'].append(val_loss / len(val_loader))
         history['val_acc'].append(val_accuracy_metric.compute().item())
@@ -251,7 +235,6 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
         with torch.no_grad():
             for inputs, targets in val_loader:
                 inputs, targets = inputs.to(device), targets.to(device)
-                # In DDP, call model.module to bypass the wrapper
                 outputs = model.module(inputs) if isinstance(model, DDP) else model(inputs)
                 probs = torch.softmax(outputs, dim=1)
                 for name, metric in metrics.items():
@@ -279,7 +262,9 @@ def main(args):
     
     log_info(f"Starting training process using: {processing_mode}")
     
-    arch_types, complex_activations, learn_imag_opts = ['WS', 'DN', 'IB'], ['crelu', 'zrelu', 'modrelu', 'complex_cardioid'], [True, False]
+    arch_types = ['WS', 'DN', 'IB']
+    complex_activations = ['crelu', 'zrelu', 'modrelu', 'complex_cardioid']
+    learn_imag_opts = [True, False]
     experiment_configs = []
 
     for arch, act, learn in product(arch_types, complex_activations, learn_imag_opts):
@@ -315,21 +300,15 @@ def main(args):
             
             for fold, (train_idx, val_idx) in enumerate(splits):
                 fold_num = fold + 1
-                
+                train_subset = Subset(train_dataset, train_idx)
                 if args.folds > 1:
-                    train_subset = Subset(train_dataset, train_idx)
                     val_dataset_no_aug = torchvision.datasets.CIFAR10(root='./data', train=True, download=False, transform=get_datasets()[1].transform)
                     val_subset = Subset(val_dataset_no_aug, val_idx)
                 else:
-                    train_subset = train_dataset
                     val_subset = test_dataset
                 
-                if use_ddp:
-                    train_sampler = DistributedSampler(train_subset)
-                    shuffle = False
-                else:
-                    train_sampler = None
-                    shuffle = True
+                train_sampler = DistributedSampler(train_subset) if use_ddp else None
+                shuffle = not use_ddp
 
                 train_loader = DataLoader(train_subset, batch_size=args.batch_size, sampler=train_sampler, shuffle=shuffle, num_workers=2, pin_memory=True)
                 val_loader = DataLoader(val_subset, batch_size=args.batch_size, shuffle=False, num_workers=2, pin_memory=True)
@@ -353,9 +332,7 @@ def main(args):
             if is_main_process():
                 final_save_data = {'status': 'Completed', **config}
                 if args.folds > 1:
-                    metric_keys = list(fold_results[0].keys())
-                    metric_keys.remove('fold')
-                    metric_keys.remove('model_path')
+                    metric_keys = list(fold_results[0].keys() - {'fold', 'model_path'})
                     for key in metric_keys:
                         values = [res[key] for res in fold_results]
                         final_save_data[f"{key}_mean"] = np.mean(values)

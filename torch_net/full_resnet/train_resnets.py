@@ -1,12 +1,13 @@
 """
-PyTorch Training Script for Comparing a Specific Real and Complex ResNet
+PyTorch Training Script for Comparing Real and Complex ResNets
 
-This script is configured to run a focused comparison between two models based
-on the 'WS' architecture described in "Deep Complex Networks" (Trabelsi et al., 2018):
-1. A Complex 'WS' ResNet using CReLU and a learned imaginary component.
-2. An equivalent Real 'WS' ResNet for direct comparison.
+This script is portable and automatically adapts to the execution environment:
+- Multi-GPU training using torch.nn.parallel.DistributedDataParallel (DDP).
+- Single-GPU training if DDP is not available.
+- CPU training as a fallback.
 
-It automatically adapts to the execution environment: DDP, single GPU, or CPU.
+It correctly selects the appropriate Batch Normalization layer (Sync or standard)
+for the environment and iterates through all specified model configurations.
 
 Usage:
     # To run with DDP on a multi-GPU machine (e.g., 2 GPUs):
@@ -32,6 +33,7 @@ import logging
 import argparse
 import smtplib
 from email.mime.text import MIMEText
+from itertools import product
 from datetime import datetime
 import traceback
 import numpy as np
@@ -136,11 +138,11 @@ def get_datasets():
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
-    if is_main_process(): # Download only on one process
+    if is_main_process():
         trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
         testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
     if dist.is_initialized():
-        dist.barrier() # Wait for main process to download
+        dist.barrier()
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=False, transform=transform_train)
     testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=False, transform=transform_test)
     if is_main_process():
@@ -166,13 +168,13 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
     use_sync_bn = (processing_mode == 'DDP')
     
     if config['model_type'] == 'Real':
-        model = RealResNet(block_class=RealResidualBlock, use_sync_bn=use_sync_bn, num_classes=10)
+        model = RealResNet(block_class=RealResidualBlock, architecture_type=config['arch'], use_sync_bn=use_sync_bn, num_classes=10)
     else:
-        model = ComplexResNet(block_class=ComplexResidualBlock, activation_function=config['activation'], learn_imaginary_component=config['learn_imag'], use_sync_bn=use_sync_bn, num_classes=10)
+        model = ComplexResNet(block_class=ComplexResidualBlock, architecture_type=config['arch'], activation_function=config['activation'], learn_imaginary_component=config['learn_imag'], use_sync_bn=use_sync_bn, num_classes=10)
     
     model.to(device)
     if processing_mode == 'DDP':
-        model = DDP(model, device_ids=[device], find_unused_parameters=False)
+        model = DDP(model, device_ids=[device])
     
     optimizer = optim.SGD(model.parameters(), lr=args.learning_rate, momentum=0.9, nesterov=True)
     criterion = nn.CrossEntropyLoss()
@@ -260,10 +262,15 @@ def main(args):
     
     log_info(f"Starting training process using: {processing_mode}")
     
-    experiment_configs = [
-        {'name': 'Complex_ResNet_WS_CReLU_LearnImag', 'model_type': 'Complex', 'activation': 'crelu', 'learn_imag': True},
-        {'name': 'Real_ResNet_WS_Equivalent', 'model_type': 'Real', 'activation': 'relu', 'learn_imag': 'N/A'}
-    ]
+    arch_types = ['WS', 'DN', 'IB']
+    complex_activations = ['crelu', 'zrelu', 'modrelu', 'complex_cardioid']
+    learn_imag_opts = [True, False]
+    experiment_configs = []
+
+    for arch, act, learn in product(arch_types, complex_activations, learn_imag_opts):
+        experiment_configs.append({'name': f"Complex_ResNet_{arch}_{act}_{'LearnImag' if learn else 'ZeroImag'}", 'model_type': 'Complex', 'arch': arch, 'activation': act, 'learn_imag': learn})
+    for arch in arch_types:
+        experiment_configs.append({'name': f"Real_ResNet_{arch}", 'model_type': 'Real', 'arch': arch, 'activation': 'relu', 'learn_imag': 'N/A'})
 
     train_dataset, test_dataset = get_datasets()
 
@@ -273,6 +280,7 @@ def main(args):
         log_info(f"STARTING NEW EXPERIMENT: {config['name']}")
         log_info(f"  - Processing Mode: {processing_mode}")
         log_info(f"  - Model Type: {config['model_type']}")
+        log_info(f"  - Architecture: {config['arch']}")
         log_info(f"  - Activation: {config['activation']}")
         log_info(f"  - Learn Imaginary: {config['learn_imag']}")
         log_info(f"  - Epochs: {args.epochs}")
