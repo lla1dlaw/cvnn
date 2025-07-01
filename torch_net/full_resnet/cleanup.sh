@@ -19,15 +19,15 @@ echo "Cleaning up log and output files..."
 # The `find` command is safer as it won't fail if no files match the pattern.
 
 # Remove SLURM output files (*.out)
-find . -maxdepth 1 -name "resnet_comparison_max_*.out" -print -delete
+find . -maxdepth 1 -name "*.out" -print -delete
 echo "Removed SLURM .out files."
 
 # Remove SLURM error files (*.err)
-find . -maxdepth 1 -name "resnet_comparison_max_*.err" -print -delete
+find . -maxdepth 1 -name "*.err" -print -delete
 echo "Removed SLURM .err files."
 
 # Remove the Python training log
-find . -maxdepth 1 -name "training.log" -print -delete
+find . -maxdepth 1 -name "*.log" -print -delete
 echo "Removed Python training.log."
 
 echo "-------------------------"
