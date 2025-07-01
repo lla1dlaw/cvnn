@@ -64,7 +64,7 @@ echo "---------------------------"
 # 4. Run the DataParallel training script
 echo "Starting DataParallel training script..."
 python train_resnets.py \
-  --epochs 50 \
+  --epochs 200 \
   --batch-size ${BATCH_SIZE} \
   --folds 1
 

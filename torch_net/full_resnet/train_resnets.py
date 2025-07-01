@@ -283,7 +283,7 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="PyTorch ResNet Comparison Training Script")
-    parser.add_argument('--epochs', type=int, default=50, help='Number of training epochs.')
+    parser.add_argument('--epochs', type=int, default=200, help='Number of training epochs.')
     parser.add_argument('--batch-size', type=int, default=128, help='Batch size for training.')
     parser.add_argument('--learning-rate', type=float, default=0.01, help='Initial learning rate.')
     parser.add_argument('--folds', type=int, default=1, help='Number of K-Folds for cross-validation. Default is 1 (standard train/test split).')

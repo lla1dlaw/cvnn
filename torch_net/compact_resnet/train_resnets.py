@@ -218,12 +218,9 @@ def main(args):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logging.info(f"Starting training process using: {device}")
     
- #   arch_types = ['WS', 'DN', 'IB']
- #   complex_activations = ['crelu', 'zrelu', 'modrelu', 'complex_cardioid']
- #   learn_imag_opts = [True, False]
-    arch_types = ['WS']
-    complex_activations = ['crelu']
-    learn_imag_opts = [True]
+    arch_types = ['WS', 'DN', 'IB']
+    complex_activations = ['crelu', 'zrelu', 'modrelu', 'complex_cardioid']
+    learn_imag_opts = [True, False]
     experiment_configs = []
 
     for arch, act, learn in product(arch_types, complex_activations, learn_imag_opts):
