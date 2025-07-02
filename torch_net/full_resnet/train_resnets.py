@@ -2,7 +2,19 @@
 PyTorch Training Script for Comparing Real and Complex ResNets
 
 This script automates the training and evaluation of various ResNet architectures
-using torch.nn.DataParallel for multi-GPU training.
+using torch.nn.DataParallel for multi-GPU training. It now implements the
+specific training schedule from the "Deep Complex Networks" paper and allows
+for experiment configurations to be passed via the command line.
+
+Usage:
+    # To run all default experiments (all architectures, all activations, etc.):
+    python train_resnets.py
+
+    # To run only the 'WS' and 'DN' architectures:
+    python train_resnets.py --architectures WS DN
+
+    # To run only with 'crelu' and only when learning the imaginary component:
+    python train_resnets.py --activations crelu --learn_imag_mode true_only
 """
 import torch
 import torch.nn as nn
@@ -117,6 +129,24 @@ def get_metrics(device, num_classes=10):
 
 # --- CORE TRAINING LOGIC ---
 
+def adjust_learning_rate(optimizer, epoch):
+    """Sets the learning rate according to the schedule from the paper."""
+    if epoch < 10:
+        lr = 0.01
+    elif epoch < 100:
+        lr = 0.1
+    elif epoch < 120:
+        lr = 0.01
+    elif epoch < 150:
+        lr = 0.001
+    else: # epoch >= 150
+        lr = 0.0001
+    
+    for param_group in optimizer.param_groups:
+        if param_group['lr'] != lr:
+            logging.info(f"Adjusting learning rate to {lr} at epoch {epoch+1}")
+            param_group['lr'] = lr
+
 def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device):
     if config['model_type'] == 'Real':
         model = RealResNet(block_class=RealResidualBlock, architecture_type=config['arch'], num_classes=10)
@@ -128,7 +158,7 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
         logging.info(f"Using {torch.cuda.device_count()} GPUs with DataParallel.")
         model = nn.DataParallel(model)
     
-    optimizer = optim.SGD(model.parameters(), lr=args.learning_rate, momentum=0.9, nesterov=True)
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True)
     criterion = nn.CrossEntropyLoss()
     train_accuracy_metric = MulticlassAccuracy(num_classes=10, average='micro').to(device)
     val_accuracy_metric = MulticlassAccuracy(num_classes=10, average='micro').to(device)
@@ -136,6 +166,7 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
     history = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': []}
 
     for epoch in range(args.epochs):
+        adjust_learning_rate(optimizer, epoch)
         logging.info(f"\nEpoch {epoch+1}/{args.epochs}")
         
         model.train()
@@ -196,12 +227,16 @@ def main(args):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logging.info(f"Starting training process using: {device}")
     
-#    arch_types = ['WS', 'DN', 'IB']
-#    complex_activations = ['crelu', 'zrelu', 'modrelu', 'complex_cardioid']
-#    learn_imag_opts = [True, False]
-    arch_types = ['WS']
-    complex_activations = ['crelu']
-    learn_imag_opts = [True]
+    # Build experiment configurations from CLI arguments
+    arch_types = args.architectures
+    complex_activations = args.activations
+    if args.learn_imag_mode == 'true_only':
+        learn_imag_opts = [True]
+    elif args.learn_imag_mode == 'false_only':
+        learn_imag_opts = [False]
+    else: # 'both'
+        learn_imag_opts = [True, False]
+        
     experiment_configs = []
 
     for arch, act, learn in product(arch_types, complex_activations, learn_imag_opts):
@@ -221,7 +256,6 @@ def main(args):
         logging.info(f"  - Learn Imaginary: {config['learn_imag']}")
         logging.info(f"  - Epochs: {args.epochs}")
         logging.info(f"  - Batch Size: {args.batch_size}")
-        logging.info(f"  - Learning Rate: {args.learning_rate}")
         logging.info(f"  - Folds: {args.folds}")
         logging.info("="*80)
         
@@ -285,8 +319,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="PyTorch ResNet Comparison Training Script")
     parser.add_argument('--epochs', type=int, default=200, help='Number of training epochs.')
     parser.add_argument('--batch-size', type=int, default=128, help='Batch size for training.')
-    parser.add_argument('--learning-rate', type=float, default=0.01, help='Initial learning rate.')
+    parser.add_argument('--learning-rate', type=float, default=0.1, help='Initial learning rate (note: this is only for logging, the schedule is hardcoded).')
     parser.add_argument('--folds', type=int, default=1, help='Number of K-Folds for cross-validation. Default is 1 (standard train/test split).')
+    
+    # --- New CLI Arguments for Experiment Control ---
+    parser.add_argument('--architectures', '--arch', nargs='+', default=['WS', 'DN', 'IB'], choices=['WS', 'DN', 'IB'], help="Space-separated list of architectures to train (e.g., WS DN). Default: all.")
+    parser.add_argument('--activations', '--act', nargs='+', default=['crelu', 'zrelu', 'modrelu', 'complex_cardioid'], choices=['crelu', 'zrelu', 'modrelu', 'complex_cardioid'], help="Space-separated list of complex activation functions to test. Default: all.")
+    parser.add_argument('--learn_imag_mode', default='both', choices=['true_only', 'false_only', 'both'], help="Controls which 'learn_imaginary_component' settings to use. 'true_only', 'false_only', or 'both'. Default: both.")
     
     args = parser.parse_args()
     main(args)

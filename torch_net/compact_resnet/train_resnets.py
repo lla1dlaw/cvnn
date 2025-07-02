@@ -3,7 +3,18 @@ PyTorch Training Script for Comparing Real and Complex ResNets
 
 This script automates the training and evaluation of various ResNet architectures
 using torch.nn.DataParallel for multi-GPU training. It now implements the
-specific training schedule from the "Deep Complex Networks" paper.
+specific training schedule from the "Deep Complex Networks" paper and allows
+for experiment configurations to be passed via the command line.
+
+Usage:
+    # To run all default experiments (all architectures, all activations, etc.):
+    python train_resnets.py
+
+    # To run only the 'WS' and 'DN' architectures:
+    python train_resnets.py --architectures WS DN
+
+    # To run only with 'crelu' and only when learning the imaginary component:
+    python train_resnets.py --activations crelu --learn_imag_mode true_only
 """
 import torch
 import torch.nn as nn
@@ -216,9 +227,16 @@ def main(args):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logging.info(f"Starting training process using: {device}")
     
-    arch_types = ['WS', 'DN', 'IB']
-    complex_activations = ['crelu', 'zrelu', 'modrelu', 'complex_cardioid']
-    learn_imag_opts = [True, False]
+    # Build experiment configurations from CLI arguments
+    arch_types = args.architectures
+    complex_activations = args.activations
+    if args.learn_imag_mode == 'true_only':
+        learn_imag_opts = [True]
+    elif args.learn_imag_mode == 'false_only':
+        learn_imag_opts = [False]
+    else: # 'both'
+        learn_imag_opts = [True, False]
+        
     experiment_configs = []
 
     for arch, act, learn in product(arch_types, complex_activations, learn_imag_opts):
@@ -303,6 +321,11 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', type=int, default=128, help='Batch size for training.')
     parser.add_argument('--learning-rate', type=float, default=0.1, help='Initial learning rate (note: this is only for logging, the schedule is hardcoded).')
     parser.add_argument('--folds', type=int, default=1, help='Number of K-Folds for cross-validation. Default is 1 (standard train/test split).')
+    
+    # --- New CLI Arguments for Experiment Control ---
+    parser.add_argument('--architectures', '--arch', nargs='+', default=['WS', 'DN', 'IB'], choices=['WS', 'DN', 'IB'], help="Space-separated list of architectures to train (e.g., WS DN). Default: all.")
+    parser.add_argument('--activations', '--act', nargs='+', default=['crelu', 'zrelu', 'modrelu', 'complex_cardioid'], choices=['crelu', 'zrelu', 'modrelu', 'complex_cardioid'], help="Space-separated list of complex activation functions to test. Default: all.")
+    parser.add_argument('--learn_imag_mode', default='both', choices=['true_only', 'false_only', 'both'], help="Controls which 'learn_imaginary_component' settings to use. 'true_only', 'false_only', or 'both'. Default: both.")
     
     args = parser.parse_args()
     main(args)
