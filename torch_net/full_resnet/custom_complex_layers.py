@@ -7,6 +7,7 @@ compatible with torch.nn.DataParallel for multi-GPU training.
 import torch
 import torch.nn as nn
 from torch.nn import Parameter
+import math
 
 class ComplexBatchNorm2d(nn.Module):
     """
@@ -43,14 +44,23 @@ class ComplexBatchNorm2d(nn.Module):
         if self.track_running_stats:
             self.running_mean.zero_()
             self.running_cov.zero_()
-            self.running_cov[:, 0] = 1 
-            self.running_cov[:, 1] = 1 
+            # --- FIX: Initialize running_cov correctly as per the paper ---
+            # The moving averages of Vri and beta are initialized to 0.
+            self.running_cov[:, 2].zero_()
+            # The moving averages of Vrr and Vii are initialized to 1/sqrt(2).
+            self.running_cov[:, 0].fill_(1 / math.sqrt(2))
+            self.running_cov[:, 1].fill_(1 / math.sqrt(2))
             self.num_batches_tracked.zero_()
         
+        # Initialize bias (beta) to zero
         self.bias.data.zero_()
-        self.weight.data.zero_()
-        self.weight.data[:, 0] = 1.0 
-        self.weight.data[:, 1] = 1.0
+        
+        # Initialize gamma_ri to 0
+        self.weight.data[:, 2].zero_()
+        # Initialize gamma_rr and gamma_ii to 1/sqrt(2)
+        self.weight.data[:, 0].fill_(1 / math.sqrt(2))
+        self.weight.data[:, 1].fill_(1 / math.sqrt(2))
+
 
     def forward(self, x):
         if not x.is_complex():
@@ -78,16 +88,16 @@ class ComplexBatchNorm2d(nn.Module):
         mean_reshaped = mean_to_use.view(1, self.num_features, 1, 1)
         centered_x = x - mean_reshaped
         
-        V_rr = cov_to_use[:, 0].view(1, self.num_features, 1, 1)
-        V_ii = cov_to_use[:, 1].view(1, self.num_features, 1, 1)
+        V_rr = cov_to_use[:, 0].view(1, self.num_features, 1, 1) + self.eps
+        V_ii = cov_to_use[:, 1].view(1, self.num_features, 1, 1) + self.eps
         V_ri = cov_to_use[:, 2].view(1, self.num_features, 1, 1)
         
         s = V_rr * V_ii - V_ri ** 2
-        t = torch.sqrt(s + self.eps)
-        inv_t = 1.0 / (t + self.eps)
+        t = torch.sqrt(s)
+        inv_t = 1.0 / t
         
-        Rrr = (V_ii + t) * inv_t
-        Rii = (V_rr + t) * inv_t
+        Rrr = V_ii * inv_t
+        Rii = V_rr * inv_t
         Rri = -V_ri * inv_t
 
         real_part = Rrr * centered_x.real + Rri * centered_x.imag
