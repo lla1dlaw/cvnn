@@ -1,0 +1,17 @@
+2025-07-02 14:21:08,628 - INFO - Starting training process using: cuda:0
+2025-07-02 14:21:09,763 - INFO - CIFAR-10 datasets loaded successfully.
+2025-07-02 14:21:09,764 - INFO - 
+================================================================================
+2025-07-02 14:21:09,764 - INFO - STARTING NEW EXPERIMENT: Complex_ResNet_WS_crelu_LearnImag
+2025-07-02 14:21:09,764 - INFO -   - Model Type: Complex
+2025-07-02 14:21:09,764 - INFO -   - Architecture: WS
+2025-07-02 14:21:09,764 - INFO -   - Activation: crelu
+2025-07-02 14:21:09,764 - INFO -   - Learn Imaginary: True
+2025-07-02 14:21:09,764 - INFO -   - Epochs: 200
+2025-07-02 14:21:09,764 - INFO -   - Batch Size: 128
+2025-07-02 14:21:09,764 - INFO -   - Folds: 1
+2025-07-02 14:21:09,764 - INFO - ================================================================================
+2025-07-02 14:21:13,225 - INFO - Using 4 GPUs with DataParallel.
+2025-07-02 14:21:13,230 - INFO - Adjusting learning rate to 0.01 at epoch 1
+2025-07-02 14:21:13,231 - INFO - 
+Epoch 1/200

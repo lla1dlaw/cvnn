@@ -1,0 +1,6 @@
+name,model_type,arch,activation,learn_imag,status,error
+Complex_ResNet_WS_crelu_LearnImag,Complex,WS,crelu,True,Failed,[Errno 116] Stale file handle
+Real_ResNet_WS,Real,WS,relu,N/A,Failed,[Errno 116] Stale file handle
+Complex_ResNet_WS_crelu_LearnImag,Complex,WS,crelu,True,Failed,'ComplexConv2d' object has no attribute 'in_channels'
+Complex_ResNet_WS_crelu_LearnImag,Complex,WS,crelu,True,Failed,'ComplexConv2d' object has no attribute 'in_channels'
+Complex_ResNet_WS_crelu_LearnImag,Complex,WS,crelu,True,Failed,"shape '[12, 3, 3, 3]' is invalid for input of size 144"
