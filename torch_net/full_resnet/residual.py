@@ -20,88 +20,69 @@ import math
 
 # --- WEIGHT INITIALIZATION (as per Paper Sec. 3.6) ---
 
-def complex_rayleigh_init(weight_tensor, fan_in):
-    """Initializes complex weights using Rayleigh distribution for magnitude
-    and uniform for phase, scaled by He variance."""
-    # Calculate sigma for Rayleigh distribution based on He initialization
-    # Var(W) = 2 * sigma^2 = 2 / fan_in  =>  sigma = 1 / sqrt(fan_in)
-    sigma = 1 / math.sqrt(fan_in)
-    
-    # Magnitude from Rayleigh distribution
-    magnitude = torch.randn_like(weight_tensor.real) * sigma
-    
-    # Phase from Uniform distribution
-    phase = torch.rand_like(weight_tensor.real) * (2 * math.pi) - math.pi
-    
-    # Create complex tensor
-    return torch.polar(magnitude, phase)
-
-def unitary_init(weight_tensor, fan_in):
-    """
-    Performs unitary initialization and scales to match He variance.
-    This is the variant used in the paper's experiments.
-    """
-    # Create a random complex matrix
-    num_rows, num_cols = weight_tensor.shape[0], weight_tensor.shape[1]
-    
-    # Flatten the spatial dimensions of the kernel
-    flat_shape = (num_rows, num_cols * weight_tensor.shape[2] * weight_tensor.shape[3])
-    
-    # Generate a random complex matrix
-    random_matrix = torch.randn(flat_shape, dtype=torch.complex64)
-    
-    # Perform QR decomposition to get a unitary matrix Q
-    q, _ = torch.linalg.qr(random_matrix)
-    
-    # Reshape back to the original weight tensor shape
-    unitary_matrix = q.reshape(weight_tensor.shape)
-    
-    # --- Scaling to match He variance ---
-    # He variance for complex is 2 / fan_in
-    he_variance = 2.0 / fan_in
-    
-    # Variance of the unitary matrix (should be close to 1/num_rows)
-    # We scale to match the desired He variance
-    scaling_factor = math.sqrt(he_variance)
-    
-    with torch.no_grad():
-        weight_tensor.copy_(unitary_matrix * scaling_factor)
-    return weight_tensor
-
-
 def init_weights(m):
     """
     Applies the paper's weight initialization to the model's layers.
+    Initializes real convolutions with scaled orthogonal matrices and
+    complex convolutions with scaled unitary matrices.
     """
     if isinstance(m, nn.Conv2d):
         # Orthogonal initialization for real-valued convolutions
         fan_in = nn.init._calculate_fan_in_and_fan_out(m.weight)[0]
         
-        # Create a random tensor to be orthogonalized
         flat_shape = (m.out_channels, m.in_channels * m.kernel_size[0] * m.kernel_size[1])
         random_matrix = torch.randn(flat_shape)
-        
-        # Perform orthogonal initialization
         orthogonal_matrix = orthogonal_(random_matrix)
-        
-        # Reshape back to the original weight tensor shape
         reshaped_matrix = orthogonal_matrix.reshape(m.weight.shape)
         
-        # --- Scaling to match He variance ---
-        # He variance is 2 / fan_in
         he_variance = 2.0 / fan_in
-        
-        # Variance of an orthogonal matrix is 1/N
-        # We scale to match the desired He variance
+        # The variance of an orthogonal matrix's elements is 1/n.
+        # We scale it to match the desired He variance.
         scaling_factor = math.sqrt(he_variance * m.out_channels)
         
         with torch.no_grad():
             m.weight.copy_(reshaped_matrix * scaling_factor)
 
     elif isinstance(m, ComplexConv2d):
-        # Unitary initialization for complex-valued convolutions
-        fan_in = m.in_channels * m.kernel_size[0] * m.kernel_size[1]
-        unitary_init(m.weight, fan_in)
+        # --- FIX: Access attributes from the internal real convolution layer ---
+        real_conv = m.conv_r
+        fan_in = real_conv.in_channels * real_conv.kernel_size[0] * real_conv.kernel_size[1]
+        
+        # Create a random complex matrix for QR decomposition
+        num_rows, num_cols = real_conv.out_channels, real_conv.in_channels
+        flat_shape = (num_rows, num_cols * real_conv.kernel_size[0] * real_conv.kernel_size[1])
+        random_matrix = torch.randn(flat_shape, dtype=torch.complex64)
+        
+        q, _ = torch.linalg.qr(random_matrix)
+        unitary_matrix = q.reshape(real_conv.weight.shape)
+        
+        # Scale to match He variance for complex weights
+        he_variance = 2.0 / fan_in
+        scaling_factor = math.sqrt(he_variance)
+        
+        scaled_unitary = unitary_matrix * scaling_factor
+
+        # --- FIX: Assign to the separate real and imaginary weight tensors ---
+        with torch.no_grad():
+            m.conv_r.weight.copy_(scaled_unitary.real)
+            m.conv_i.weight.copy_(scaled_unitary.imag)
+
+    elif isinstance(m, ComplexLinear):
+        # Unitary initialization for complex linear layers
+        real_fc = m.fc_r
+        fan_in = real_fc.in_features
+        
+        random_matrix = torch.randn(real_fc.weight.shape, dtype=torch.complex64)
+        q, _ = torch.linalg.qr(random_matrix)
+        
+        he_variance = 2.0 / fan_in
+        scaling_factor = math.sqrt(he_variance)
+        
+        scaled_unitary = q * scaling_factor
+        
+        with torch.no_grad():
+            m.fc_r.weight.copy_(scaled_unitary.real)
+            m.fc_i.weight.copy_(scaled_unitary.imag)
 
 
 # MODULE: UTILITY & INITIALIZATION
