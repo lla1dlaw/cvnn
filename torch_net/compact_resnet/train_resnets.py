@@ -131,7 +131,6 @@ def adjust_learning_rate(optimizer, epoch):
     else: # epoch >= 150
         lr = 0.0001
     
-    # Only update and log if the learning rate has changed
     for param_group in optimizer.param_groups:
         if param_group['lr'] != lr:
             logging.info(f"Adjusting learning rate to {lr} at epoch {epoch+1}")
@@ -148,7 +147,6 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
         logging.info(f"Using {torch.cuda.device_count()} GPUs with DataParallel.")
         model = nn.DataParallel(model)
     
-    # Set initial learning rate to a placeholder; it will be set by the scheduler on the first epoch
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True)
     criterion = nn.CrossEntropyLoss()
     train_accuracy_metric = MulticlassAccuracy(num_classes=10, average='micro').to(device)
@@ -303,7 +301,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="PyTorch ResNet Comparison Training Script")
     parser.add_argument('--epochs', type=int, default=200, help='Number of training epochs.')
     parser.add_argument('--batch-size', type=int, default=128, help='Batch size for training.')
-    parser.add_argument('--learning-rate', type=float, default=0.01, help='Initial learning rate (note: this is only for logging, the schedule is hardcoded).')
+    parser.add_argument('--learning-rate', type=float, default=0.1, help='Initial learning rate (note: this is only for logging, the schedule is hardcoded).')
     parser.add_argument('--folds', type=int, default=1, help='Number of K-Folds for cross-validation. Default is 1 (standard train/test split).')
     
     args = parser.parse_args()
