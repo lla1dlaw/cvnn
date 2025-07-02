@@ -67,7 +67,8 @@ echo "Starting DataParallel training script..."
 python train_resnets.py \
   --epochs 50 \
   --batch-size ${BATCH_SIZE} \
-  --folds 1
+  --folds 1 \
+  --act crelu complex_cardioid
 
 echo "======================================================"
 echo "Job finished with exit code $? at $(date)"
