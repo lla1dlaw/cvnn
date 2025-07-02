@@ -10,3 +10,7 @@
 /torch_net/full_resnet/__pycache__/
 /torch_net/full_resnet/saved_models/
 /torch_net/compact_resnet/saved_models/
+/torch_net/**/*.log
+/torch_net/**/*.err
+/torch_net/**/*.out
+
