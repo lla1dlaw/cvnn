@@ -51,7 +51,6 @@ dependencies:
   - openssl=3.5.1=h7b32b05_0
   - pathspec=0.12.1=pyhd8ed1ab_1
   - pip=25.1.1=pyh145f28c_0
-  - protobuf=5.29.3=py313h386a9ef_0
   - pycparser=2.22=pyh29332c3_1
   - pycryptodome=3.23.0=py313h0669bf7_0
   - pygments=2.19.2=pyhd8ed1ab_0
@@ -99,6 +98,7 @@ dependencies:
       - nvidia-nvtx-cu11==11.8.86
       - packaging==25.0
       - pillow==11.0.0
+      - protobuf==4.25.8
       - python-dotenv==1.1.1
       - scikit-learn==1.7.0
       - scipy==1.16.0
