@@ -1,5 +1,22 @@
 #!/bin/bash
 
+FILE_TO_WAIT_FOR="./dp_resnet.err"
+TIMEOUT_SECONDS=60 # Optional: set a timeout
+
 ./cleanup.sh
 sbatch train.sh
-tail -f -n 100 -s 0.25 dp_resnet.err
+echo "Waiting for $FILE_TO_WAIT_FOR to be created..."
+
+# Loop until the file exists or timeout is reached
+start_time=$(date +%s)
+until [ -f "$FILE_TO_WAIT_FOR" ] || (($(date +%s) - start_time >= TIMEOUT_SECONDS)); do
+  sleep 1 # Check every second
+done
+
+if [ -f "$FILE_TO_WAIT_FOR" ]; then
+  echo "$FILE_TO_WAIT_FOR has been created."
+  tail -f -n 100 -s 0.25 dp_resnet.err
+else
+  echo "Timeout: $FILE_TO_WAIT_FOR was not created within $TIMEOUT_SECONDS seconds."
+  exit 1 # Exit with an error code
+fi
