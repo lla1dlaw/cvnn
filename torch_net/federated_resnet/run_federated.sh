@@ -17,8 +17,8 @@
 #SBATCH --job-name=federated_resnet
 
 # Output and error files
-#SBATCH --output=federated_resnet_%j.out
-#SBATCH --error=federated_resnet_%j.err
+#SBATCH --output=federated_resnet.out
+#SBATCH --error=federated_resnet.err
 
 # Resource requests
 #SBATCH --partition=gpu
@@ -59,7 +59,7 @@ echo "---------------------------"
 #    Pass all desired experiment parameters here.
 echo "Starting Flower federated learning script..."
 python federated.py \
-  --num_clients 20 \
+  --num_clients 5 \
   --num_rounds 10 \
   --local_epochs 5 \
   --architectures WS \

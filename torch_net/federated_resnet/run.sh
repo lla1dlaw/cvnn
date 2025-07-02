@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_TO_WAIT_FOR="./dp_resnet.err"
+FILE_TO_WAIT_FOR="./federated_resnet.err"
 TIMEOUT_SECONDS=60 # Optional: set a timeout
 
 ./cleanup.sh
@@ -15,7 +15,7 @@ done
 
 if [ -f "$FILE_TO_WAIT_FOR" ]; then
   echo "$FILE_TO_WAIT_FOR has been created."
-  tail -f -n 100 -s 0.25 dp_resnet.err
+  tail -f -n 100 -s 0.25 "$FILE_TO_WAIT_FOR"
 else
   echo "Timeout: $FILE_TO_WAIT_FOR was not created within $TIMEOUT_SECONDS seconds."
   exit 1 # Exit with an error code
