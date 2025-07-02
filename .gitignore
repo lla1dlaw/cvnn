@@ -1,4 +1,6 @@
 /torch_net/data/
+/torch_net/compact_resnet/data/
+/torch_net/full_resnet/data/
 /torch_net/.env
 /data/
 /tf_net/.env
