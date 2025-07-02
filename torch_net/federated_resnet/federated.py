@@ -1,4 +1,3 @@
-
 """
 Federated Learning Training Script for Comparing Real and Complex ResNets
 
@@ -47,17 +46,18 @@ class FlowerClient(fl.client.NumPyClient):
         epochs = config["local_epochs"]
         learning_rate = config["learning_rate"]
         
-        train_loss, train_acc = train(self.model, self.trainloader, epochs=epochs, device=self.device, learning_rate=learning_rate)
+        train(self.model, self.trainloader, epochs=epochs, device=self.device, learning_rate=learning_rate)
         
-        return get_weights(self.model), len(self.trainloader.dataset), {"train_loss": train_loss, "train_accuracy": train_acc}
+        return get_weights(self.model), len(self.trainloader.dataset), {}
 
     def evaluate(self, parameters, config):
         print(f"[Client {self.cid}] evaluate, config: {config}")
         set_weights(self.model, parameters)
         
-        loss, accuracy = test(self.model, self.valloader, device=self.device)
+        loss, metrics = test(self.model, self.valloader, device=self.device)
         
-        return loss, len(self.valloader.dataset), {"accuracy": accuracy}
+        # Return the primary metric (accuracy) for Flower's default aggregation
+        return float(loss), len(self.valloader.dataset), {"accuracy": float(metrics["accuracy"])}
 
 # --- SIMULATION SETUP ---
 
@@ -69,14 +69,15 @@ def client_fn(cid: str, config: dict, trainloaders, valloaders, device):
     return FlowerClient(cid, model, trainloader, valloader, device)
 
 def get_evaluate_fn(test_loader, device, config):
-    """Return an evaluation function for server-side evaluation."""
+    """Return an evaluation function for server-side evaluation with all metrics."""
     def evaluate(server_round: int, parameters: fl.common.NDArrays, config_dict: dict):
         model = get_model(config)
         set_weights(model, parameters)
         model.to(device)
-        loss, accuracy = test(model, test_loader, device)
-        print(f"Server-side evaluation round {server_round} | Accuracy: {accuracy:.4f} | Loss: {loss:.4f}")
-        return loss, {"accuracy": accuracy}
+        loss, metrics = test(model, test_loader, device)
+        print(f"Server-side evaluation round {server_round} | Accuracy: {metrics['accuracy']:.4f} | Loss: {loss:.4f}")
+        # Return loss and the full dictionary of metrics
+        return loss, metrics
     return evaluate
 
 def save_results_to_csv(results, filename="federated_results.csv"):
@@ -142,8 +143,11 @@ def main(args):
             client_resources={"num_gpus": 1} if device.type == "cuda" else None,
         )
 
-        final_accuracy = history.metrics_centralized["accuracy"][-1][1]
-        final_loss = history.losses_centralized[-1][1]
+        # --- FIX: Correctly extract and save all metrics ---
+        final_metrics = history.metrics_centralized
+        # The metrics are stored as {metric_name: [(round, value), ...]}
+        # We want the value from the last round.
+        final_metrics_processed = {key: val[-1][1] for key, val in final_metrics.items()}
         
         final_save_data = {
             'status': 'Completed',
@@ -151,12 +155,11 @@ def main(args):
             'num_clients': args.num_clients,
             'num_rounds': args.num_rounds,
             'local_epochs': args.local_epochs,
-            'final_server_accuracy': final_accuracy,
-            'final_server_loss': final_loss,
+            **final_metrics_processed, # Unpack all the final metrics here
             'training_time_seconds': (datetime.now() - start_time).total_seconds()
         }
         save_results_to_csv(final_save_data)
-        print(f"SUCCESS: Experiment {config['name']} fully completed. Final Accuracy: {final_accuracy:.4f}")
+        print(f"SUCCESS: Experiment {config['name']} fully completed. Final Accuracy: {final_metrics_processed.get('accuracy', -1):.4f}")
 
 
 if __name__ == "__main__":
