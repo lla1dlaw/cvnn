@@ -199,9 +199,7 @@ def main(args):
                 server_app=fl.server.ServerApp(server_fn=server_fn),
                 client_app=fl.client.ClientApp(client_fn=client_fn),
                 num_clients=args.num_clients,
-                run_config=fl.common.RunConfig(
-                    model_config=config  # Pass the experiment config to the context
-                ),
+                run_config={"model_config": config},  # Pass the config as a dictionary
                 client_resources={"num_gpus": 1} if device.type == "cuda" else None,
             )
             
