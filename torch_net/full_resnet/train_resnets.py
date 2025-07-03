@@ -246,74 +246,76 @@ def main(args):
 
     train_dataset, test_dataset = get_datasets()
 
+
     for config in experiment_configs:
-        start_time = datetime.now()
-        logging.info("\n" + "="*80)
-        logging.info(f"STARTING NEW EXPERIMENT: {config['name']}")
-        logging.info(f"  - Model Type: {config['model_type']}")
-        logging.info(f"  - Architecture: {config['arch']}")
-        logging.info(f"  - Activation: {config['activation']}")
-        logging.info(f"  - Learn Imaginary: {config['learn_imag']}")
-        logging.info(f"  - Epochs: {args.epochs}")
-        logging.info(f"  - Batch Size: {args.batch_size}")
-        logging.info(f"  - Folds: {args.folds}")
-        logging.info("="*80)
-        
-        try:
-            fold_results = []
-            if args.folds > 1:
-                targets = np.array(train_dataset.targets)
-                skf = StratifiedKFold(n_splits=args.folds, shuffle=True, random_state=42)
-                splits = list(skf.split(np.zeros(len(targets)), targets))
-            else:
-                splits = [(np.arange(len(train_dataset)), np.arange(len(test_dataset)))]
+        for i in range(10): # run experiment 10 times for complex and for real resnets (take average after training)
+            start_time = datetime.now()
+            logging.info("\n" + "="*80)
+            logging.info(f"STARTING NEW EXPERIMENT: {config['name']}")
+            logging.info(f"  - Model Type: {config['model_type']}")
+            logging.info(f"  - Architecture: {config['arch']}")
+            logging.info(f"  - Activation: {config['activation']}")
+            logging.info(f"  - Learn Imaginary: {config['learn_imag']}")
+            logging.info(f"  - Epochs: {args.epochs}")
+            logging.info(f"  - Batch Size: {args.batch_size}")
+            logging.info(f"  - Folds: {args.folds}")
+            logging.info("="*80)
             
-            for fold, (train_idx, val_idx) in enumerate(splits):
-                fold_num = fold + 1
+            try:
+                fold_results = []
                 if args.folds > 1:
-                    train_sampler = SubsetRandomSampler(train_idx)
-                    val_sampler = SubsetRandomSampler(val_idx)
-                    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, sampler=train_sampler, num_workers=2)
-                    val_dataset_no_aug = torchvision.datasets.CIFAR10(root='./data', train=True, download=False, transform=get_datasets()[1].transform)
-                    val_loader = DataLoader(val_dataset_no_aug, batch_size=args.batch_size, sampler=val_sampler, num_workers=2)
+                    targets = np.array(train_dataset.targets)
+                    skf = StratifiedKFold(n_splits=args.folds, shuffle=True, random_state=42)
+                    splits = list(skf.split(np.zeros(len(targets)), targets))
                 else:
-                    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2)
-                    val_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
-
-                model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                    splits = [(np.arange(len(train_dataset)), np.arange(len(test_dataset)))]
                 
-                model_path = save_model(model, config, fold=fold_num)
-                fold_data = {'fold': fold_num, 'model_path': model_path, **metrics}
-                if args.folds <= 1: 
-                    for i in range(args.epochs):
-                        fold_data[f"epoch_{i+1}_train_loss"] = history['train_loss'][i]
-                        fold_data[f"epoch_{i+1}_train_acc"] = history['train_acc'][i]
-                        fold_data[f"epoch_{i+1}_val_loss"] = history['val_loss'][i]
-                        fold_data[f"epoch_{i+1}_val_acc"] = history['val_acc'][i]
-                fold_results.append(fold_data)
-                logging.info(f"SUCCESS: Fold {fold_num} for experiment {config['name']} completed.")
+                for fold, (train_idx, val_idx) in enumerate(splits):
+                    fold_num = fold + 1
+                    if args.folds > 1:
+                        train_sampler = SubsetRandomSampler(train_idx)
+                        val_sampler = SubsetRandomSampler(val_idx)
+                        train_loader = DataLoader(train_dataset, batch_size=args.batch_size, sampler=train_sampler, num_workers=2)
+                        val_dataset_no_aug = torchvision.datasets.CIFAR10(root='./data', train=True, download=False, transform=get_datasets()[1].transform)
+                        val_loader = DataLoader(val_dataset_no_aug, batch_size=args.batch_size, sampler=val_sampler, num_workers=2)
+                    else:
+                        train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=2)
+                        val_loader = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=2)
 
-            final_save_data = {'status': 'Completed', **config}
-            if args.folds > 1:
-                metric_keys = list(fold_results[0].keys() - {'fold', 'model_path'})
-                for key in metric_keys:
-                    values = [res[key] for res in fold_results]
-                    final_save_data[f"{key}_mean"] = np.mean(values)
-                    final_save_data[f"{key}_std"] = np.std(values)
-            else:
-                final_save_data.update(fold_results[0])
+                    model, metrics, history = run_experiment_fold(config, args, train_loader, val_loader, fold_num, device)
+                    
+                    model_path = save_model(model, config, fold=fold_num)
+                    fold_data = {'fold': fold_num, 'model_path': model_path, **metrics}
+                    if args.folds <= 1: 
+                        for i in range(args.epochs):
+                            fold_data[f"epoch_{i+1}_train_loss"] = history['train_loss'][i]
+                            fold_data[f"epoch_{i+1}_train_acc"] = history['train_acc'][i]
+                            fold_data[f"epoch_{i+1}_val_loss"] = history['val_loss'][i]
+                            fold_data[f"epoch_{i+1}_val_acc"] = history['val_acc'][i]
+                    fold_results.append(fold_data)
+                    logging.info(f"SUCCESS: Fold {fold_num} for experiment {config['name']} completed.")
 
-            final_save_data['training_time_seconds'] = (datetime.now() - start_time).total_seconds()
-            save_results_to_csv(final_save_data)
-            logging.info(f"SUCCESS: Experiment {config['name']} fully completed and results saved.")
+                final_save_data = {'status': 'Completed', **config}
+                if args.folds > 1:
+                    metric_keys = list(fold_results[0].keys() - {'fold', 'model_path'})
+                    for key in metric_keys:
+                        values = [res[key] for res in fold_results]
+                        final_save_data[f"{key}_mean"] = np.mean(values)
+                        final_save_data[f"{key}_std"] = np.std(values)
+                else:
+                    final_save_data.update(fold_results[0])
 
-        except Exception as e:
-            logging.error(f"FAILURE: Experiment {config['name']} failed after {(datetime.now() - start_time).total_seconds():.2f} seconds.")
-            logging.error(traceback.format_exc())
-            error_results = {**config, 'status': 'Failed', 'error': str(e)}
-            save_results_to_csv(error_results)
-            error_body = f"Experiment '{config['name']}' failed.\n\nError:\n{e}\n\nTraceback:\n{traceback.format_exc()}"
-            send_email_notification("Training Script ERROR", error_body)
+                final_save_data['training_time_seconds'] = (datetime.now() - start_time).total_seconds()
+                save_results_to_csv(final_save_data)
+                logging.info(f"SUCCESS: Experiment {config['name']} fully completed and results saved.")
+
+            except Exception as e:
+                logging.error(f"FAILURE: Experiment {config['name']} failed after {(datetime.now() - start_time).total_seconds():.2f} seconds.")
+                logging.error(traceback.format_exc())
+                error_results = {**config, 'status': 'Failed', 'error': str(e)}
+                save_results_to_csv(error_results)
+                error_body = f"Experiment '{config['name']}' failed.\n\nError:\n{e}\n\nTraceback:\n{traceback.format_exc()}"
+                send_email_notification("Training Script ERROR", error_body)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="PyTorch ResNet Comparison Training Script")
