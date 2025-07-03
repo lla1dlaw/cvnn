@@ -158,7 +158,7 @@ def test(net, testloader, device):
             loss += criterion(outputs, labels).item()
             probs = torch.softmax(outputs, dim=1)
             for name, metric in metrics.items():
-                (metric.update(probs, targets) if name == 'auroc' else metric.update(outputs, targets))
+                (metric.update(probs, labels) if name == 'auroc' else metric.update(outputs, labels))
     
     loss /= len(testloader.dataset)
     # Compute all metrics
