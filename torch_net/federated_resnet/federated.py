@@ -4,9 +4,9 @@ Federated Learning Training Script for Comparing Real and Complex ResNets
 This script uses Flower to simulate a federated learning environment for the
 ResNet comparison experiment.
 
-This updated version uses the modern Flower API with `start_simulation` and the
-`server_fn` pattern to manage experiment state in a robust and clean manner.
-It also includes rich progress bars for monitoring training.
+This version is adapted to use an older Flower simulation API to ensure
+compatibility with the user's environment. It uses rich progress bars for
+monitoring training.
 
 Usage:
     # To run a default federated experiment with 10 clients for 5 rounds:
@@ -45,7 +45,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.valloader = valloader
         self.device = device
 
-    def get_parameters(self):
+    def get_parameters(self, config):
         """Return the current local model weights."""
         return get_weights(self.model)
 
@@ -60,7 +60,7 @@ class FlowerClient(fl.client.NumPyClient):
         train(self.model, self.trainloader, epochs=epochs, device=self.device, learning_rate=learning_rate, cid=self.cid)
         return get_weights(self.model), len(self.trainloader.dataset), {}
 
-    def evaluate(self, parameters):
+    def evaluate(self, parameters, config):
         """
         Receive model parameters from the server, evaluate the model on the
         local validation set, and return the results.
@@ -100,7 +100,7 @@ class RichFedAvg(fl.server.strategy.FedAvg):
 
 def get_evaluate_fn(test_loader, device, config, progress: Progress, rounds_task_id: int):
     """Return an evaluation function for server-side evaluation."""
-    def evaluate(server_round: int, parameters: fl.common.NDArrays):
+    def evaluate(server_round: int, parameters: fl.common.NDArrays, config_dict: dict):
         """Centralized evaluation function."""
         model = get_model(config)
         set_weights(model, parameters)
@@ -163,33 +163,32 @@ def main(args):
             rounds_task_id = progress.add_task("[green]Federated Rounds", total=args.num_rounds)
             client_task_id = progress.add_task("[cyan]Fitting clients", total=args.min_fit_clients)
 
-            # Define a function that returns the ServerAppComponents
-            def server_fn(context: fl.common.Context) -> fl.server.ServerAppComponents:
-                evaluate_fn = get_evaluate_fn(testloader, device, config, progress, rounds_task_id)
-                strategy = RichFedAvg(
-                    progress=progress,
-                    client_task_id=client_task_id,
-                    fraction_fit=args.fraction_fit,
-                    min_fit_clients=args.min_fit_clients,
-                    min_available_clients=args.num_clients,
-                    evaluate_fn=evaluate_fn,
-                    on_fit_config_fn=lambda server_round: {"local_epochs": args.local_epochs, "learning_rate": args.learning_rate},
-                )
-                server_config = fl.server.ServerConfig(num_rounds=args.num_rounds)
-                return fl.server.ServerAppComponents(config=server_config, strategy=strategy)
-
-            # Define the client function
+            # Define the client function, capturing necessary variables from the loop's scope
             def client_fn(cid: str) -> fl.client.Client:
                 model = get_model(config).to(device)
                 trainloader = trainloaders[int(cid)]
                 valloader = valloaders[int(cid)]
                 return FlowerClient(cid=cid, model=model, trainloader=trainloader, valloader=valloader, device=device)
 
+            # Define the evaluation function and strategy
+            evaluate_fn = get_evaluate_fn(testloader, device, config, progress, rounds_task_id)
+            strategy = RichFedAvg(
+                progress=progress,
+                client_task_id=client_task_id,
+                fraction_fit=args.fraction_fit,
+                min_fit_clients=args.min_fit_clients,
+                min_available_clients=args.num_clients,
+                evaluate_fn=evaluate_fn,
+                on_fit_config_fn=lambda server_round: {"local_epochs": args.local_epochs, "learning_rate": args.learning_rate},
+            )
+
             console.print(f"\n--> Starting simulation for '{config['name']}'...")
+            # Use the older start_simulation API
             history = fl.simulation.start_simulation(
-                server_app=fl.server.ServerApp(server_fn=server_fn),
                 client_fn=client_fn,
                 num_clients=args.num_clients,
+                config=fl.server.ServerConfig(num_rounds=args.num_rounds),
+                strategy=strategy,
                 client_resources={"num_gpus": 1} if device.type == "cuda" else None,
             )
             
