@@ -4,9 +4,9 @@ Federated Learning Training Script for Comparing Real and Complex ResNets
 This script uses Flower to simulate a federated learning environment for the
 ResNet comparison experiment.
 
-This updated version uses the modern Flower API with `run_simulation` and `Context`
-to manage experiment state in a robust and clean manner. It also includes
-rich progress bars for monitoring training.
+This updated version uses the modern Flower API with `start_simulation` and the
+`server_fn` pattern to manage experiment state in a robust and clean manner.
+It also includes rich progress bars for monitoring training.
 
 Usage:
     # To run a default federated experiment with 10 clients for 5 rounds:
@@ -45,7 +45,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.valloader = valloader
         self.device = device
 
-    def get_parameters(self, config):
+    def get_parameters(self):
         """Return the current local model weights."""
         return get_weights(self.model)
 
@@ -60,7 +60,7 @@ class FlowerClient(fl.client.NumPyClient):
         train(self.model, self.trainloader, epochs=epochs, device=self.device, learning_rate=learning_rate, cid=self.cid)
         return get_weights(self.model), len(self.trainloader.dataset), {}
 
-    def evaluate(self, parameters, config):
+    def evaluate(self, parameters):
         """
         Receive model parameters from the server, evaluate the model on the
         local validation set, and return the results.
@@ -98,23 +98,9 @@ class RichFedAvg(fl.server.strategy.FedAvg):
 
 # --- SIMULATION SETUP ---
 
-def client_fn_context(context: fl.common.Context) -> fl.client.Client:
-    """
-    Create a Flower client instance using the shared context.
-    This function now adheres to the `def client_fn(context: Context)` signature.
-    """
-    # The client ID is now retrieved from the context
-    cid = context.get("cid")
-    
-    model_config = context.get("model_config")
-    model = get_model(model_config).to(context.get("device"))
-    trainloader = context.get("trainloaders")[int(cid)]
-    valloader = context.get("valloaders")[int(cid)]
-    return FlowerClient(cid=cid, model=model, trainloader=trainloader, valloader=valloader, device=context.get("device")).to_client()
-
 def get_evaluate_fn(test_loader, device, config, progress: Progress, rounds_task_id: int):
     """Return an evaluation function for server-side evaluation."""
-    def evaluate(server_round: int, parameters: fl.common.NDArrays, config_dict: dict):
+    def evaluate(server_round: int, parameters: fl.common.NDArrays):
         """Centralized evaluation function."""
         model = get_model(config)
         set_weights(model, parameters)
@@ -171,30 +157,41 @@ def main(args):
         exp_task_id = progress.add_task("[magenta]Overall Progress", total=len(experiment_configs))
 
         for config in experiment_configs:
+            start_time = datetime.now()
             console.print(Panel(f"[bold]STARTING EXPERIMENT: {config['name']}[/bold]", style="cyan", border_style="cyan"))
             
             rounds_task_id = progress.add_task("[green]Federated Rounds", total=args.num_rounds)
             client_task_id = progress.add_task("[cyan]Fitting clients", total=args.min_fit_clients)
 
-            evaluate_fn = get_evaluate_fn(testloader, device, config, progress, rounds_task_id)
+            # Define a function that returns the ServerAppComponents
+            def server_fn(context: fl.common.Context) -> fl.server.ServerAppComponents:
+                evaluate_fn = get_evaluate_fn(testloader, device, config, progress, rounds_task_id)
+                strategy = RichFedAvg(
+                    progress=progress,
+                    client_task_id=client_task_id,
+                    fraction_fit=args.fraction_fit,
+                    min_fit_clients=args.min_fit_clients,
+                    min_available_clients=args.num_clients,
+                    evaluate_fn=evaluate_fn,
+                    on_fit_config_fn=lambda server_round: {"local_epochs": args.local_epochs, "learning_rate": args.learning_rate},
+                )
+                server_config = fl.server.ServerConfig(num_rounds=args.num_rounds)
+                return fl.server.ServerAppComponents(config=server_config, strategy=strategy)
 
-            strategy = RichFedAvg(
-                progress=progress,
-                client_task_id=client_task_id,
-                fraction_fit=args.fraction_fit,
-                min_fit_clients=args.min_fit_clients,
-                min_available_clients=args.num_clients,
-                evaluate_fn=evaluate_fn,
-                on_fit_config_fn=lambda server_round: {"local_epochs": args.local_epochs, "learning_rate": args.learning_rate},
-            )
-
-            client_app = fl.client.ClientApp(client_fn=client_fn_context)
-            server_app = fl.server.ServerApp(config=fl.server.ServerConfig(num_rounds=args.num_rounds), strategy=strategy)
-            
-            context = fl.common.Context(shared={"model_config": config, "trainloaders": trainloaders, "valloaders": valloaders, "device": device})
+            # Define the client function
+            def client_fn(cid: str) -> fl.client.Client:
+                model = get_model(config).to(device)
+                trainloader = trainloaders[int(cid)]
+                valloader = valloaders[int(cid)]
+                return FlowerClient(cid=cid, model=model, trainloader=trainloader, valloader=valloader, device=device)
 
             console.print(f"\n--> Starting simulation for '{config['name']}'...")
-            history = fl.simulation.run_simulation(server_app=server_app, client_app=client_app, num_clients=args.num_clients, context=context, client_resources={"num_gpus": 1} if device.type == "cuda" else None)
+            history = fl.simulation.start_simulation(
+                server_app=fl.server.ServerApp(server_fn=server_fn),
+                client_fn=client_fn,
+                num_clients=args.num_clients,
+                client_resources={"num_gpus": 1} if device.type == "cuda" else None,
+            )
             
             progress.remove_task(rounds_task_id)
             progress.remove_task(client_task_id)
@@ -204,9 +201,8 @@ def main(args):
             final_metrics = history.metrics_centralized
             final_metrics_processed = {key: val[-1][1] for key, val in final_metrics.items() if val}
             
-            # Correctly calculate training time
-            start_time = datetime.now() # This should be captured before the loop
-            final_save_data = {'status': 'Completed', **config, 'num_clients': args.num_clients, 'num_rounds': args.num_rounds, 'local_epochs': args.local_epochs, **final_metrics_processed, 'training_time_seconds': (datetime.now() - start_time).total_seconds()}
+            end_time = datetime.now()
+            final_save_data = {'status': 'Completed', **config, 'num_clients': args.num_clients, 'num_rounds': args.num_rounds, 'local_epochs': args.local_epochs, **final_metrics_processed, 'training_time_seconds': (end_time - start_time).total_seconds()}
             save_results_to_csv(final_save_data)
             console.print(f"Results for '[bold]{config['name']}[/bold]' saved. Final Accuracy: [bold yellow]{final_metrics_processed.get('accuracy', -1):.4f}[/bold yellow]")
             
