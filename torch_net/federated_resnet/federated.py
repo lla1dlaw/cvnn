@@ -4,9 +4,9 @@ Federated Learning Training Script for Comparing Real and Complex ResNets
 This script uses Flower to simulate a federated learning environment for the
 ResNet comparison experiment.
 
-This version is adapted to use an older Flower simulation API to ensure
-compatibility with the user's environment. It uses rich progress bars for
-monitoring training.
+This version is adapted to use the modern Flower simulation API (ClientApp/ServerApp)
+to ensure compatibility with the user's environment and remove deprecation warnings.
+It uses rich progress bars for monitoring training.
 
 Usage:
     # To run a default federated experiment with 10 clients for 5 rounds:
@@ -163,32 +163,45 @@ def main(args):
             rounds_task_id = progress.add_task("[green]Federated Rounds", total=args.num_rounds)
             client_task_id = progress.add_task("[cyan]Fitting clients", total=args.min_fit_clients)
 
-            # Define the client function, capturing necessary variables from the loop's scope
-            def client_fn(cid: str) -> fl.client.Client:
-                model = get_model(config).to(device)
+            # Define the client function according to the modern Flower API
+            def client_fn(context: fl.common.Context) -> fl.client.Client:
+                # Get client ID from the context
+                cid = str(context.node_id)
+                # Get the model config from the context's run_config
+                model_config = context.run_config["model_config"]
+                
+                model = get_model(model_config).to(device)
                 trainloader = trainloaders[int(cid)]
                 valloader = valloaders[int(cid)]
-                return FlowerClient(cid=cid, model=model, trainloader=trainloader, valloader=valloader, device=device)
+                # Return a Client object
+                return FlowerClient(cid=cid, model=model, trainloader=trainloader, valloader=valloader, device=device).to_client()
 
-            # Define the evaluation function and strategy
-            evaluate_fn = get_evaluate_fn(testloader, device, config, progress, rounds_task_id)
-            strategy = RichFedAvg(
-                progress=progress,
-                client_task_id=client_task_id,
-                fraction_fit=args.fraction_fit,
-                min_fit_clients=args.min_fit_clients,
-                min_available_clients=args.num_clients,
-                evaluate_fn=evaluate_fn,
-                on_fit_config_fn=lambda server_round: {"local_epochs": args.local_epochs, "learning_rate": args.learning_rate},
-            )
+            # Define the server-side components via a function
+            def server_fn(context: fl.common.Context) -> fl.server.ServerAppComponents:
+                server_model_config = context.run_config["model_config"]
+                evaluate_fn = get_evaluate_fn(testloader, device, server_model_config, progress, rounds_task_id)
+                strategy = RichFedAvg(
+                    progress=progress,
+                    client_task_id=client_task_id,
+                    fraction_fit=args.fraction_fit,
+                    min_fit_clients=args.min_fit_clients,
+                    min_available_clients=args.num_clients,
+                    evaluate_fn=evaluate_fn,
+                    on_fit_config_fn=lambda server_round: {"local_epochs": args.local_epochs, "learning_rate": args.learning_rate},
+                )
+                server_config = fl.server.ServerConfig(num_rounds=args.num_rounds)
+                return fl.server.ServerAppComponents(config=server_config, strategy=strategy)
 
             console.print(f"\n--> Starting simulation for '{config['name']}'...")
-            # Use the older start_simulation API
+            
+            # Use the modern start_simulation API with ServerApp and ClientApp
             history = fl.simulation.start_simulation(
-                client_fn=client_fn,
+                server_app=fl.server.ServerApp(server_fn=server_fn),
+                client_app=fl.client.ClientApp(client_fn=client_fn),
                 num_clients=args.num_clients,
-                config=fl.server.ServerConfig(num_rounds=args.num_rounds),
-                strategy=strategy,
+                run_config=fl.common.RunConfig(
+                    model_config=config  # Pass the experiment config to the context
+                ),
                 client_resources={"num_gpus": 1} if device.type == "cuda" else None,
             )
             
