@@ -66,7 +66,7 @@ def client_fn(cid: str, config: dict, trainloaders, valloaders, device):
     model = get_model(config).to(device)
     trainloader = trainloaders[int(cid)]
     valloader = valloaders[int(cid)]
-    return FlowerClient(cid, model, trainloader, valloader, device)
+    return FlowerClient(cid, model, trainloader, valloader, device).to_client()
 
 def get_evaluate_fn(test_loader, device, config):
     """Return an evaluation function for server-side evaluation with all metrics."""
