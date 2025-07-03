@@ -13,7 +13,6 @@ import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Subset
 from collections import OrderedDict
-from tqdm import tqdm
 import math
 from torch.nn.init import orthogonal_
 
@@ -111,7 +110,6 @@ def load_partitioned_data(num_clients: int, batch_size: int):
     lengths = [partition_size] * num_clients
     datasets = torch.utils.data.random_split(trainset, lengths, torch.Generator().manual_seed(42))
     trainloaders = [DataLoader(ds, batch_size=batch_size, shuffle=True) for ds in datasets]
-    # For federated simulation, client-side validation uses the global test set
     valloaders = [DataLoader(testset, batch_size=batch_size) for _ in range(num_clients)]
     testloader = DataLoader(testset, batch_size=batch_size)
     return trainloaders, valloaders, testloader
@@ -132,10 +130,12 @@ def get_metrics(device, num_classes=10):
     }
     return metrics
 
-def train(net, trainloader, epochs, device, learning_rate):
+def train(net, trainloader, epochs, device, learning_rate, cid: str):
+    """Train the network on the training set."""
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=learning_rate, momentum=0.9, nesterov=True)
     net.train()
+    print(f"    > Client {cid} starting training...")
     for epoch in range(epochs):
         for images, labels in trainloader:
             images, labels = images.to(device), labels.to(device)
@@ -144,26 +144,28 @@ def train(net, trainloader, epochs, device, learning_rate):
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
+    print(f"    > Client {cid} finished training.")
+
 
 def test(net, testloader, device):
     """Evaluate the network on the test set and return all metrics."""
     criterion = torch.nn.CrossEntropyLoss()
     metrics = get_metrics(device)
-    loss = 0.0
+    total_loss = 0.0
     net.eval()
     with torch.no_grad():
         for images, labels in testloader:
             images, labels = images.to(device), labels.to(device)
             outputs = net(images)
-            loss += criterion(outputs, labels).item()
+            total_loss += criterion(outputs, labels).item()
+            
             probs = torch.softmax(outputs, dim=1)
             for name, metric in metrics.items():
                 (metric.update(probs, labels) if name == 'auroc' else metric.update(outputs, labels))
     
-    loss /= len(testloader.dataset)
-    # Compute all metrics
+    avg_loss = total_loss / len(testloader)
     final_metrics = {key: metric.compute().item() for key, metric in metrics.items()}
-    return loss, final_metrics
+    return avg_loss, final_metrics
 
 def get_weights(net):
     return [val.cpu().numpy() for _, val in net.state_dict().items()]

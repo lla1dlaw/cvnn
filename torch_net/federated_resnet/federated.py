@@ -4,8 +4,9 @@ Federated Learning Training Script for Comparing Real and Complex ResNets
 This script uses Flower to simulate a federated learning environment for the
 ResNet comparison experiment.
 
-It defines the Flower Client, the server-side Strategy, and the main
-simulation loop. All experiment parameters are controllable via CLI arguments.
+This updated version uses the modern Flower API with `run_simulation` and `Context`
+to manage experiment state in a robust and clean manner. It also includes
+rich progress bars for monitoring training.
 
 Usage:
     # To run a default federated experiment with 10 clients for 5 rounds:
@@ -19,15 +20,24 @@ import torch
 import argparse
 from itertools import product
 from datetime import datetime
-import logging
 import os
 import csv
+from typing import Dict, Any, List, Tuple
+
+# Rich imports for better terminal output
+from rich.console import Console
+from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn, TimeElapsedColumn
+from rich.panel import Panel
 
 from federated_utils import get_model, load_partitioned_data, train, test, get_weights, set_weights
 
 # --- FLOWER CLIENT DEFINITION ---
 
 class FlowerClient(fl.client.NumPyClient):
+    """
+    A Flower client that handles training and evaluation of a ResNet model.
+    It is instantiated with a client ID, model, data loaders, and a device.
+    """
     def __init__(self, cid, model, trainloader, valloader, device):
         self.cid = cid
         self.model = model
@@ -36,51 +46,92 @@ class FlowerClient(fl.client.NumPyClient):
         self.device = device
 
     def get_parameters(self, config):
-        print(f"[Client {self.cid}] get_parameters")
+        """Return the current local model weights."""
         return get_weights(self.model)
 
     def fit(self, parameters, config):
-        print(f"[Client {self.cid}] fit, config: {config}")
+        """
+        Receive model parameters from the server, train the model locally,
+        and return the updated model parameters.
+        """
         set_weights(self.model, parameters)
-        
         epochs = config["local_epochs"]
         learning_rate = config["learning_rate"]
-        
-        train(self.model, self.trainloader, epochs=epochs, device=self.device, learning_rate=learning_rate)
-        
+        train(self.model, self.trainloader, epochs=epochs, device=self.device, learning_rate=learning_rate, cid=self.cid)
         return get_weights(self.model), len(self.trainloader.dataset), {}
 
     def evaluate(self, parameters, config):
-        print(f"[Client {self.cid}] evaluate, config: {config}")
+        """
+        Receive model parameters from the server, evaluate the model on the
+        local validation set, and return the results.
+        """
         set_weights(self.model, parameters)
-        
         loss, metrics = test(self.model, self.valloader, device=self.device)
-        
-        # Return the primary metric (accuracy) for Flower's default aggregation
         return float(loss), len(self.valloader.dataset), {"accuracy": float(metrics["accuracy"])}
+
+# --- RICH-ENABLED FEDAVG STRATEGY ---
+
+class RichFedAvg(fl.server.strategy.FedAvg):
+    """
+    A custom FedAvg strategy that integrates with Rich progress bars.
+    """
+    def __init__(self, *, progress: Progress, client_task_id: int, **kwargs):
+        self.progress = progress
+        self.client_task_id = client_task_id
+        super().__init__(**kwargs)
+
+    def configure_fit(
+        self, server_round: int, parameters: fl.common.NDArrays, client_manager: fl.server.client_manager.ClientManager
+    ) -> List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitIns]]:
+        """Configure the next round of training and update the client progress bar."""
+        # Get the clients and their configurations from the parent class
+        clients_and_configs = super().configure_fit(server_round, parameters, client_manager)
+        
+        # Update the client progress bar for the new round
+        self.progress.update(self.client_task_id, total=len(clients_and_configs), description=f"[cyan]Fitting round {server_round}", completed=0)
+        
+        return clients_and_configs
+
+    def aggregate_fit(
+        self, server_round: int, results: List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes]], failures: List[Any]
+    ) -> Tuple[fl.common.NDArrays | None, Dict[str, Any]]:
+        """Aggregate fit results and advance the client progress bar."""
+        # Advance the progress bar based on the number of successful results
+        self.progress.update(self.client_task_id, advance=len(results))
+        
+        # Call the parent aggregation method
+        return super().aggregate_fit(server_round, results, failures)
+
 
 # --- SIMULATION SETUP ---
 
-def client_fn(cid: str, config: dict, trainloaders, valloaders, device):
-    """Create a Flower client instance for a given client ID."""
-    model = get_model(config).to(device)
-    trainloader = trainloaders[int(cid)]
-    valloader = valloaders[int(cid)]
-    return FlowerClient(cid, model, trainloader, valloader, device).to_client()
+def client_fn_context(cid: str, context: fl.common.Context) -> fl.client.Client:
+    """Create a Flower client instance for a given client ID using the shared context."""
+    model_config = context.get("model_config")
+    model = get_model(model_config).to(context.get("device"))
+    trainloader = context.get("trainloaders")[int(cid)]
+    valloader = context.get("valloaders")[int(cid)]
+    return FlowerClient(cid=cid, model=model, trainloader=trainloader, valloader=valloader, device=context.get("device")).to_client()
 
-def get_evaluate_fn(test_loader, device, config):
-    """Return an evaluation function for server-side evaluation with all metrics."""
+def get_evaluate_fn(test_loader, device, config, progress: Progress, rounds_task_id: int):
+    """Return an evaluation function for server-side evaluation."""
     def evaluate(server_round: int, parameters: fl.common.NDArrays, config_dict: dict):
+        """Centralized evaluation function."""
         model = get_model(config)
         set_weights(model, parameters)
         model.to(device)
+        
         loss, metrics = test(model, test_loader, device)
-        print(f"Server-side evaluation round {server_round} | Accuracy: {metrics['accuracy']:.4f} | Loss: {loss:.4f}")
-        # Return loss and the full dictionary of metrics
+        
+        # Update the server-side progress bar for rounds
+        progress.update(rounds_task_id, advance=1, description=f"[green]Finished round {server_round}")
+        
+        console.print(f"Round {server_round} | Server-side Accuracy: {metrics['accuracy']:.4f} | Loss: {loss:.4f}")
         return loss, metrics
     return evaluate
 
-def save_results_to_csv(results, filename="federated_results.csv"):
+def save_results_to_csv(results: Dict[str, Any], filename="federated_results.csv"):
+    """Append a dictionary of results to a CSV file."""
     file_exists = os.path.isfile(filename)
     with open(filename, 'a', newline='') as csvfile:
         fieldnames = list(results.keys())
@@ -88,79 +139,80 @@ def save_results_to_csv(results, filename="federated_results.csv"):
         if not file_exists:
             writer.writeheader()
         writer.writerow(results)
-    print(f"Results saved to {filename}")
 
 # --- MAIN DRIVER ---
+console = Console()
 
 def main(args):
+    """Main function to set up and run the federated learning simulation."""
+    console.print(Panel("[bold green]Step 1: Initializing Setup[/bold green]"))
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    print(f"Starting federated training on device: {device}")
+    console.print(f"Federated training starting on device: [yellow]{device}[/yellow]")
 
+    console.print(Panel("[bold green]Step 2: Loading and Partitioning Data[/bold green]"))
     trainloaders, valloaders, testloader = load_partitioned_data(args.num_clients, args.batch_size)
+    console.print(f"Data partitioned for [cyan]{args.num_clients}[/cyan] clients.")
 
+    console.print(Panel("[bold green]Step 3: Defining Experiment Configurations[/bold green]"))
     arch_types = args.architectures
     complex_activations = args.activations
-    if args.learn_imag_mode == 'true_only':
-        learn_imag_opts = [True]
-    elif args.learn_imag_mode == 'false_only':
-        learn_imag_opts = [False]
-    else:
-        learn_imag_opts = [True, False]
+    learn_imag_opts = {'true_only': [True], 'false_only': [False], 'both': [True, False]}[args.learn_imag_mode]
         
     experiment_configs = []
     for arch, act, learn in product(arch_types, complex_activations, learn_imag_opts):
         experiment_configs.append({'name': f"Complex_ResNet_{arch}_{act}_{'LearnImag' if learn else 'ZeroImag'}", 'model_type': 'Complex', 'arch': arch, 'activation': act, 'learn_imag': learn})
     for arch in arch_types:
         experiment_configs.append({'name': f"Real_ResNet_{arch}", 'model_type': 'Real', 'arch': arch, 'activation': 'relu', 'learn_imag': 'N/A'})
+    console.print(f"Generated [cyan]{len(experiment_configs)}[/cyan] experiment configurations to run.")
 
-    for config in experiment_configs:
-        start_time = datetime.now()
-        print("\n" + "="*80)
-        print(f"STARTING NEW FEDERATED EXPERIMENT: {config['name']}")
-        print(f"  - Architecture: {config['arch']}")
-        print(f"  - Activation: {config['activation']}")
-        print(f"  - Learn Imaginary: {config['learn_imag']}")
-        print(f"  - Rounds: {args.num_rounds}")
-        print(f"  - Clients: {args.num_clients}")
-        print("="*80)
+    console.print(Panel("[bold green]Step 4: Starting Federated Learning Simulation Loop[/bold green]"))
+    
+    progress_columns = [TextColumn("[progress.description]{task.description}"), BarColumn(), TextColumn("[progress.percentage]{task.percentage:>3.0f}%"), TimeRemainingColumn(), TimeElapsedColumn()]
+    
+    with Progress(*progress_columns, console=console) as progress:
+        exp_task_id = progress.add_task("[magenta]Overall Progress", total=len(experiment_configs))
 
-        bound_client_fn = lambda cid: client_fn(cid, config, trainloaders, valloaders, device)
-        evaluate_fn = get_evaluate_fn(testloader, device, config)
+        for config in experiment_configs:
+            console.print(Panel(f"[bold]STARTING EXPERIMENT: {config['name']}[/bold]", style="cyan", border_style="cyan"))
+            
+            rounds_task_id = progress.add_task("[green]Federated Rounds", total=args.num_rounds)
+            client_task_id = progress.add_task("[cyan]Fitting clients", total=args.min_fit_clients)
 
-        strategy = fl.server.strategy.FedAvg(
-            fraction_fit=args.fraction_fit,
-            min_fit_clients=args.min_fit_clients,
-            min_available_clients=args.num_clients,
-            evaluate_fn=evaluate_fn,
-            on_fit_config_fn=lambda server_round: {"local_epochs": args.local_epochs, "learning_rate": args.learning_rate},
-        )
+            evaluate_fn = get_evaluate_fn(testloader, device, config, progress, rounds_task_id)
 
-        history = fl.simulation.start_simulation(
-            client_fn=bound_client_fn,
-            num_clients=args.num_clients,
-            config=fl.server.ServerConfig(num_rounds=args.num_rounds),
-            strategy=strategy,
-            client_resources={"num_gpus": 1} if device.type == "cuda" else None,
-        )
+            strategy = RichFedAvg(
+                progress=progress,
+                client_task_id=client_task_id,
+                fraction_fit=args.fraction_fit,
+                min_fit_clients=args.min_fit_clients,
+                min_available_clients=args.num_clients,
+                evaluate_fn=evaluate_fn,
+                on_fit_config_fn=lambda server_round: {"local_epochs": args.local_epochs, "learning_rate": args.learning_rate},
+            )
 
-        # --- FIX: Correctly extract and save all metrics ---
-        final_metrics = history.metrics_centralized
-        # The metrics are stored as {metric_name: [(round, value), ...]}
-        # We want the value from the last round.
-        final_metrics_processed = {key: val[-1][1] for key, val in final_metrics.items()}
-        
-        final_save_data = {
-            'status': 'Completed',
-            **config,
-            'num_clients': args.num_clients,
-            'num_rounds': args.num_rounds,
-            'local_epochs': args.local_epochs,
-            **final_metrics_processed, # Unpack all the final metrics here
-            'training_time_seconds': (datetime.now() - start_time).total_seconds()
-        }
-        save_results_to_csv(final_save_data)
-        print(f"SUCCESS: Experiment {config['name']} fully completed. Final Accuracy: {final_metrics_processed.get('accuracy', -1):.4f}")
+            client_app = fl.client.ClientApp(client_fn=client_fn_context)
+            server_app = fl.server.ServerApp(config=fl.server.ServerConfig(num_rounds=args.num_rounds), strategy=strategy)
+            
+            context = fl.common.Context(shared={"model_config": config, "trainloaders": trainloaders, "valloaders": valloaders, "device": device})
 
+            console.print(f"\n--> Starting simulation for '{config['name']}'...")
+            history = fl.simulation.run_simulation(server_app=server_app, client_app=client_app, num_clients=args.num_clients, context=context, client_resources={"num_gpus": 1} if device.type == "cuda" else None)
+            
+            progress.remove_task(rounds_task_id)
+            progress.remove_task(client_task_id)
+            console.print(f"--- Simulation for '[bold]{config['name']}[/bold]' finished. ---", style="green")
+
+            console.print(Panel("[bold green]Step 5: Processing and Saving Results[/bold green]"))
+            final_metrics = history.metrics_centralized
+            final_metrics_processed = {key: val[-1][1] for key, val in final_metrics.items() if val}
+            
+            final_save_data = {'status': 'Completed', **config, 'num_clients': args.num_clients, 'num_rounds': args.num_rounds, 'local_epochs': args.local_epochs, **final_metrics_processed, 'training_time_seconds': (datetime.now() - datetime.now()).total_seconds()}
+            save_results_to_csv(final_save_data)
+            console.print(f"Results for '[bold]{config['name']}[/bold]' saved. Final Accuracy: [bold yellow]{final_metrics_processed.get('accuracy', -1):.4f}[/bold yellow]")
+            
+            progress.update(exp_task_id, advance=1)
+
+    console.print(Panel("[bold]All Experiments Finished[/bold]", style="bold green"))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Flower Federated Learning for ResNet Comparison")
