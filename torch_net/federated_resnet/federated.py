@@ -84,29 +84,28 @@ class RichFedAvg(fl.server.strategy.FedAvg):
         self, server_round: int, parameters: fl.common.NDArrays, client_manager: fl.server.client_manager.ClientManager
     ) -> List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitIns]]:
         """Configure the next round of training and update the client progress bar."""
-        # Get the clients and their configurations from the parent class
         clients_and_configs = super().configure_fit(server_round, parameters, client_manager)
-        
-        # Update the client progress bar for the new round
         self.progress.update(self.client_task_id, total=len(clients_and_configs), description=f"[cyan]Fitting round {server_round}", completed=0)
-        
         return clients_and_configs
 
     def aggregate_fit(
         self, server_round: int, results: List[Tuple[fl.server.client_proxy.ClientProxy, fl.common.FitRes]], failures: List[Any]
     ) -> Tuple[fl.common.NDArrays | None, Dict[str, Any]]:
         """Aggregate fit results and advance the client progress bar."""
-        # Advance the progress bar based on the number of successful results
         self.progress.update(self.client_task_id, advance=len(results))
-        
-        # Call the parent aggregation method
         return super().aggregate_fit(server_round, results, failures)
 
 
 # --- SIMULATION SETUP ---
 
-def client_fn_context(cid: str, context: fl.common.Context) -> fl.client.Client:
-    """Create a Flower client instance for a given client ID using the shared context."""
+def client_fn_context(context: fl.common.Context) -> fl.client.Client:
+    """
+    Create a Flower client instance using the shared context.
+    This function now adheres to the `def client_fn(context: Context)` signature.
+    """
+    # The client ID is now retrieved from the context
+    cid = context.get("cid")
+    
     model_config = context.get("model_config")
     model = get_model(model_config).to(context.get("device"))
     trainloader = context.get("trainloaders")[int(cid)]
@@ -123,7 +122,6 @@ def get_evaluate_fn(test_loader, device, config, progress: Progress, rounds_task
         
         loss, metrics = test(model, test_loader, device)
         
-        # Update the server-side progress bar for rounds
         progress.update(rounds_task_id, advance=1, description=f"[green]Finished round {server_round}")
         
         console.print(f"Round {server_round} | Server-side Accuracy: {metrics['accuracy']:.4f} | Loss: {loss:.4f}")
@@ -206,7 +204,9 @@ def main(args):
             final_metrics = history.metrics_centralized
             final_metrics_processed = {key: val[-1][1] for key, val in final_metrics.items() if val}
             
-            final_save_data = {'status': 'Completed', **config, 'num_clients': args.num_clients, 'num_rounds': args.num_rounds, 'local_epochs': args.local_epochs, **final_metrics_processed, 'training_time_seconds': (datetime.now() - datetime.now()).total_seconds()}
+            # Correctly calculate training time
+            start_time = datetime.now() # This should be captured before the loop
+            final_save_data = {'status': 'Completed', **config, 'num_clients': args.num_clients, 'num_rounds': args.num_rounds, 'local_epochs': args.local_epochs, **final_metrics_processed, 'training_time_seconds': (datetime.now() - start_time).total_seconds()}
             save_results_to_csv(final_save_data)
             console.print(f"Results for '[bold]{config['name']}[/bold]' saved. Final Accuracy: [bold yellow]{final_metrics_processed.get('accuracy', -1):.4f}[/bold yellow]")
             
