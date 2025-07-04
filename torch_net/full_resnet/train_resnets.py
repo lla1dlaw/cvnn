@@ -154,9 +154,9 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
         model = ComplexResNet(block_class=ComplexResidualBlock, architecture_type=config['arch'], activation_function=config['activation'], learn_imaginary_component=config['learn_imag'], num_classes=10)
     
     model.to(device)
-#    if torch.cuda.device_count() > 1:
-#        logging.info(f"Using {torch.cuda.device_count()} GPUs with DataParallel.")
-#        model = nn.DataParallel(model)
+    if torch.cuda.device_count() > 1:
+        logging.info(f"Using {torch.cuda.device_count()} GPUs with DataParallel.")
+        model = nn.DataParallel(model)
     
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True)
     criterion = nn.CrossEntropyLoss()
