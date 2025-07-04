@@ -224,7 +224,7 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
 def main(args):
     setup_logging()
     
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     logging.info(f"Starting training process using: {device}")
     
     # Build experiment configurations from CLI arguments

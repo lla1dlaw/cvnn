@@ -184,7 +184,8 @@ class ComplexResNet(nn.Module):
             current_channels *= 2
         final_channels = self.initial_filters * (2**(len(self.blocks_per_stage) - 1))
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = ComplexLinear(final_channels, num_classes)
+        # conversion to real happens here (right before linear)
+        self.fc = nn.Linear(final_channels*2, num_classes)
         self.apply(init_weights)
     def _make_stage(self, block_class, channels, num_blocks):
         blocks = []
@@ -208,8 +209,10 @@ class ComplexResNet(nn.Module):
         pooled_imag = self.avgpool(x.imag)
         x = torch.complex(pooled_real, pooled_imag)
         x = torch.flatten(x, 1)
-        x_complex_logits = self.fc(x)
-        return x_complex_logits.abs()
+        # converts tensor to a flattened real_valued tensor containing both the phase and magnitude values
+        x = torch.cat([x.abs(), x.angle()])
+        logits = self.fc(x)
+        return logits
 
 class RealResNet(nn.Module):
     def __init__(self, block_class, architecture_type, input_channels=3, num_classes=10):
