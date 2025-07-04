@@ -183,7 +183,6 @@ class ComplexResNet(nn.Module):
                 self.downsample_layers.append(ComplexConv2d(current_channels, current_channels, kernel_size=1, stride=1, bias=False))
             current_channels *= 2
         final_channels = self.initial_filters * (2**(len(self.blocks_per_stage) - 1))
-        print(f"Final channels {final_channels}")
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         # conversion to real happens here (right before linear)
         self.fc = nn.Linear(final_channels*2, num_classes)
@@ -210,7 +209,6 @@ class ComplexResNet(nn.Module):
         pooled_imag = self.avgpool(x.imag)
         x = torch.complex(pooled_real, pooled_imag)
         x = torch.flatten(x, 1)
-        print(f"x_shape: {x.shape}")
         # converts tensor to a flattened real_valued tensor containing both the phase and magnitude values
         x = torch.cat([x.abs(), x.angle()], dim=1)
         logits = self.fc(x)
