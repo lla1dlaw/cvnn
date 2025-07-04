@@ -210,6 +210,7 @@ class ComplexResNet(nn.Module):
         pooled_imag = self.avgpool(x.imag)
         x = torch.complex(pooled_real, pooled_imag)
         x = torch.flatten(x, 1)
+        print(f"x_shape: {x.shape}")
         # converts tensor to a flattened real_valued tensor containing both the phase and magnitude values
         x = torch.cat([x.abs(), x.angle()])
         logits = self.fc(x)
