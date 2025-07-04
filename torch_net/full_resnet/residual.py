@@ -183,6 +183,7 @@ class ComplexResNet(nn.Module):
                 self.downsample_layers.append(ComplexConv2d(current_channels, current_channels, kernel_size=1, stride=1, bias=False))
             current_channels *= 2
         final_channels = self.initial_filters * (2**(len(self.blocks_per_stage) - 1))
+        print(f"Final channels {final_channels}")
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         # conversion to real happens here (right before linear)
         self.fc = nn.Linear(final_channels*2, num_classes)
