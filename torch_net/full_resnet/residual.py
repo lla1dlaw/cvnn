@@ -212,7 +212,7 @@ class ComplexResNet(nn.Module):
         x = torch.flatten(x, 1)
         print(f"x_shape: {x.shape}")
         # converts tensor to a flattened real_valued tensor containing both the phase and magnitude values
-        x = torch.cat([x.abs(), x.angle()])
+        x = torch.cat([x.abs(), x.angle()], dim=1)
         logits = self.fc(x)
         return logits
 
