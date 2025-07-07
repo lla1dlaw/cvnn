@@ -68,7 +68,8 @@ python train_resnets.py \
   --batch-size ${BATCH_SIZE} \
   --folds 1 \
   --arch WS \
-  --act crelu modrelu zrelu --learn_imag_mode true_only
+  --act crelu \
+  --learn_imag_mode true_only
 
 echo "======================================================"
 echo "Job finished with exit code $? at $(date)"
