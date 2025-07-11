@@ -19,12 +19,12 @@
 #SBATCH --output=dp_resnet.out
 #SBATCH --error=dp_resnet.err
 
-# Resource requests - Maximized for a V100 GPU node
-#SBATCH --partition=gpu             # Request the partition with V100 GPUs
+# Resource requests - Maximized for a l40 GPU node
+#SBATCH --partition=gpu-l40             # Request the partition with V100 GPUs
 #SBATCH --nodes=1                   # Number of nodes
 #SBATCH --ntasks-per-node=1         # A single main task
-#SBATCH --cpus-per-task=40          # Request all 40 CPUs on the node
-#SBATCH --gres=gpu:4                # Request all 4 GPUs on the node
+#SBATCH --cpus-per-task=48          # Request all 40 CPUs on the node
+#SBATCH --gres=gpu:1                # Request all 4 GPUs on the node
 #SBATCH --mem=180G                  # Request most of the memory (180 of 192 GB)
 #SBATCH --time=7-00:00:00           # Set time limit to the 7-day maximum
 
