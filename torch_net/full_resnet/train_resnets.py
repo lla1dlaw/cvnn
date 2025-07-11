@@ -166,7 +166,7 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
     history = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': []}
 
     for epoch in range(args.epochs):
-        adjust_learning_rate(optimizer, epoch)
+        #adjust_learning_rate(optimizer, epoch) # the given schedule causes instability in training
         logging.info(f"\nEpoch {epoch+1}/{args.epochs}")
         
         model.train()
