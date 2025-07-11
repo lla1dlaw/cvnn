@@ -1,9 +1,8 @@
 """
 PyTorch Training Script for Comparing Real and Complex ResNets
 
-This script automates the training and evaluation of various ResNet architectures
-using torch.nn.DataParallel for multi-GPU training. It now implements the
-specific training schedule from the "Deep Complex Networks" paper and allows
+This script automates the training and evaluation of various ResNet architectures. 
+It now implements the specific training schedule from the "Deep Complex Networks" paper and allows
 for experiment configurations to be passed via the command line.
 
 Usage:
@@ -21,7 +20,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader, Subset, SubsetRandomSampler
+from torch.utils.data import DataLoader, SubsetRandomSampler
 
 import os
 import csv
@@ -154,11 +153,8 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
         model = ComplexResNet(block_class=ComplexResidualBlock, architecture_type=config['arch'], activation_function=config['activation'], learn_imaginary_component=config['learn_imag'], num_classes=10)
     
     model.to(device)
-    if torch.cuda.device_count() > 1:
-        logging.info(f"Using {torch.cuda.device_count()} GPUs with DataParallel.")
-        model = nn.DataParallel(model)
     
-    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True)
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=1e-4)
     criterion = nn.CrossEntropyLoss()
     train_accuracy_metric = MulticlassAccuracy(num_classes=10, average='micro').to(device)
     val_accuracy_metric = MulticlassAccuracy(num_classes=10, average='micro').to(device)
@@ -166,7 +162,7 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
     history = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': []}
 
     for epoch in range(args.epochs):
-        adjust_learning_rate(optimizer, epoch)
+        # adjust_learning_rate(optimizer, epoch) # not needed (causes instability in training)
         logging.info(f"\nEpoch {epoch+1}/{args.epochs}")
         
         model.train()
