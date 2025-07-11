@@ -158,7 +158,7 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
 #        logging.info(f"Using {torch.cuda.device_count()} GPUs with DataParallel.")
 #        model = nn.DataParallel(model)
     
-    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True)
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, nesterov=True, weight_decay=1e-4)
     criterion = nn.CrossEntropyLoss()
     train_accuracy_metric = MulticlassAccuracy(num_classes=10, average='micro').to(device)
     val_accuracy_metric = MulticlassAccuracy(num_classes=10, average='micro').to(device)
@@ -166,7 +166,7 @@ def run_experiment_fold(config, args, train_loader, val_loader, fold_num, device
     history = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': []}
 
     for epoch in range(args.epochs):
-        adjust_learning_rate(optimizer, epoch)
+        # adjust_learning_rate(optimizer, epoch)
         logging.info(f"\nEpoch {epoch+1}/{args.epochs}")
         
         model.train()
